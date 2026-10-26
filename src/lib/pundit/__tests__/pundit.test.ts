@@ -80,19 +80,31 @@ describe("rate limiting", () => {
 });
 
 describe("request helpers", () => {
+  const ON_VERCEL = { VERCEL: "1" } as unknown as NodeJS.ProcessEnv;
+  const OFF_VERCEL = {} as unknown as NodeJS.ProcessEnv;
+
   it("hashes the client IP instead of keeping it", () => {
-    const key = clientKey(new Headers({ "x-vercel-forwarded-for": "203.0.113.9" }));
+    const key = clientKey(new Headers({ "x-vercel-forwarded-for": "203.0.113.9" }), ON_VERCEL);
     expect(key).toMatch(/^[0-9a-f]{32}$/);
     expect(key).not.toContain("203");
-    expect(clientKey(new Headers({ "x-real-ip": "203.0.113.9" }))).toBe(key);
   });
 
-  it("prefers platform headers and ignores spoofable leading x-forwarded-for entries", () => {
-    const real = clientKey(new Headers({ "x-vercel-forwarded-for": "198.51.100.7" }));
-    const spoofed = new Headers({ "x-vercel-forwarded-for": "198.51.100.7", "x-forwarded-for": "1.2.3.4, 198.51.100.7" });
-    expect(clientKey(spoofed)).toBe(real);
-    expect(clientKey(new Headers({ "x-forwarded-for": "1.2.3.4, 198.51.100.7" }))).toBe(real);
-    expect(clientKey(new Headers())).toMatch(/^[0-9a-f]{32}$/);
+  it("on Vercel, keys on the platform header and ignores spoofable x-forwarded-for entries", () => {
+    const real = clientKey(new Headers({ "x-vercel-forwarded-for": "198.51.100.7" }), ON_VERCEL);
+    const spoofed = new Headers({ "x-vercel-forwarded-for": "198.51.100.7", "x-forwarded-for": "1.2.3.4, 9.9.9.9" });
+    expect(clientKey(spoofed, ON_VERCEL)).toBe(real);
+  });
+
+  it("off Vercel, ignores platform headers a client could forge and uses the last proxy hop", () => {
+    const real = clientKey(new Headers({ "x-forwarded-for": "1.2.3.4, 198.51.100.7" }), OFF_VERCEL);
+    const forged = new Headers({
+      "x-vercel-forwarded-for": "10.0.0.1",
+      "x-real-ip": "10.0.0.2",
+      "x-forwarded-for": "1.2.3.4, 198.51.100.7",
+    });
+    expect(clientKey(forged, OFF_VERCEL)).toBe(real);
+    expect(clientKey(new Headers({ "x-forwarded-for": "198.51.100.7" }), OFF_VERCEL)).toBe(real);
+    expect(clientKey(new Headers(), OFF_VERCEL)).toMatch(/^[0-9a-f]{32}$/);
   });
 
   it("accepts same-origin posts only", () => {

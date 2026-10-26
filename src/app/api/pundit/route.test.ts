@@ -49,7 +49,7 @@ describe("POST /api/pundit", () => {
   it("rejects invalid and oversized bodies", async () => {
     expect((await POST(req({ question: "x" }))).status).toBe(400);
     expect((await POST(req("not json"))).status).toBe(400);
-    expect((await POST(req({ question: "a".repeat(3000) }))).status).toBe(400);
+    expect((await POST(req({ question: "a".repeat(3000) }))).status).toBe(413);
     expect(ask).not.toHaveBeenCalled();
   });
 
@@ -64,6 +64,26 @@ describe("POST /api/pundit", () => {
   it("rejects a declared oversized body before reading it", async () => {
     const res = await POST(req({ question: "What does he do?" }, { "content-length": "999999" }));
     expect(res.status).toBe(413);
+  });
+
+  it("rejects an oversized streamed body that declares no length", async () => {
+    const big = new TextEncoder().encode(JSON.stringify({ question: "x".repeat(5000) }));
+    const body = new ReadableStream<Uint8Array>({
+      start(c) {
+        for (let i = 0; i < big.length; i += 512) c.enqueue(big.slice(i, i + 512));
+        c.close();
+      },
+    });
+    const res = await POST(
+      new Request("https://va.dev/api/pundit", {
+        method: "POST",
+        headers: { origin: "https://va.dev", host: "va.dev", "content-type": "application/json" },
+        body,
+        duplex: "half",
+      } as RequestInit),
+    );
+    expect(res.status).toBe(413);
+    expect(ask).not.toHaveBeenCalled();
   });
 
   it("returns 503 busy when the rate limiter is down", async () => {
