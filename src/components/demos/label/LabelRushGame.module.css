@@ -1,0 +1,349 @@
+.game {
+  --cyan: #2de2e6;
+  --pink: #ff2a6d;
+  --violet: #7a4dff;
+  --yellow: #ffd400;
+  --panel: #140c26;
+  --panel-line: #4b2d8a;
+  --soft: #b2a8dc;
+  --dark: #0a0614;
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+  overflow: hidden;
+  background: var(--dark);
+  font-family: var(--pixel), "Share Tech Mono", monospace;
+  color: #efeaff;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+  container-type: inline-size;
+  outline: none;
+}
+
+.grid {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: 0;
+  height: 55%;
+  background-image: linear-gradient(#7a4dff55 1px, transparent 1px), linear-gradient(90deg, #7a4dff55 1px, transparent 1px);
+  background-size: 36px 22px;
+  transform: perspective(240px) rotateX(48deg);
+  transform-origin: bottom;
+}
+
+.sky {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 45%;
+  background: linear-gradient(180deg, #1a0f33 0%, var(--dark) 100%);
+}
+
+.belt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 54%;
+  height: 22%;
+  background: repeating-linear-gradient(90deg, #1d1236 0px, #1d1236 16px, #251845 16px, #251845 32px);
+  border-top: 2px solid var(--cyan);
+  border-bottom: 2px solid var(--pink);
+}
+
+.gate {
+  position: absolute;
+  top: 34%;
+  height: 46%;
+  border: 2px solid var(--cyan);
+  background: #2de2e612;
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+.laser {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+.gateTag {
+  position: absolute;
+  left: -2px;
+  top: -20px;
+  background: var(--cyan);
+  color: var(--dark);
+  font-size: 10px;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+
+.chips {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.chip {
+  position: absolute;
+  top: 65%;
+  width: 0;
+  height: 0;
+}
+
+.body {
+  position: absolute;
+  left: -20px;
+  top: -12px;
+  width: 40px;
+  height: 24px;
+}
+
+.cap {
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 24px;
+  background: #c4cad2;
+  border: 1px solid #000;
+}
+
+.capL {
+  left: 0;
+}
+
+.capR {
+  right: 0;
+}
+
+.ceramic {
+  position: absolute;
+  left: 8px;
+  top: 1px;
+  width: 24px;
+  height: 22px;
+  background: #b8875a;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+.crack {
+  position: absolute;
+  left: 14px;
+  top: 3px;
+  width: 2px;
+  height: 20px;
+  background: #2b1a10;
+  transform: rotate(32deg);
+}
+
+.box {
+  position: absolute;
+  left: -25px;
+  top: -17px;
+  width: 50px;
+  height: 34px;
+  border: 2px solid var(--box);
+  box-shadow: 0 0 8px var(--box);
+}
+
+.tag {
+  position: absolute;
+  left: -25px;
+  top: -32px;
+  font-size: 10px;
+  line-height: 13px;
+  padding: 0 3px;
+  background: var(--box);
+  color: var(--dark);
+  white-space: nowrap;
+}
+
+.hud {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.model {
+  display: flex;
+  border: 2px solid var(--pink);
+  font-family: var(--display), "Chakra Petch", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.modelName {
+  background: var(--cyan);
+  color: var(--dark);
+  padding: 4px 7px;
+}
+
+.modelAcc {
+  background: var(--panel);
+  color: #efeaff;
+  padding: 4px 7px;
+}
+
+.stats {
+  align-self: flex-start;
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  padding: 2px 7px;
+  font-size: 11px;
+}
+
+.retrain {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  padding: 3px 7px;
+  font-size: 10px;
+}
+
+.retrainBar {
+  position: relative;
+  width: 60px;
+  height: 6px;
+  background: #2a1d4d;
+}
+
+.retrainFill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--pink);
+}
+
+.keys {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 6px;
+  pointer-events: none;
+  font-size: 11px;
+}
+
+.keyA,
+.keyB {
+  color: var(--dark);
+  padding: 2px 7px;
+}
+
+.keyA {
+  background: var(--pink);
+}
+
+.keyB {
+  background: var(--cyan);
+}
+
+.auto {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 11px;
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  padding: 2px 7px;
+  pointer-events: none;
+}
+
+.flash {
+  position: absolute;
+  left: 50%;
+  top: 24%;
+  transform: translate(-50%, -50%);
+  font-family: var(--display), "Chakra Petch", sans-serif;
+  font-weight: 700;
+  font-size: calc(30px * var(--display-scale, 1));
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  color: var(--cyan);
+  text-shadow: 0 0 12px var(--cyan);
+}
+
+.flashRed {
+  color: var(--pink);
+  text-shadow: 0 0 12px var(--pink);
+}
+
+.over {
+  position: absolute;
+  inset: 0;
+  background: #0a0614e8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.overKicker {
+  font-size: 12px;
+  color: var(--soft);
+}
+
+.overTitle {
+  font-family: var(--display), "Chakra Petch", sans-serif;
+  font-weight: 700;
+  font-size: calc(44px * var(--display-scale, 1));
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.overScore {
+  font-size: 12px;
+  color: var(--pink);
+}
+
+.overHint {
+  font-size: 11px;
+  color: var(--soft);
+}
+
+/* Phone: shrink the chips and move the attract note out of the HUD's way. */
+@container (max-width: 520px) {
+  .chip {
+    scale: 0.8;
+  }
+
+  .auto {
+    top: auto;
+    right: auto;
+    left: 10px;
+    bottom: 10px;
+    max-width: 52%;
+    font-size: 10px;
+  }
+
+  .overTitle {
+    font-size: calc(32px * var(--display-scale, 1));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .laser {
+    display: none;
+  }
+}

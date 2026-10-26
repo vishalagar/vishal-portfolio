@@ -1,0 +1,54 @@
+.group {
+  display: flex;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  background: var(--surface);
+  color: var(--ink);
+  border: 2px solid var(--line);
+  box-shadow: 3px 3px 0 var(--shadow);
+  font-family: var(--pixel);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--ink);
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--accent-text);
+  outline-offset: 2px;
+}
+
+.dot {
+  width: 16px;
+  height: 16px;
+  background: var(--sw);
+  border: 2px solid var(--ink);
+  display: inline-block;
+}
+
+.label {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .btn {
+    padding: 0 12px;
+  }
+  .label {
+    display: inline;
+  }
+}

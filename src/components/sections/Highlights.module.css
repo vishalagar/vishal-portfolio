@@ -1,0 +1,260 @@
+.lede {
+  margin: -20px 0 28px;
+  color: var(--muted);
+}
+
+.motd {
+  display: flex;
+  flex-wrap: wrap;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  box-shadow: 8px 8px 0 var(--shadow);
+  margin-bottom: 28px;
+}
+
+.motdGame {
+  flex: 999 1 560px;
+  min-width: 0;
+  /* grows with the text column beside it so there's no empty band under the demo */
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border-right: 2px solid var(--line);
+  border-bottom: 2px solid var(--line);
+  margin: 0 -2px -2px 0;
+}
+
+.motdGame > * {
+  flex: 1 0 auto;
+}
+
+
+.motdInfo {
+  flex: 1 1 300px;
+  min-width: 0;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.minuteRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.minuteBadge {
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 18px;
+  padding: 0 8px;
+}
+
+.motdTitle {
+  font-size: calc(34px * var(--display-scale, 1));
+  line-height: 1;
+}
+
+.lead {
+  margin: 0;
+  font-size: 15px;
+}
+
+/* Play button on the world's game card */
+.play {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 2;
+  min-height: 48px;
+  padding: 0 18px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 #000000;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.takeControl {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 2;
+  min-height: 44px;
+  padding: 0 12px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 2px solid #0b1610;
+  box-shadow: 3px 3px 0 #000000;
+  font-family: var(--pixel);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* where a game sits while it's open full screen */
+.away {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface2);
+  color: var(--muted);
+  font-family: var(--pixel);
+  font-size: 12px;
+}
+
+.checksTitle {
+  margin-bottom: 6px;
+}
+
+.small {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cell {
+  display: flex;
+}
+
+.card {
+  flex: 1;
+  min-width: 0;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  box-shadow: 6px 6px 0 var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+.stage {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid var(--line);
+  background: #0b1a12;
+}
+
+.cardMinute {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 18px;
+  padding: 0 8px;
+  pointer-events: none;
+}
+
+.body {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.cardTitle {
+  font-size: calc(28px * var(--display-scale, 1));
+  line-height: 1;
+}
+
+.blurb {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.checks {
+  border: 2px dashed var(--line);
+  padding: 10px 12px;
+}
+
+.checkList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.check {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.35;
+  margin-top: 4px;
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.links {
+  display: flex;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 6px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.links a {
+  display: inline-block;
+  padding: 8px 0;
+}
+
+.squad {
+  margin-top: 28px;
+  border: 2px solid var(--line);
+  padding: 14px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  align-items: baseline;
+}
+
+.squad ul {
+  display: contents;
+}
+
+.squad li {
+  font-weight: 600;
+  list-style: none;
+}
+
+@media (max-width: 560px) {
+  .motdGame {
+    flex-basis: 100%;
+    /* stacked: the demo's own height decides (PrintSafe is shorter on phones) */
+    min-height: 0;
+    border-right: 0;
+    margin-right: 0;
+  }
+}

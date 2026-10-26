@@ -1,0 +1,259 @@
+/* ---------- Fire & smoke ---------- */
+.fire {
+  position: absolute;
+  inset: 0;
+  background: #1b1612;
+}
+
+.floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46px;
+  background: #2a221c;
+  border-top: 2px solid #3a3029;
+}
+
+.machine {
+  position: absolute;
+  left: 12%;
+  bottom: 46px;
+  width: 34%;
+  height: 84px;
+  background: #4a4f57;
+  border: 2px solid #0b0b0b;
+  box-shadow: 4px 4px 0 #0b0b0b;
+}
+
+.ledGreen,
+.ledYellow {
+  position: absolute;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+}
+
+.ledGreen {
+  left: 10px;
+  background: #6fd08c;
+  animation: va-pulse 1s steps(1) infinite;
+}
+
+.ledYellow {
+  left: 24px;
+  background: #f5d547;
+}
+
+.panel {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 12px;
+  height: 18px;
+  background: #343940;
+}
+
+.flame {
+  position: absolute;
+  left: 60%;
+  bottom: 46px;
+  width: 30px;
+  height: 50px;
+}
+
+.flameOuter,
+.flameMid,
+.flameCore {
+  position: absolute;
+  bottom: 0;
+  transform-origin: bottom;
+}
+
+.flameOuter {
+  left: 0;
+  width: 30px;
+  height: 44px;
+  background: #e5432f;
+  animation: va-flame 0.45s steps(3) infinite;
+}
+
+.flameMid {
+  left: 5px;
+  width: 20px;
+  height: 30px;
+  background: #ff8a3d;
+  animation: va-flame 0.38s steps(3) infinite reverse;
+}
+
+.flameCore {
+  left: 10px;
+  width: 10px;
+  height: 16px;
+  background: #f5d547;
+  animation: va-flame 0.3s steps(3) infinite;
+}
+
+.smoke {
+  position: absolute;
+  bottom: 100px;
+  opacity: 0;
+  animation: va-smoke 2.4s linear infinite;
+}
+
+.smoke1 {
+  left: 61%;
+  width: 16px;
+  height: 16px;
+  background: #7a7a7a;
+}
+
+.smoke2 {
+  left: 63%;
+  width: 14px;
+  height: 14px;
+  background: #8a8a8a;
+  animation-delay: 0.8s;
+}
+
+.smoke3 {
+  left: 60%;
+  width: 18px;
+  height: 18px;
+  background: #6b6b6b;
+  animation-delay: 1.6s;
+}
+
+.fireBox,
+.smokeBox {
+  position: absolute;
+  border: 2px solid;
+}
+
+.fireBox span,
+.smokeBox span {
+  position: absolute;
+  font-family: var(--pixel);
+  font-size: 10px;
+  color: #0b1610;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+
+.fireBox {
+  left: calc(60% - 8px);
+  bottom: 42px;
+  width: 44px;
+  height: 60px;
+  border-color: #ff8a3d;
+}
+
+.fireBox span {
+  left: -2px;
+  bottom: -22px;
+  background: #ff8a3d;
+}
+
+.smokeBox {
+  left: calc(60% - 6px);
+  bottom: 106px;
+  width: 62px;
+  height: 96px;
+  border-color: #a7bcae;
+}
+
+.smokeBox span {
+  right: -2px;
+  top: -2px;
+  background: #a7bcae;
+}
+
+.client {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: #eef3ea;
+  background: #08130e;
+  padding: 3px 7px;
+}
+
+@keyframes va-flame {
+  0% { transform: scaleY(1); }
+  33% { transform: scaleY(1.25) translateX(-1px); }
+  66% { transform: scaleY(0.85) translateX(1px); }
+  100% { transform: scaleY(1); }
+}
+
+@keyframes va-smoke {
+  0% { transform: translate(0, 0); opacity: 0; }
+  20% { opacity: 0.85; }
+  100% { transform: translate(16px, -96px); opacity: 0; }
+}
+
+/* ---------- Colorization wipe ---------- */
+.colorize {
+  position: absolute;
+  inset: 0;
+}
+
+.out {
+  object-fit: contain;
+  background: #f2f2f2;
+}
+
+.in {
+  object-fit: contain;
+  background: #e6e6e6;
+  animation: va-wipe 6s ease-in-out infinite;
+}
+
+.wipe {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  margin-left: -1px;
+  background: var(--accent);
+  animation: va-wipeline 6s ease-in-out infinite;
+}
+
+.caption {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: #eef3ea;
+  background: #08130e;
+  padding: 3px 7px;
+}
+
+@keyframes va-wipe {
+  0%, 15% { clip-path: inset(0 0 0 0); }
+  50%, 65% { clip-path: inset(0 0 0 100%); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes va-wipeline {
+  0%, 15% { left: 0; }
+  50%, 65% { left: 100%; }
+  100% { left: 0; }
+}
+
+/* Reduced motion: show a still half-and-half split instead of the wipe. */
+@media (prefers-reduced-motion: reduce) {
+  .in {
+    clip-path: inset(0 0 0 50%);
+  }
+  .wipe {
+    left: 50%;
+  }
+}
+
+/* Local copies: CSS Modules scope animation names, so global keyframes are not reachable from here. */
+@keyframes va-pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.25; }
+}

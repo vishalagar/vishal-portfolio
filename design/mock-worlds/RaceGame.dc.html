@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Grand Prix mini-game</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&amp;family=Titillium+Web:wght@700;900&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 100%; height: {{height}}; overflow: hidden; background: #2d6b3c; font-family: 'Silkscreen', monospace; color: #ffffff; user-select: none; display: flex; justify-content: center">
+
+<div style="position: relative; height: 100%; aspect-ratio: 3 / 4; max-width: 100%; overflow: hidden; background: repeating-linear-gradient(0deg, #2f7440 0px, #2f7440 18px, #2a6a3a 18px, #2a6a3a 36px); background-position: 0 {{grassShift}}">
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<sc-for list="{{slices}}" as="s" hint-placeholder-count="30">
+<div style="position: absolute; left: {{s.left}}; top: {{s.top}}; width: {{s.width}}; height: {{s.height}}; background: #3a3a40; border-left: 4px solid {{s.kerb}}; border-right: 4px solid {{s.kerb}}; box-sizing: border-box"></div>
+</sc-for>
+<sc-for list="{{lines}}" as="ln" hint-placeholder-count="2">
+<div style="position: absolute; left: {{ln.left}}; top: {{ln.top}}; width: {{ln.width}}; height: 10px; background: repeating-linear-gradient(90deg, #ffffff 0px, #ffffff 8px, #111111 8px, #111111 16px)"></div>
+</sc-for>
+</div>
+
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<sc-for list="{{cars}}" as="c" hint-placeholder-count="8">
+<div style="position: absolute; left: {{c.left}}; top: {{c.top}}; width: 0; height: 0">
+<div style="position: absolute; left: -9px; top: -16px; width: 18px; height: 32px">
+<div style="position: absolute; left: 0; top: 2px; width: 18px; height: 4px; background: {{c.wing}}"></div>
+<div style="position: absolute; left: 1px; top: 6px; width: 4px; height: 7px; background: #111111"></div>
+<div style="position: absolute; right: 1px; top: 6px; width: 4px; height: 7px; background: #111111"></div>
+<div style="position: absolute; left: 6px; top: 3px; width: 6px; height: 26px; background: {{c.body}}; border: 1px solid #111111"></div>
+<div style="position: absolute; left: 7px; top: 13px; width: 4px; height: 5px; background: #111111"></div>
+<div style="position: absolute; left: 0; top: 19px; width: 4px; height: 8px; background: #111111"></div>
+<div style="position: absolute; right: 0; top: 19px; width: 4px; height: 8px; background: #111111"></div>
+<div style="position: absolute; left: 1px; top: 28px; width: 16px; height: 4px; background: {{c.wing}}"></div>
+</div>
+<div style="position: absolute; left: -14px; top: -21px; width: 28px; height: 42px; border: {{c.box}}"></div>
+<span style="position: absolute; left: -14px; top: -35px; font-size: 9px; line-height: 12px; padding: 0 3px; white-space: nowrap; background: {{c.tagBg}}; color: #111111">{{c.label}}</span>
+</div>
+</sc-for>
+</div>
+
+<sc-if value="{{showLights}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: 50%; top: 22%; transform: translateX(-50%); display: flex; gap: 6px; padding: 8px 10px; background: #111111; border: 2px solid #ffffff">
+<sc-for list="{{lights}}" as="l" hint-placeholder-count="5">
+<span style="width: 18px; height: 18px; border-radius: 50%; background: {{l.bg}}; border: 2px solid #333333"></span>
+</sc-for>
+</div>
+</sc-if>
+</div>
+
+<div style="position: absolute; left: 10px; top: 10px; display: flex; flex-direction: column; gap: 4px; pointer-events: none">
+<div style="display: flex; align-items: stretch; border: 2px solid #111111; font-family: 'Titillium Web', sans-serif; font-weight: 900; font-size: 18px; line-height: 1">
+<span style="background: #ffffff; color: #c8102e; padding: 3px 7px">P{{position}}</span>
+<span style="background: #111111; color: #ffffff; padding: 3px 7px">/ 8</span>
+<span style="background: #c8102e; color: #ffffff; padding: 3px 7px; font-family: 'Silkscreen', monospace; font-weight: 400; font-size: 11px; display: flex; align-items: center">Lap {{lap}}/3</span>
+</div>
+<span style="align-self: flex-start; background: #111111; padding: 2px 7px; font-size: 10px">{{speed}} km/h · DRS {{drs}}</span>
+<div style="display: flex; flex-direction: column; gap: 1px; margin-top: 4px">
+<sc-for list="{{tower}}" as="t" hint-placeholder-count="8">
+<div style="display: flex; gap: 4px; align-items: center; background: {{t.bg}}; color: {{t.fg}}; padding: 1px 5px; font-size: 9px; width: 84px">
+<span style="width: 18px">P{{t.pos}}</span><span style="width: 8px; height: 8px; background: {{t.color}}; border: 1px solid #111111"></span><span>{{t.name}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{attract}}" hint-placeholder-val="{{ true }}">
+<span style="position: absolute; right: 10px; top: 10px; font-size: 10px; background: #111111; padding: 2px 7px; pointer-events: none">AI driving · tracking 8 cars</span>
+</sc-if>
+
+<sc-if value="{{flashOn}}" hint-placeholder-val="{{ false }}">
+<div aria-live="polite" style="position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%); font-family: 'Titillium Web', sans-serif; font-weight: 900; font-style: italic; font-size: {{flashSize}}; line-height: 1; text-transform: uppercase; color: #ffffff; text-shadow: 4px 4px 0 #111111; white-space: nowrap; pointer-events: none">{{flashText}}</div>
+</sc-if>
+
+<sc-if value="{{over}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: #111111e0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center">
+<div style="font-size: 12px; color: #ffb3b3">Chequered flag</div>
+<div style="font-family: 'Titillium Web', sans-serif; font-weight: 900; font-size: 52px; line-height: 1; text-transform: uppercase">P{{finishPos}} of 8</div>
+<div style="font-size: 12px; color: #ffd400">{{verdict}}</div>
+<div style="font-size: 10px; color: #dddddd">A: race again · Exit: back to the page</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["attract","play"],"default":"attract"},"pad":{"editor":null},"playKey":{"editor":null},"height":{"editor":"text","default":"360px"},"sound":{"editor":"boolean","default":false},"$preview":{"width":720,"height":360}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.LAP = 900;
+    this.LAPS = 3;
+    this.prevPad = {};
+    this.state = { r: this.fresh() };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.tick(), 33);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  componentDidUpdate(prev) {
+    if (prev.playKey !== this.props.playKey || prev.mode !== this.props.mode) {
+      this.prevPad = {};
+      this.setState({ r: this.fresh() });
+    }
+  }
+  fresh() {
+    const teams = [
+      ['ACE', '#1e2a78', '#ffd400', 9], ['BLZ', '#f2f2f2', '#111111', 21], ['ZIP', '#ff8000', '#111111', 12],
+      ['NOV', '#7a1fa2', '#ffd400', 30], ['KAI', '#00594f', '#c6ff00', 51], ['RIO', '#00a19c', '#1e2a78', 77],
+      ['TEO', '#5b5b66', '#ff8000', 2]
+    ];
+    // the visitor starts last: overtaking is the point
+    const rivals = teams.map(([name, body, wing, num], i) => ({
+      name, body, wing, num,
+      x: i % 2 ? 0.66 : 0.34,
+      d: 18 + (6 - i) * 14,
+      speed: 0,
+      top: 0.9 + ((i * 37) % 7) / 100,
+      target: i % 2 ? 0.66 : 0.34,
+      bump: 0
+    }));
+    return { phase: 'lights', t: 0, me: { x: 0.5, d: 0, speed: 0, drs: 3, boost: 0, bump: 0 }, rivals, flash: null, finishPos: 0 };
+  }
+  audio() {
+    if (!this.ac) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      this.ac = new AC();
+    }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  }
+  tone(type, f0, f1, dur, vol, delay) {
+    if (!this.props.sound) return;
+    const ac = this.audio();
+    if (!ac) return;
+    const t = ac.currentTime + (delay || 0);
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(ac.destination);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  }
+  center(d) {
+    return 0.5 + 0.16 * Math.sin(d / 140) + 0.06 * Math.sin(d / 47);
+  }
+  playing() {
+    return this.props.mode === 'play';
+  }
+  input(r) {
+    if (!this.playing()) return this.autopilot(r);
+    const p = this.props.pad || {};
+    const prev = this.prevPad;
+    this.prevPad = { ...p };
+    return { steer: (p.right ? 1 : 0) - (p.left ? 1 : 0), brake: !!(p.b || p.down), boost: !!p.a && !prev.a, again: !!p.a && !prev.a };
+  }
+  autopilot(r) {
+    // aim for the side with more room ahead, use DRS when a car is close in front
+    const ahead = r.rivals.filter((c) => c.d > r.me.d && c.d - r.me.d < 60);
+    let target = 0.5;
+    if (ahead.length) {
+      const near = ahead.reduce((a, b) => (a.d < b.d ? a : b));
+      target = near.x > 0.5 ? 0.3 : 0.7;
+    }
+    const close = ahead.some((c) => c.d - r.me.d < 30);
+    return { steer: Math.max(-1, Math.min(1, (target - r.me.x) * 6)), brake: false, boost: close && r.me.drs > 0 && Math.random() < 0.05, again: false };
+  }
+  tick() {
+    const r = this.state.r;
+    const inp = this.input(r);
+    if (r.phase === 'over') {
+      if (this.playing() && inp.again) { this.prevPad = {}; this.setState({ r: this.fresh() }); }
+      else if (!this.playing() && r.t > 150) this.setState({ r: this.fresh() });
+      else this.setState({ r: { ...r, t: r.t + 1 } });
+      return;
+    }
+    if (r.phase === 'lights') {
+      const t = r.t + 1;
+      if (t % 15 === 0 && t <= 75) this.tone('square', 440, 440, 0.12, 0.04);
+      if (t >= 90) {
+        this.tone('square', 880, 880, 0.3, 0.05);
+        this.setState({ r: { ...r, phase: 'race', t: 0, flash: { text: 'Lights out', t: 30 } } });
+        return;
+      }
+      this.setState({ r: { ...r, t } });
+      return;
+    }
+    this.setState({ r: this.race(r, inp) });
+  }
+  race(r, inp) {
+    const me = { ...r.me };
+    let flash = r.flash && r.flash.t > 1 ? { ...r.flash, t: r.flash.t - 1 } : null;
+    const offTrack = Math.abs(me.x - 0.5) > 0.44;
+    if (inp.boost && me.drs > 0 && me.boost === 0) {
+      me.drs -= 1;
+      me.boost = 60;
+      flash = { text: 'DRS', t: 20 };
+      this.tone('sawtooth', 200, 600, 0.4, 0.03);
+    }
+    const top = (me.boost > 0 ? 1.25 : 1) * (offTrack ? 0.5 : 1);
+    const target = inp.brake ? 0.35 : top;
+    me.speed += (target - me.speed) * (inp.brake ? 0.08 : 0.025);
+    if (me.bump > 0) { me.speed *= 0.97; me.bump -= 1; }
+    me.boost = Math.max(0, me.boost - 1);
+    me.x = Math.max(0.02, Math.min(0.98, me.x + inp.steer * 0.018));
+    me.d += me.speed * 2.2;
+
+    const rivals = r.rivals.map((c) => {
+      const n = { ...c };
+      if (Math.random() < 0.01) n.target = 0.25 + Math.random() * 0.5;
+      n.x += (n.target - n.x) * 0.02;
+      const tSpeed = n.top * (this.playing() ? 0.97 : 1);
+      n.speed += (tSpeed - n.speed) * 0.02;
+      if (n.bump > 0) { n.speed *= 0.97; n.bump -= 1; }
+      n.d += n.speed * 2.2;
+      return n;
+    });
+    // contact: whoever is behind loses speed and both get pushed apart
+    rivals.forEach((c) => {
+      const dy = c.d - me.d;
+      const dx = c.x - me.x;
+      if (Math.abs(dy) < 9 && Math.abs(dx) < 0.11) {
+        if (dy > 0) { me.bump = 20; me.speed *= 0.8; } else { c.bump = 20; c.speed *= 0.8; }
+        me.x -= Math.sign(dx || 1) * 0.03;
+        c.x += Math.sign(dx || 1) * 0.03;
+        if (!flash) flash = { text: 'Contact', t: 16 };
+        this.tone('square', 160, 90, 0.12, 0.05);
+      }
+    });
+    const lapBefore = Math.floor(r.me.d / this.LAP);
+    const lapNow = Math.floor(me.d / this.LAP);
+    if (lapNow > lapBefore && lapNow < this.LAPS) {
+      flash = { text: 'Lap ' + (lapNow + 1), t: 30 };
+      this.tone('triangle', 660, 660, 0.15, 0.04);
+    }
+    const position = 1 + rivals.filter((c) => c.d > me.d).length;
+    if (position < r.position && r.position) {
+      flash = { text: 'Overtake', t: 18 };
+      this.tone('triangle', 520, 880, 0.12, 0.04);
+    }
+    if (me.d >= this.LAP * this.LAPS) {
+      this.tone('sine', 523, 523, 0.15, 0.05);
+      this.tone('sine', 659, 659, 0.15, 0.05, 0.15);
+      this.tone('sine', 784, 784, 0.3, 0.05, 0.3);
+      return { ...r, me, rivals, phase: 'over', t: 0, finishPos: position, position, flash: null };
+    }
+    return { ...r, me, rivals, flash, position, t: r.t + 1 };
+  }
+  renderVals() {
+    const r = this.state.r;
+    const me = r.me;
+    const VIEW_BACK = 40;
+    const VIEW_FWD = 200;
+    const span = VIEW_BACK + VIEW_FWD;
+    const yOf = (d) => (1 - (d - (me.d - VIEW_BACK)) / span) * 100;
+    const halfW = 0.38;
+    const slices = [];
+    const N = 30;
+    for (let i = 0; i < N; i++) {
+      const d0 = me.d - VIEW_BACK + (span * i) / N;
+      const c = this.center(d0);
+      slices.push({
+        left: ((c - halfW) * 100).toFixed(2) + '%',
+        width: (halfW * 200).toFixed(2) + '%',
+        top: (yOf(d0 + span / N)).toFixed(2) + '%',
+        height: 'calc(' + (100 / N).toFixed(3) + '% + 1px)',
+        kerb: Math.floor(d0 / 12) % 2 ? '#c8102e' : '#ffffff'
+      });
+    }
+    const lines = [];
+    for (let k = 0; k <= this.LAPS; k++) {
+      const d = k * this.LAP;
+      if (d > me.d - VIEW_BACK && d < me.d + VIEW_FWD) {
+        const c = this.center(d);
+        lines.push({ left: ((c - halfW) * 100).toFixed(2) + '%', width: (halfW * 200).toFixed(2) + '%', top: yOf(d).toFixed(2) + '%' });
+      }
+    }
+    const toScreen = (car) => {
+      const c = this.center(car.d);
+      return { left: ((c + (car.x - 0.5) * halfW * 2) * 100).toFixed(2) + '%', top: yOf(car.d).toFixed(2) + '%' };
+    };
+    const human = this.playing();
+    const cars = r.rivals
+      .filter((c) => c.d > me.d - VIEW_BACK - 10 && c.d < me.d + VIEW_FWD + 10)
+      .map((c) => ({ ...toScreen(c), body: c.body, wing: c.wing, box: '2px solid #ffffffaa', tagBg: '#ffffff', label: 'car ' + c.num + ' 0.9' + (c.num % 10) }));
+    cars.push({ ...toScreen(me), body: '#c8102e', wing: '#ffffff', box: '3px solid #ffd400', tagBg: '#ffd400', label: human ? 'you · 4' : 'VA · 4' });
+    const order = [{ name: 'VA', d: me.d, color: '#c8102e', you: true }].concat(r.rivals.map((c) => ({ name: c.name, d: c.d, color: c.body })))
+      .sort((a, b) => b.d - a.d);
+    const lit = r.phase === 'lights' ? Math.min(5, Math.floor(r.t / 15)) : 0;
+    const flash = r.flash;
+    const pos = 1 + r.rivals.filter((c) => c.d > me.d).length;
+    return {
+      height: this.props.height || '360px',
+      grassShift: ((me.d * 4) % 36).toFixed(0) + 'px',
+      slices,
+      lines,
+      cars,
+      showLights: r.phase === 'lights',
+      lights: [0, 1, 2, 3, 4].map((i) => ({ bg: i < lit ? '#ff1e1e' : '#2a2a2a' })),
+      position: pos,
+      lap: Math.min(this.LAPS, Math.floor(me.d / this.LAP) + 1),
+      speed: Math.round(me.speed * 290),
+      drs: me.drs,
+      tower: order.map((o, i) => ({ pos: i + 1, name: o.name, color: o.color, bg: o.you ? '#ffd400' : '#111111cc', fg: o.you ? '#111111' : '#ffffff' })),
+      attract: !human,
+      flashOn: !!flash && r.phase !== 'over',
+      flashText: flash ? flash.text : '',
+      flashSize: flash && flash.text.length > 8 ? '30px' : '44px',
+      over: r.phase === 'over' && human,
+      finishPos: r.finishPos,
+      verdict: r.finishPos === 1 ? 'Race win. From the back of the grid.' : (r.finishPos <= 3 ? 'Podium. Spray the champagne.' : 'Points finish. Box, box for a better strategy.')
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+.sprite {
+  position: relative;
+  flex: none;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  background-image: url("/sprite/vishal-sheet.png");
+  background-size: 500% 100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+/* costume sheets (5 frames) per world; football and the unmasked frame use the base sheet */
+.gp { background-image: url("/sprite/vishal_gp_sheet_8x.png"); }
+.gaming { background-image: url("/sprite/vishal_gaming_sheet_8x.png"); }
+.run { background-image: url("/sprite/vishal_run_sheet_8x.png"); }
+.ai { background-image: url("/sprite/vishal_ai_sheet_8x.png"); }
+
+/* unmask strips (8 frames), shown on frames 1–6 only */
+.strip {
+  background-size: 800% 100%;
+}
+.stripgp { background-image: url("/sprite/vishal_gp_unmask_8x.png"); }
+.stripgaming { background-image: url("/sprite/vishal_gaming_unmask_8x.png"); }
+.striprun { background-image: url("/sprite/vishal_run_unmask_8x.png"); }
+.stripai { background-image: url("/sprite/vishal_ai_unmask_8x.png"); }

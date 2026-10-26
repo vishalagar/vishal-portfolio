@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Football mini-game</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&amp;family=Barlow+Condensed:wght@800&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 100%; height: {{height}}; overflow: hidden; background: repeating-linear-gradient(90deg, #2f7a43 0px, #2f7a43 48px, #348449 48px, #348449 96px); font-family: 'Silkscreen', monospace; color: #eef3ea; user-select: none; touch-action: none">
+<div aria-hidden="true" style="position: absolute; inset: 8px; border: 2px solid #e4eef0"></div>
+<div aria-hidden="true" style="position: absolute; left: 50%; top: 8px; bottom: 8px; width: 2px; background: #e4eef0"></div>
+
+<div aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: 84px; height: 84px; margin: -43px 0 0 -43px; border: 2px solid #e4eef0; border-radius: 50%"></div>
+<div aria-hidden="true" style="position: absolute; right: 8px; top: 20%; width: 15%; height: 60%; border: 2px solid #e4eef0; border-right: 0"></div>
+<div aria-hidden="true" style="position: absolute; left: 8px; top: 20%; width: 15%; height: 60%; border: 2px solid #e4eef0; border-left: 0"></div>
+<div aria-hidden="true" style="position: absolute; right: 2px; top: 39%; width: 8px; height: 22%; background: repeating-linear-gradient(0deg, #ffffff 0px, #ffffff 3px, #cfd8d2 3px, #cfd8d2 6px); border: 2px solid #ffffff"></div>
+<div aria-hidden="true" style="position: absolute; left: 2px; top: 39%; width: 8px; height: 22%; background: repeating-linear-gradient(0deg, #ffffff 0px, #ffffff 3px, #cfd8d2 3px, #cfd8d2 6px); border: 2px solid #ffffff"></div>
+
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<sc-for list="{{actors}}" as="a" hint-placeholder-count="7">
+<div style="position: absolute; left: {{a.left}}; top: {{a.top}}; width: 0; height: 0">
+<div style="position: absolute; left: {{a.offX}}; top: {{a.offY}}; width: {{a.w}}; height: {{a.h}}; background: {{a.fill}}; border: 2px solid #0b1610"></div>
+<div style="position: absolute; left: {{a.boxX}}; top: {{a.boxY}}; width: {{a.boxW}}; height: {{a.boxH}}; border: {{a.boxBorder}}"></div>
+<span style="position: absolute; left: {{a.boxX}}; top: {{a.labelY}}; font-size: 9px; line-height: 12px; background: {{a.color}}; color: #0b1610; padding: 0 3px; white-space: nowrap">{{a.label}}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="position: absolute; left: 14px; top: 14px; display: flex; flex-direction: column; gap: 5px; font-size: 11px; pointer-events: none">
+<div style="display: flex; align-items: stretch; border: 2px solid #0b1610; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; line-height: 1">
+<span style="background: #2a50b8; color: #ffffff; padding: 3px 7px">VA</span>
+<span style="background: {{accent}}; color: #0b1610; padding: 3px 8px">{{scoreA}} – {{scoreB}}</span>
+<span style="background: #e5432f; color: #ffffff; padding: 3px 7px">CPU</span>
+<span style="background: #08130e; color: #eef3ea; padding: 3px 7px; font-family: 'Silkscreen', monospace; font-size: 12px; display: flex; align-items: center">{{minute}}'</span>
+</div>
+<span style="align-self: flex-start; background: #08130e; border: 1px solid #3a6150; padding: 2px 7px">{{status}}</span>
+<sc-if value="{{human}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; gap: 6px; background: #08130e; border: 1px solid #3a6150; padding: 3px 7px; font-size: 9px">
+<span>stamina</span><span style="width: 60px; height: 6px; background: #22332a; position: relative"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: {{stamina}}; background: #6fd08c"></span></span>
+</div>
+</sc-if>
+<sc-if value="{{powerOn}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; gap: 6px; background: #08130e; border: 1px solid #3a6150; padding: 3px 7px; font-size: 9px">
+<span>power</span><span style="width: 60px; height: 6px; background: #22332a; position: relative"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: {{power}}; background: #e5432f"></span></span>
+</div>
+</sc-if>
+</div>
+
+<sc-if value="{{bot}}" hint-placeholder-val="{{ true }}">
+<span style="position: absolute; right: 14px; top: 14px; font-size: 10px; background: #08130e; padding: 2px 7px; pointer-events: none">{{hint}}</span>
+</sc-if>
+
+<sc-if value="{{flashOn}}" hint-placeholder-val="{{ false }}">
+<div aria-live="polite" style="position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: {{flashSize}}; line-height: 1; text-align: center; text-transform: uppercase; color: {{flashColor}}; text-shadow: 4px 4px 0 #0b1610; pointer-events: none; white-space: nowrap">{{flashText}}</div>
+</sc-if>
+
+<sc-if value="{{fullTime}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: #08130ee0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center">
+<div style="font-size: 12px; color: #a7bcae">Full time</div>
+<div style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 54px; line-height: 1; text-transform: uppercase">VA {{scoreA}} – {{scoreB}} CPU</div>
+<div style="font-size: 13px; color: {{accent}}">{{result}}</div>
+<div style="font-size: 10px; color: #cfe0d4">A: play again · Exit: back to the page</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#f5d547"},"sound":{"editor":"boolean","default":false},"mode":{"editor":"enum","options":["attract","play"],"default":"attract"},"pad":{"editor":null},"playKey":{"editor":null},"height":{"editor":"text","default":"360px"},"$preview":{"width":720,"height":360}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.resetInput();
+    this.state = { g: this.newMatch(props.mode === 'play' ? 'human' : 'bot') };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.tick(), 33);
+  }
+  componentDidUpdate(prev) {
+    if (prev.playKey !== this.props.playKey || prev.mode !== this.props.mode) {
+      this.resetInput();
+      this.setState({ g: this.newMatch(this.props.mode === 'play' ? 'human' : 'bot') });
+    }
+  }
+  // the shared controller (keyboard on laptop, Game Boy pad on phone) arrives as the pad prop
+  readPad() {
+    const p = this.props.pad || {};
+    const prev = this.prevPad || {};
+    this.prevPad = { ...p };
+    this.keys = { up: !!p.up, down: !!p.down, left: !!p.left, right: !!p.right, sprint: !!p.r };
+    return { p, prev };
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  resetInput() {
+    this.prevPad = {};
+    this.keys = {};
+    this.charge = null;
+    this.passQueued = false;
+    this.releaseQueued = false;
+    this.tackleQueued = false;
+  }
+
+  // ---------- tuning ----------
+  cfg() {
+    return { walk: 0.62, sprint: 0.95, accel: 0.22, carry: 2.3, pickR: 2.8, tackleR: 2.8, tackleP: 0.035,
+      shotMin: 1.8, shotMax: 3.3, pass: 2.0, fric: 0.965, top: 19.5, bottom: 30.5, keeperY: [20.5, 29.5], keeperSpeed: 0.38, saveR: 2.9 };
+  }
+
+  // ---------- helpers ----------
+  clamp(v, lo, hi) {
+    return Math.max(lo, Math.min(hi, v));
+  }
+  dist(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+  decay(f) {
+    return f && f.t > 1 ? { ...f, t: f.t - 1 } : null;
+  }
+  freshBall(x, y, owner, last) {
+    return { x, y, vx: 0, vy: 0, owner, last, shotBy: null, speed: 0, intended: null, tried: [], settle: owner === null ? 0 : 14 };
+  }
+  lineup(kickTeam) {
+    const P = (x, y, team, role, num) => ({ x, y, vx: 0, vy: 0, fx: team === 'A' ? 1 : -1, fy: 0, team, role, num, cool: 0, stamina: 1, sprinting: false });
+    return [
+      P(kickTeam === 'A' ? 47 : 40, 25, 'A', 'out', 4),
+      P(36, 14, 'A', 'out', 9),
+      P(kickTeam === 'B' ? 53 : 60, 25, 'B', 'out', 3),
+      P(64, 36, 'B', 'out', 5),
+      P(3.5, 25, 'A', 'gk', 1),
+      P(96.5, 25, 'B', 'gk', 1)
+    ];
+  }
+  restart(g, kickTeam) {
+    const players = this.lineup(kickTeam);
+    const owner = kickTeam === 'A' ? 0 : 2;
+    const o = players[owner];
+    return { ...g, players, ball: this.freshBall(o.x + o.fx * 2, o.y, owner, kickTeam), active: 0, freeze: 20, pending: null, hold: 0, kTarget: [25, 25] };
+  }
+  newMatch(mode) {
+    return this.restart({ mode, score: { A: 0, B: 0 }, tick: 0, over: false, halfDone: false, flash: null }, 'A');
+  }
+
+  // ---------- sound ----------
+  audio() {
+    if (!this.ac) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      this.ac = new AC();
+    }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  }
+  tone(type, f0, f1, dur, vol, delay) {
+    const ac = this.audio();
+    if (!ac) return;
+    const t = ac.currentTime + (delay || 0);
+    const o = ac.createOscillator();
+    const gn = ac.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    gn.gain.setValueAtTime(0.0001, t);
+    gn.gain.exponentialRampToValueAtTime(vol, t + 0.01);
+    gn.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(gn).connect(ac.destination);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  }
+  roar() {
+    const ac = this.audio();
+    if (!ac) return;
+    const len = Math.floor(ac.sampleRate * 1.6);
+    const buf = ac.createBuffer(1, len, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < len; i++) {
+      last = (last + 0.05 * (Math.random() * 2 - 1)) / 1.05;
+      d[i] = last * 4;
+    }
+    const src = ac.createBufferSource();
+    src.buffer = buf;
+    const bp = ac.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 650;
+    bp.Q.value = 0.5;
+    const gn = ac.createGain();
+    const t = ac.currentTime;
+    gn.gain.setValueAtTime(0.0001, t);
+    gn.gain.exponentialRampToValueAtTime(0.35, t + 0.25);
+    gn.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
+    src.connect(bp).connect(gn).connect(ac.destination);
+    src.start();
+  }
+  sfx(e) {
+    if (!this.props.sound) return;
+    if (e === 'kick') {
+      this.tone('sine', 150, 50, 0.16, 0.35, 0);
+    } else if (e === 'pass') {
+      this.tone('sine', 180, 70, 0.1, 0.2, 0);
+    } else if (e === 'tackle') {
+      this.tone('square', 300, 180, 0.12, 0.04, 0);
+    } else if (e === 'save') {
+      this.tone('sine', 220, 90, 0.2, 0.2, 0);
+    } else if (e === 'goal') {
+      this.roar();
+      this.tone('sine', 2800, 2800, 0.5, 0.06, 0.1);
+    } else if (e === 'whistle') {
+      this.tone('sine', 2800, 2800, 0.2, 0.05, 0);
+    } else if (e === 'end') {
+      this.tone('sine', 2800, 2800, 0.18, 0.06, 0);
+      this.tone('sine', 2800, 2800, 0.18, 0.06, 0.25);
+      this.tone('sine', 2800, 2800, 0.7, 0.06, 0.5);
+    }
+  }
+
+  // ---------- game loop ----------
+  tick() {
+    const g = this.state.g;
+    if (g.mode === 'human') {
+      const { p, prev } = this.readPad();
+      if (g.over) {
+        if (p.a && !prev.a) { this.prevPad = { a: true }; this.start(); }
+        return;
+      }
+      if (p.b && !prev.b) this.passQueued = true;
+      if (p.a && !prev.a) this.pressShoot();
+      if (!p.a && prev.a) this.releaseShoot();
+    }
+    if (g.over) return;
+    if (this.charge !== null) this.charge += 1;
+    if (g.freeze > 0) {
+      const left = g.freeze - 1;
+      if (left === 0 && g.pending) {
+        this.setState({ g: this.applyPending(g) });
+        return;
+      }
+      this.setState({ g: { ...g, freeze: left, flash: this.decay(g.flash) } });
+      return;
+    }
+    const out = this.simulate(g);
+    out.events.forEach((e) => this.sfx(e));
+    this.setState({ g: out.g });
+  }
+  applyPending(g) {
+    const p = g.pending;
+    if (p.type === 'kickoff') return { ...this.restart(g, p.team), flash: g.flash };
+    if (p.type === 'end') return g.mode === 'bot' ? this.newMatch('bot') : { ...g, over: true, pending: null, freeze: 0 };
+    const players = g.players.map((q) => ({ ...q, vx: 0, vy: 0 }));
+    let owner;
+    if (p.keeper) {
+      owner = players.findIndex((q) => q.role === 'gk' && q.team === p.team);
+    } else {
+      const options = players.map((q, i) => ({ q, i })).filter(({ q }) => q.team === p.team && q.role === 'out');
+      owner = options.reduce((a, b) => (this.dist(a.q, p) <= this.dist(b.q, p) ? a : b)).i;
+      const dir = p.team === 'A' ? 1 : -1;
+      players[owner] = { ...players[owner], x: this.clamp(p.x - dir * 2, 2, 98), y: this.clamp(p.y, 2, 48), fx: dir, fy: 0 };
+    }
+    const o = players[owner];
+    const active = g.mode === 'human' && p.team === 'A' && o.role === 'out' ? owner : g.active;
+    return { ...g, players, ball: this.freshBall(o.x, o.y, owner, p.team), pending: null, freeze: 0, hold: 0, active };
+  }
+
+  humanIntent() {
+    const k = this.keys;
+    const it = { mx: (k.right ? 1 : 0) - (k.left ? 1 : 0), my: (k.down ? 1 : 0) - (k.up ? 1 : 0), sprint: !!k.sprint, shoot: null, pass: false, arrive: false };
+    if (this.passQueued) { it.pass = true; this.passQueued = false; }
+    if (this.releaseQueued) { it.shoot = this.power(); this.releaseQueued = false; this.charge = null; }
+    return it;
+  }
+  power() {
+    return this.charge === null ? 0.5 : this.clamp(0.3 + this.charge / 24, 0.3, 1);
+  }
+  keeperIntent(i, ball, hold) {
+    return { mx: 0, my: 0, sprint: false, shoot: null, pass: ball.owner === i && hold > 22, arrive: false };
+  }
+  aiIntent(i, p, players, ball, cfg) {
+    // think in a frame where this player's team always attacks to the right,
+    // so both teams make exactly mirrored decisions
+    if (p.team === 'A') return this.aiThink(i, players[i], players, ball, cfg);
+    const flip = (o) => ({ ...o, x: 100 - o.x, y: 50 - o.y, vx: -o.vx, vy: -o.vy, fx: -(o.fx || 0), fy: -(o.fy || 0) });
+    const fp = players.map(flip);
+    const it = this.aiThink(i, fp[i], fp, flip(ball), cfg);
+    return { ...it, mx: -it.mx, my: -it.my, aimY: it.aimY === undefined ? undefined : 50 - it.aimY };
+  }
+  aiThink(i, p, players, ball, cfg) {
+    const dir = 1;
+    const goalX = 100;
+    const ownX = 0;
+    const outs = players.map((q, j) => ({ q, j })).filter(({ q }) => q.role === 'out');
+    const mate = outs.find(({ q, j }) => q.team === p.team && j !== i);
+    const foes = outs.filter(({ q }) => q.team !== p.team).map(({ q }) => q);
+    const go = (x, y, sprint) => ({ mx: x - p.x, my: y - p.y, sprint: !!sprint, shoot: null, pass: false, arrive: true });
+    const owner = ball.owner === null ? null : players[ball.owner];
+    const nearFoe = Math.min(...foes.map((f) => this.dist(f, p)));
+
+    if (ball.owner === i) {
+      const toGoal = Math.hypot(goalX - p.x, 25 - p.y);
+      const inRange = Math.abs(goalX - p.x) < 26;
+      if (inRange && (nearFoe < 6 || toGoal < 15)) {
+        const keeper = players.find((q) => q.role === 'gk' && q.team !== p.team);
+        const aimY = keeper.y >= 25 ? cfg.top + 1 : cfg.bottom - 1;
+        return { ...go(goalX, 25), arrive: false, shoot: 0.55 + Math.random() * 0.4, aimY };
+      }
+      if (mate) {
+        const m = mate.q;
+        const mateAhead = (m.x - p.x) * dir > 3;
+        const mateSpace = Math.min(...foes.map((f) => this.dist(f, m)));
+        if (nearFoe < 4 && mateSpace > 7 && (mateAhead || nearFoe < 2.5) && Math.random() < 0.18) {
+          return { ...go(m.x, m.y), pass: true };
+        }
+      }
+      const f = foes.reduce((a, b) => (this.dist(a, p) <= this.dist(b, p) ? a : b));
+      const dodge = nearFoe < 9 ? (f.y > p.y ? -9 : 9) : 0;
+      return { ...go(goalX - dir * 6, this.clamp(25 + (p.y - 25) * 0.6 + dodge, 5, 45), nearFoe > 8), arrive: false };
+    }
+    if (owner && owner.team === p.team) {
+      return go(this.clamp(owner.x + dir * 15, 8, 92), owner.y < 25 ? 35 : 15, false);
+    }
+    const team = outs.filter(({ q }) => q.team === p.team);
+    const chaser = team.reduce((a, b) => (this.dist(a.q, ball) <= this.dist(b.q, ball) ? a : b));
+    if (chaser.j === i) return { ...go(ball.x, ball.y, true), arrive: false };
+    const others = foes.filter((f) => f !== owner);
+    if (others.length) {
+      const mark = others.reduce((a, b) => (Math.abs(a.x - ownX) <= Math.abs(b.x - ownX) ? a : b));
+      return go(mark.x - dir * 4, mark.y, false);
+    }
+    return go((ball.x + ownX) / 2, (ball.y + 25) / 2, false);
+  }
+  shot(o, power, cfg, aimY) {
+    const goalX = o.team === 'A' ? 100 : 0;
+    const dir = o.team === 'A' ? 1 : -1;
+    const dist = Math.max(1, Math.abs(goalX - o.x));
+    let target = aimY;
+    if (target === undefined || target === null) {
+      const facingGoal = o.fx * dir > 0.2;
+      const faceY = facingGoal ? o.y + (o.fy / Math.abs(o.fx)) * dist : 25 + o.fy * 6;
+      target = 25 + (this.clamp(faceY, cfg.top - 5, cfg.bottom + 5) - 25) * 0.85;
+    }
+    const spread = 3.2 * (0.35 + power * power) * (0.6 + dist / 40);
+    const y = target + (Math.random() - 0.5) * spread;
+    const speed = cfg.shotMin + (cfg.shotMax - cfg.shotMin) * power;
+    const dx = goalX - o.x;
+    const dy = y - o.y;
+    const l = Math.hypot(dx, dy) || 1;
+    const b = this.freshBall(o.x + dir * 1.2, o.y, null, o.team);
+    return { ...b, vx: dx / l * speed, vy: dy / l * speed, speed, shotBy: o.team };
+  }
+  passTo(o, t, j, cfg) {
+    const tx = this.clamp(t.x + t.vx * 10, 3, 97);
+    const ty = this.clamp(t.y + t.vy * 10, 3, 47);
+    const dx = tx - o.x;
+    const dy = ty - o.y;
+    const l = Math.hypot(dx, dy) || 1;
+    const speed = Math.min(cfg.pass * (0.7 + l / 45), cfg.pass * 1.4);
+    const b = this.freshBall(o.x + dx / l * 1.5, o.y + dy / l * 1.5, null, o.team);
+    return { ...b, vx: dx / l * speed, vy: dy / l * speed, speed, intended: j };
+  }
+
+  simulate(g) {
+    const cfg = this.cfg();
+    const events = [];
+    const human = g.mode === 'human';
+    const players = g.players.map((p) => ({ ...p, cool: Math.max(0, p.cool - 1) }));
+    let ball = { ...g.ball };
+    let flash = this.decay(g.flash);
+    let active = g.active;
+    const hold = ball.owner !== null && players[ball.owner].role === 'gk' ? g.hold + 1 : 0;
+    const tick = g.tick + 1;
+
+    // keepers re-read the play every 4 ticks: a small reaction delay
+    let kTarget = g.kTarget;
+    if (tick % 4 === 0) {
+      kTarget = [3.5, 96.5].map((kx, side) => {
+        const toward = side === 0 ? ball.vx < -0.2 : ball.vx > 0.2;
+        let y = 25 + (ball.y - 25) * 0.45;
+        if (ball.owner === null && toward) y = ball.y + ball.vy * ((kx - ball.x) / ball.vx);
+        return this.clamp(y, cfg.keeperY[0], cfg.keeperY[1]);
+      });
+    }
+
+    // human controls whichever of #4 / #9 makes sense
+    if (human) {
+      const o = ball.owner === null ? null : players[ball.owner];
+      if (o && o.team === 'A' && o.role === 'out') {
+        active = ball.owner;
+      } else if (tick % 12 === 0) {
+        const near = this.dist(players[0], ball) <= this.dist(players[1], ball) ? 0 : 1;
+        if (near !== active && this.dist(players[active], ball) - this.dist(players[near], ball) > 3) active = near;
+      }
+    }
+
+    const intents = players.map((p, i) => {
+      if (human && i === active) return this.humanIntent();
+      if (p.role === 'gk') return this.keeperIntent(i, ball, hold);
+      return this.aiIntent(i, p, players, ball, cfg);
+    });
+
+    // movement with acceleration, sprint and stamina
+    players.forEach((p, i) => {
+      const it = intents[i];
+      if (p.role === 'gk') {
+        const target = kTarget[p.team === 'A' ? 0 : 1];
+        const sp = cfg.keeperSpeed * (ball.owner === null && Math.abs(ball.vx) > 1.5 ? 1.5 : 1);
+        const dy = this.clamp(target - p.y, -sp, sp);
+        p.y += dy;
+        p.vy = dy;
+        p.vx = 0;
+        p.fx = p.team === 'A' ? 1 : -1;
+        p.fy = 0;
+        return;
+      }
+      const len = Math.hypot(it.mx, it.my);
+      const moving = len > 0.3;
+      const sprinting = it.sprint && p.stamina > 0.05 && moving;
+      const max = (sprinting ? cfg.sprint : cfg.walk) * (human && p.team === 'B' ? 0.92 : 1);
+      const sp = moving ? (it.arrive ? Math.min(max, len * 0.12) : max) : 0;
+      p.vx += ((moving ? it.mx / len * sp : 0) - p.vx) * cfg.accel;
+      p.vy += ((moving ? it.my / len * sp : 0) - p.vy) * cfg.accel;
+      p.x = this.clamp(p.x + p.vx, 2, 98);
+      p.y = this.clamp(p.y + p.vy, 2, 48);
+      if (moving) { p.fx = it.mx / len; p.fy = it.my / len; }
+      p.stamina = this.clamp(p.stamina + (sprinting ? -0.011 : 0.004), 0, 1);
+      p.sprinting = sprinting;
+    });
+
+    // the player on the ball: shoot, pass or carry
+    if (ball.owner !== null) {
+      const o = players[ball.owner];
+      const it = intents[ball.owner];
+      if (o.role === 'out' && it.shoot !== null && it.shoot !== undefined) {
+        ball = this.shot(o, it.shoot, cfg, it.aimY);
+        o.cool = 10;
+        events.push('kick');
+      } else if (it.pass) {
+        const mates = players.map((q, j) => ({ q, j })).filter(({ q, j }) => q.team === o.team && q.role === 'out' && j !== ball.owner);
+        const space = (m) => Math.min(...players.filter((f) => f.team !== o.team && f.role === 'out').map((f) => this.dist(f, m.q)));
+        const target = mates.length ? mates.reduce((a, b) => (space(a) >= space(b) ? a : b)) : null;
+        if (target) {
+          ball = this.passTo(o, target.q, target.j, cfg);
+          o.cool = 10;
+          events.push('pass');
+        }
+      } else if (o.role === 'gk') {
+        ball = { ...ball, x: o.x + o.fx * 1.5, y: o.y, vx: 0, vy: 0 };
+      } else {
+        const reach = cfg.carry * (o.sprinting ? 1.3 : 1);
+        ball = { ...ball, x: o.x + o.fx * reach, y: o.y + o.fy * reach, vx: 0, vy: 0 };
+      }
+    } else {
+      ball = { ...ball, x: ball.x + ball.vx, y: ball.y + ball.vy, vx: ball.vx * cfg.fric, vy: ball.vy * cfg.fric };
+      ball.speed = Math.hypot(ball.vx, ball.vy);
+    }
+
+    // tackles
+    if (ball.settle > 0) ball = { ...ball, settle: ball.settle - 1 };
+    if (ball.owner !== null && players[ball.owner].role === 'out' && !ball.settle) {
+      const o = players[ball.owner];
+      const tacklers = players.map((q, j) => ({ q, j }))
+        .filter(({ q }) => q.team !== o.team && q.role === 'out' && q.cool === 0 && this.dist(q, ball) < cfg.tackleR);
+      for (const { q, j } of tacklers) {
+        const forced = human && j === active && this.tackleQueued;
+        const chance = forced ? 0.5 : cfg.tackleP * (o.sprinting ? 1.4 : 1) * (human && q.team === 'B' ? 0.7 : 1);
+        if (Math.random() < chance) {
+          o.cool = 16;
+          if (Math.random() < 0.55) {
+            ball = this.freshBall(ball.x, ball.y, j, q.team);
+          } else {
+            ball = { ...this.freshBall(ball.x, ball.y, null, q.team), vx: (q.x < o.x ? 1 : -1) * (0.6 + Math.random() * 0.6), vy: (Math.random() - 0.5) * 1.2, speed: 1 };
+          }
+          flash = { text: 'Tackled', t: 22 };
+          events.push('tackle');
+          break;
+        }
+      }
+    }
+    this.tackleQueued = false;
+
+    // loose ball: first touch / interception
+    if (ball.owner === null) {
+      let best = null;
+      players.forEach((p, i) => {
+        if (p.role !== 'out' || p.cool > 0) return;
+        if (ball.shotBy && p.team === ball.shotBy && ball.speed > 1.4) return;
+        const d = this.dist(p, ball);
+        if (d > cfg.pickR) return;
+        const ctrl = ball.speed < 1.4 ? 1 : (ball.intended === i ? 0.85 : 0.3);
+        if (Math.random() < ctrl && (!best || d < best.d)) best = { i, d };
+      });
+      if (best) ball = this.freshBall(ball.x, ball.y, best.i, players[best.i].team);
+    }
+
+    // keepers: one save attempt per shot
+    if (ball.owner === null) {
+      players.forEach((k, i) => {
+        if (ball.owner !== null || k.role !== 'gk' || ball.tried.includes(i)) return;
+        const towards = k.team === 'A' ? ball.vx < 0 : ball.vx > 0;
+        if (!towards || this.dist(k, ball) > cfg.saveR) return;
+        const chance = this.clamp(1.3 - ball.speed * 0.22 - Math.abs(ball.y - k.y) * 0.1, 0.3, 0.94);
+        ball = { ...ball, tried: ball.tried.concat([i]) };
+        if (Math.random() < chance) {
+          if (ball.speed < 2.3) ball = this.freshBall(k.x, k.y, i, k.team);
+          else ball = { ...ball, vx: -ball.vx * 0.4, vy: ball.vy + (Math.random() - 0.5) * 1.6, shotBy: null, last: k.team };
+          flash = { text: 'Saved', t: 22 };
+          events.push('save');
+        }
+      });
+    }
+
+    // goals and the ball going out of play
+    let score = g.score;
+    let pending = null;
+    let freeze = 0;
+    if (ball.owner === null) {
+      const inMouth = ball.y > cfg.top && ball.y < cfg.bottom;
+      const endA = ball.x <= 0.6;
+      const endB = ball.x >= 99.4;
+      if (endA || endB) {
+        const scorer = endB ? 'A' : 'B';
+        const defender = endB ? 'B' : 'A';
+        if (inMouth) {
+          score = { ...score, [scorer]: score[scorer] + 1 };
+          flash = { text: 'Goal', t: 50 };
+          events.push('goal');
+          pending = { type: 'kickoff', team: defender };
+          freeze = 50;
+        } else if (ball.last === defender) {
+          flash = { text: 'Corner', t: 26 };
+          events.push('whistle');
+          pending = { type: 'set', team: scorer, x: endB ? 92 : 8, y: ball.y < 25 ? 3 : 47 };
+          freeze = 26;
+        } else {
+          flash = { text: 'Goal kick', t: 26 };
+          events.push('whistle');
+          pending = { type: 'set', team: defender, keeper: true };
+          freeze = 26;
+        }
+      } else if (ball.y <= 0.6 || ball.y >= 49.4) {
+        flash = { text: 'Throw-in', t: 24 };
+        events.push('whistle');
+        pending = { type: 'set', team: ball.last === 'A' ? 'B' : 'A', x: this.clamp(ball.x, 4, 96), y: ball.y < 25 ? 2.5 : 47.5 };
+        freeze = 24;
+      }
+    }
+
+    // 90-second match: one real second per minute
+    let halfDone = g.halfDone;
+    const minute = Math.floor(tick / 30);
+    if (!pending && minute >= 45 && !halfDone) {
+      halfDone = true;
+      flash = { text: 'Half-time', t: 45 };
+      events.push('end');
+      pending = { type: 'kickoff', team: 'B' };
+      freeze = 45;
+    } else if (!pending && minute >= 90) {
+      flash = { text: 'Full time', t: 90 };
+      events.push('end');
+      pending = { type: 'end' };
+      freeze = human ? 2 : 90;
+    }
+
+    return { g: { ...g, players, ball, flash, active, hold, kTarget, tick, score, pending, freeze, halfDone }, events };
+  }
+
+  // ---------- input ----------
+  start() {
+    const keep = this.prevPad;
+    this.resetInput();
+    this.prevPad = keep;
+    this.sfx('whistle');
+    this.setState({ g: this.newMatch('human') });
+  }
+  pressShoot() {
+    const g = this.state.g;
+    if (g.mode !== 'human' || g.over) return;
+    if (g.ball.owner === g.active) {
+      if (this.charge === null) this.charge = 0;
+    } else {
+      this.tackleQueued = true;
+    }
+  }
+  releaseShoot() {
+    if (this.charge !== null) this.releaseQueued = true;
+  }
+  hold(key, on) {
+    return () => { this.keys = { ...this.keys, [key]: on }; };
+  }
+
+  renderVals() {
+    const g = this.state.g;
+    const accent = this.props.accent ?? '#f5d547';
+    const human = g.mode === 'human';
+    const kit = { A: '#2a50b8', B: '#e5432f' };
+    const actors = g.players.map((p, i) => {
+      const gk = p.role === 'gk';
+      const you = human && i === g.active;
+      const w = 12;
+      const h = 16;
+      const color = you ? accent : (p.team === 'A' ? '#cfe0f5' : '#ffb4a6');
+      return {
+        left: p.x + '%', top: (p.y / 50 * 100) + '%',
+        w: w + 'px', h: h + 'px', offX: (-w / 2) + 'px', offY: (-h / 2) + 'px',
+        boxW: (w + 10) + 'px', boxH: (h + 10) + 'px', boxX: (-w / 2 - 5) + 'px', boxY: (-h / 2 - 5) + 'px',
+        labelY: (-h / 2 - 18) + 'px',
+        fill: gk ? (p.team === 'A' ? '#3ddc97' : '#ff8a3d') : kit[p.team],
+        color,
+        boxBorder: (you ? 3 : 2) + 'px solid ' + color,
+        label: you ? 'you · ' + p.num : (gk ? 'gk' : 'id ' + p.num)
+      };
+    });
+    const bs = 8;
+    const bx = this.clamp(g.ball.x, 0, 100);
+    const by = this.clamp(g.ball.y, 0, 50);
+    actors.push({
+      left: bx + '%', top: (by / 50 * 100) + '%',
+      w: bs + 'px', h: bs + 'px', offX: (-bs / 2) + 'px', offY: (-bs / 2) + 'px',
+      boxW: (bs + 10) + 'px', boxH: (bs + 10) + 'px', boxX: (-bs / 2 - 5) + 'px', boxY: (-bs / 2 - 5) + 'px',
+      labelY: (-bs / 2 - 18) + 'px', fill: '#ffffff', color: '#ffffff', boxBorder: '2px solid #ffffff', label: 'ball'
+    });
+    const owner = g.ball.owner === null ? null : g.players[g.ball.owner];
+    const flash = g.flash;
+    const big = flash && flash.text === 'Goal';
+    const me = g.players[g.active];
+    const keymap = { ArrowUp: 'up', w: 'up', W: 'up', ArrowDown: 'down', s: 'down', S: 'down', ArrowLeft: 'left', a: 'left', A: 'left', ArrowRight: 'right', d: 'right', D: 'right', Shift: 'sprint' };
+    const gameKey = (k) => keymap[k] !== undefined || k === ' ' || k === 'Enter' || k === 'x' || k === 'X' || k === 'k' || k === 'K';
+    const diff = g.score.A - g.score.B;
+    return {
+      accent,
+      height: this.props.height || '360px',
+      human,
+      bot: !human,
+      hint: 'Bots playing · YOLOv8n tracking',
+      scoreA: g.score.A,
+      scoreB: g.score.B,
+      minute: Math.min(90, Math.floor(g.tick / 30)),
+      status: owner ? (owner.team === 'A' ? (human ? 'your ball' : 'VA on the ball') : 'CPU on the ball') : 'loose ball',
+      stamina: Math.round((me ? me.stamina : 1) * 100) + '%',
+      powerOn: human && this.charge !== null,
+      power: Math.round(this.power() * 100) + '%',
+      flashOn: !!flash && !g.over,
+      flashText: flash ? flash.text : '',
+      flashSize: big ? '72px' : (flash && flash.text.length > 12 ? '26px' : '36px'),
+      flashColor: big ? accent : '#eef3ea',
+      fullTime: human && g.over,
+      result: diff > 0 ? 'You win.' : (diff < 0 ? 'The CPU wins this one.' : 'A draw.'),
+      shootText: 'Shoot',
+      actors,
+      controlText: human ? 'Playing: you are #' + (me ? me.num : 4) : 'Kick off: you are #4',
+      controlLabel: human ? 'Arrow keys or WASD to move, Shift to sprint, X to pass, hold Space to shoot, tap Space to tackle' : 'Start a 90-second match and control player number 4',
+      control: () => { if (this.state.g.mode !== 'human' || this.state.g.over) this.start(); },
+      again: () => this.start(),
+      exit: () => { this.resetInput(); this.setState({ g: this.newMatch('bot') }); },
+      keyDown: (e) => {
+        if (!gameKey(e.key)) return;
+        e.preventDefault();
+        const cur = this.state.g;
+        if (cur.mode !== 'human' || cur.over) { this.start(); return; }
+        const key = keymap[e.key];
+        if (key) this.keys = { ...this.keys, [key]: true };
+        if (e.key === 'x' || e.key === 'X' || e.key === 'k' || e.key === 'K') this.passQueued = true;
+        if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) this.pressShoot();
+      },
+      keyUp: (e) => {
+        if (!gameKey(e.key)) return;
+        e.preventDefault();
+        const key = keymap[e.key];
+        if (key) this.keys = { ...this.keys, [key]: false };
+        if (e.key === ' ' || e.key === 'Enter') this.releaseShoot();
+      },
+      blur: () => { this.keys = {}; },
+      passClick: () => { this.passQueued = true; },
+      shootDown: () => this.pressShoot(),
+      shootUp: () => this.releaseShoot(),
+      upOn: this.hold('up', true), upOff: this.hold('up', false),
+      downOn: this.hold('down', true), downOff: this.hold('down', false),
+      leftOn: this.hold('left', true), leftOff: this.hold('left', false),
+      rightOn: this.hold('right', true), rightOff: this.hold('right', false),
+      sprintOn: this.hold('sprint', true), sprintOff: this.hold('sprint', false)
+    };
+  }
+}
+</script>
+</body>
+</html>

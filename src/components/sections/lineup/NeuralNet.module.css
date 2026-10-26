@@ -1,0 +1,125 @@
+.net {
+  position: relative;
+  height: 400px;
+}
+
+.cap {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.svg {
+  position: absolute;
+  left: 0;
+  top: 28px;
+  width: 100%;
+  height: calc(100% - 28px);
+  overflow: visible;
+}
+
+.edge {
+  stroke: var(--chalk);
+  stroke-opacity: 0.35;
+  stroke-width: 1.5;
+}
+
+.pulse {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 8 92;
+  stroke-dashoffset: 100;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pulse {
+    animation: flow 2.4s linear infinite;
+  }
+}
+
+/* Calm version: no moving pulses. */
+@media (prefers-reduced-motion: reduce) {
+  .pulse {
+    display: none;
+  }
+}
+
+.nodes {
+  position: absolute;
+  left: 0;
+  top: 28px;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.node {
+  position: absolute;
+  transform: translate(-50%, -24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 92px;
+}
+
+.dot {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--shirt-bg);
+  color: var(--shirt-ink);
+  border: 2px solid var(--shirt-line);
+  box-shadow: 0 0 0 4px var(--bg);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.name {
+  background: var(--tag-bg);
+  color: var(--tag-ink);
+  padding: 1px 6px;
+  font-weight: 600;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* On phones the net gets taller rather than wider; labels shrink so neighbouring columns stay apart. */
+@media (max-width: 560px) {
+  .net {
+    height: 540px;
+  }
+  .node {
+    width: 72px;
+  }
+  .dot {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+  }
+  .node {
+    transform: translate(-50%, -20px);
+  }
+  .name {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+  .cap {
+    font-size: 9px;
+  }
+}
+
+@keyframes flow {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}

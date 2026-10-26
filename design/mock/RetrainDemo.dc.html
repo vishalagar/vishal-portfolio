@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Autonomous retraining demo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&amp;family=Barlow:wght@500;600&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 100%; height: 220px; overflow: hidden; box-sizing: border-box; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; background: #0e1621; color: #e6edf3; font-family: 'Barlow', system-ui, sans-serif">
+<div style="display: flex; align-items: center; gap: 8px; padding-right: 64px; min-width: 0">
+<span style="font-family: 'Silkscreen', monospace; font-size: 11px; background: #1c2a3a; border: 1px solid #3b5068; padding: 1px 6px; white-space: nowrap">defect-yolo v{{version}}</span>
+<span style="font-size: 13px; font-weight: 600; color: {{statusColor}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{status}}</span>
+</div>
+
+<div role="img" aria-label="{{chartLabel}}" style="position: relative; height: 80px; display: flex; align-items: flex-end; gap: 2px; border-bottom: 2px solid #3b5068">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="24">
+<div style="flex: 1; height: {{b.h}}; background: {{b.bg}}; transition: height .2s ease"></div>
+</sc-for>
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 34px; border-top: 2px dashed {{accent}}"></div>
+<span aria-hidden="true" style="position: absolute; left: 0; bottom: 37px; font-family: 'Silkscreen', monospace; font-size: 9px; color: {{accent}}; background: #0e1621; padding: 0 3px">retrain below 0.88</span>
+</div>
+
+<div style="display: flex; gap: 10px; align-items: flex-end; flex: 1; min-height: 0">
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<sc-for list="{{stages}}" as="s" hint-placeholder-count="4">
+<div style="display: flex; align-items: center; gap: 6px; font-size: 12px; line-height: 15px; color: {{s.color}}; white-space: nowrap; overflow: hidden">
+<span aria-hidden="true" style="flex: none; width: 8px; height: 8px; background: {{s.dot}}; border: 1px solid {{s.color}}; animation: {{s.anim}}"></span>
+<span style="overflow: hidden; text-overflow: ellipsis">{{s.label}}</span>
+</div>
+</sc-for>
+</div>
+<button type="button" onClick="{{inject}}" disabled="{{busy}}" style="flex: none; min-height: 44px; padding: 0 10px; background: {{btnBg}}; color: #0b1610; border: 2px solid #0b1610; box-shadow: 3px 3px 0 #000000; font-family: 'Silkscreen', monospace; font-size: 11px; cursor: pointer">Inject drift</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#f5d547"},"sound":{"editor":"boolean","default":false},"$preview":{"width":360,"height":220}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const acc = [];
+    for (let i = 0; i < 24; i++) acc.push(0.95 - i * 0.0012 + 0.004 * Math.sin(i * 1.7));
+    this.state = { acc, phase: 'serving', stage: -1, ticks: 0, version: 14, trial: 0 };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.step(), 260);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  audio() {
+    if (!this.ac) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      this.ac = new AC();
+    }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  }
+  tone(type, f0, f1, dur, vol, delay) {
+    if (!this.props.sound) return;
+    const ac = this.audio();
+    if (!ac) return;
+    const t = ac.currentTime + (delay || 0);
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(ac.destination);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  }
+  push(acc, v) {
+    return acc.slice(1).concat([Math.max(0.8, Math.min(0.99, v))]);
+  }
+  step() {
+    const st = this.state;
+    const last = st.acc[st.acc.length - 1];
+    if (st.phase === 'serving') {
+      const next = last - (0.002 + Math.random() * 0.004) + (Math.random() - 0.5) * 0.004;
+      if (next < 0.88) {
+        this.tone('square', 880, 880, 0.09, 0.04, 0);
+        this.tone('square', 660, 660, 0.09, 0.04, 0.12);
+        this.setState({ acc: this.push(st.acc, next), phase: 'alert', ticks: 0 });
+      } else {
+        this.setState({ acc: this.push(st.acc, next) });
+      }
+    } else if (st.phase === 'alert') {
+      if (st.ticks >= 4) this.setState({ phase: 'pipeline', stage: 0, ticks: 0, acc: this.push(st.acc, last) });
+      else this.setState({ ticks: st.ticks + 1, acc: this.push(st.acc, last) });
+    } else if (st.phase === 'pipeline') {
+      const trial = st.stage === 1 ? Math.min(12, st.trial + 3) : st.trial;
+      if (st.ticks >= 4) {
+        if (st.stage >= 3) {
+          [523, 659, 784].forEach((f, i) => this.tone('triangle', f, f, 0.12, 0.05, i * 0.09));
+          this.setState({ phase: 'deployed', stage: 4, ticks: 0, trial: 0, version: st.version + 1, acc: this.push(st.acc, 0.95) });
+        } else {
+          this.setState({ stage: st.stage + 1, ticks: 0, trial, acc: this.push(st.acc, last) });
+        }
+      } else {
+        this.setState({ ticks: st.ticks + 1, trial, acc: this.push(st.acc, last) });
+      }
+    } else if (st.phase === 'deployed') {
+      const next = last + (Math.random() - 0.5) * 0.004;
+      if (st.ticks >= 6) this.setState({ phase: 'serving', stage: -1, ticks: 0, acc: this.push(st.acc, next) });
+      else this.setState({ ticks: st.ticks + 1, acc: this.push(st.acc, next) });
+    }
+  }
+  renderVals() {
+    const st = this.state;
+    const accent = this.props.accent ?? '#f5d547';
+    const last = st.acc[st.acc.length - 1];
+    const labels = [
+      'Data checks: duplicates and labels',
+      'Optuna tuning, trial ' + Math.max(1, st.trial) + '/12',
+      'Retrain on a free GPU',
+      'Validate and register v' + (st.version + 1)
+    ];
+    let status = 'Serving · acc ' + last.toFixed(3);
+    let statusColor = '#93a4b5';
+    if (st.phase === 'alert') { status = 'Drop detected · ' + last.toFixed(3) + ' < 0.88'; statusColor = '#ff6b57'; }
+    if (st.phase === 'pipeline') { status = 'Retraining on its own'; statusColor = accent; }
+    if (st.phase === 'deployed') { status = 'Deployed v' + st.version + ' · acc ' + last.toFixed(3); statusColor = '#6fd08c'; }
+    const busy = st.phase !== 'serving';
+    return {
+      accent,
+      version: st.version,
+      status,
+      statusColor,
+      busy,
+      btnBg: busy ? '#5b6b7c' : accent,
+      chartLabel: 'Model accuracy over time, currently ' + last.toFixed(3) + '. Retraining triggers below 0.88.',
+      inject: () => {
+        if (this.state.phase !== 'serving') return;
+        this.tone('sawtooth', 300, 120, 0.25, 0.04, 0);
+        this.setState({ acc: this.push(this.state.acc, 0.865) });
+      },
+      bars: st.acc.map((v) => ({
+        h: Math.round(Math.max(0, Math.min(1, (v - 0.8) / 0.18)) * 76 + 2) + 'px',
+        bg: v < 0.88 ? '#e5432f' : '#8fb0d9'
+      })),
+      stages: labels.map((label, i) => {
+        const done = st.stage > i;
+        const active = st.phase === 'pipeline' && st.stage === i;
+        return {
+          label,
+          color: done ? '#6fd08c' : (active ? accent : '#93a4b5'),
+          dot: done ? '#6fd08c' : (active ? accent : 'transparent'),
+          anim: active ? 'va-pulse .6s steps(1) infinite' : 'none'
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

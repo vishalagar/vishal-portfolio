@@ -1,0 +1,2094 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vishal Agarwal — Live coverage</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Barlow:wght@400;500;600&amp;family=Silkscreen:wght@400;700&amp;family=Titillium+Web:wght@700;900&amp;family=Orbitron:wght@700;900&amp;family=Anton&amp;family=Chakra+Petch:wght@600;700&amp;family=Share+Tech+Mono&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{opacity:.85}
+@keyframes va-spotflash{0%{filter:brightness(.25) saturate(.6)}18%{filter:brightness(2.4) saturate(1.2)}100%{filter:brightness(1) saturate(1)}}
+@keyframes va-sway{from{transform:rotate(-1.6deg)}to{transform:rotate(1.6deg)}}
+@keyframes va-bob{0%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes va-dribble{0%{transform:translate(0,0)}25%{transform:translate(-10px,-8px)}50%{transform:translate(-20px,0)}75%{transform:translate(-10px,-8px)}100%{transform:translate(0,0)}}
+@keyframes va-kick{0%{transform:translate(0,0)}40%{transform:translate(160px,-150px)}70%{transform:translate(260px,-40px)}100%{transform:translate(0,0)}}
+@keyframes va-scan{0%{top:0}100%{top:calc(100% - 3px)}}
+@keyframes va-pulse{0%{opacity:1}50%{opacity:.25}}
+@keyframes va-marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes va-wipe{0%,15%{clip-path:inset(0 0 0 0)}50%,65%{clip-path:inset(0 0 0 100%)}100%{clip-path:inset(0 0 0 0)}}
+@keyframes va-wipeline{0%,15%{left:0}50%,65%{left:100%}100%{left:0}}
+@keyframes va-grow{0%{transform:scaleY(0)}100%{transform:scaleY(1)}}
+@keyframes va-fill{0%{width:0}100%{width:92%}}
+@keyframes va-blink{0%{opacity:1}50%{opacity:0}}
+@keyframes va-in{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes va-shredL{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(210px) rotate(-12deg);opacity:0}}
+@keyframes va-shredR{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(210px) rotate(12deg);opacity:0}}
+@keyframes va-lights-on{0%{opacity:0}8%{opacity:.88}14%{opacity:.3}22%{opacity:.92}42%{opacity:.94}48%{opacity:.12}54%{opacity:.6}62%{opacity:.04}100%{opacity:0}}
+@keyframes va-lights-off{0%{opacity:0}22%{opacity:.96}28%{opacity:.6}34%{opacity:.96}70%{opacity:.96}100%{opacity:0}}
+@keyframes va-beam-on{0%,46%{opacity:0}56%{opacity:1}100%{opacity:0}}
+@keyframes va-beam-off{0%{opacity:1}12%{opacity:.2}18%{opacity:.8}30%{opacity:0}100%{opacity:0}}
+@keyframes va-wander{0%{transform:translate(0,0)}25%{transform:translate(28px,-10px)}50%{transform:translate(12px,16px)}75%{transform:translate(-18px,6px)}100%{transform:translate(0,0)}}
+@keyframes va-pass{0%{left:22%;top:62%}30%{left:50%;top:36%}60%{left:70%;top:60%}100%{left:22%;top:62%}}
+@keyframes va-flame{0%{transform:scaleY(1)}33%{transform:scaleY(1.25) translateX(-1px)}66%{transform:scaleY(.85) translateX(1px)}100%{transform:scaleY(1)}}
+@keyframes va-smoke{0%{transform:translate(0,0);opacity:0}20%{opacity:.85}100%{transform:translate(16px,-96px);opacity:0}}
+@keyframes va-rise{from{opacity:0;transform:translateY(70px)}to{opacity:1;transform:none}}
+@keyframes va-word{from{opacity:.14}to{opacity:1}}
+@keyframes va-hero-out{to{opacity:0;transform:translateY(-90px) scale(.95)}}
+@keyframes va-zoom{to{transform:scale(1.14);opacity:.4}}
+@keyframes va-slide{to{transform:translateX(calc(-100% + 100vw))}}
+@keyframes va-fillx{from{width:0}to{width:100%}}
+@keyframes va-scalex{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes va-roll{from{transform:translateX(0) rotate(0)}to{transform:translateX(min(1180px, calc(100vw - 110px))) rotate(1080deg)}}
+.va-progress{display:none}
+.va-stmt-pin{display:flex;flex-direction:column;justify-content:center;max-width:1280px;margin:0 auto;padding:96px 24px;box-sizing:border-box}
+.va-h{padding:64px 0}
+.va-h-track{display:flex;flex-wrap:wrap;gap:16px;max-width:1280px;margin:0 auto;padding:0 24px;box-sizing:border-box}
+.va-h-track>*{flex:1 1 220px}
+.va-h-fill{width:92%}
+@supports (animation-timeline: view()){
+.va-reveal{animation:va-rise linear both;animation-timeline:view();animation-range:entry 0% cover 28%}
+.va-hero-text{animation:va-hero-out linear both;animation-timeline:view();animation-range:exit 0% exit 75%}
+.va-hero-pitch{animation:va-zoom linear both;animation-timeline:view();animation-range:exit 0% exit 100%}
+.va-progress{display:block;animation:va-scalex linear both;animation-timeline:scroll(root)}
+.va-stmt{height:240vh;view-timeline-name:--stmt}
+.va-stmt-pin{position:sticky;top:0;height:100vh;padding-top:0;padding-bottom:0}
+.va-words>span{animation:va-word linear both;animation-timeline:--stmt}
+.va-words>span:nth-child(1){animation-range:contain 0.0% contain 10.0%}.va-words>span:nth-child(2){animation-range:contain 5.7% contain 15.7%}.va-words>span:nth-child(3){animation-range:contain 11.4% contain 21.4%}.va-words>span:nth-child(4){animation-range:contain 17.1% contain 27.1%}.va-words>span:nth-child(5){animation-range:contain 22.9% contain 32.9%}.va-words>span:nth-child(6){animation-range:contain 28.6% contain 38.6%}.va-words>span:nth-child(7){animation-range:contain 34.3% contain 44.3%}.va-words>span:nth-child(8){animation-range:contain 40.0% contain 50.0%}.va-words>span:nth-child(9){animation-range:contain 45.7% contain 55.7%}.va-words>span:nth-child(10){animation-range:contain 51.4% contain 61.4%}.va-words>span:nth-child(11){animation-range:contain 57.1% contain 67.1%}.va-words>span:nth-child(12){animation-range:contain 62.9% contain 72.9%}.va-words>span:nth-child(13){animation-range:contain 68.6% contain 78.6%}.va-words>span:nth-child(14){animation-range:contain 74.3% contain 84.3%}
+.va-stmt-ball{animation:va-roll linear both;animation-timeline:--stmt;animation-range:contain 0% contain 90%}
+.va-h{height:300vh;padding:0;view-timeline-name:--tl}
+.va-h-pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.va-h-track{flex-wrap:nowrap;width:max-content;max-width:none;margin:0;padding:0 max(24px, calc((100vw - 1232px) / 2));animation:va-slide linear both;animation-timeline:--tl;animation-range:contain 5% contain 95%}
+.va-h-track>*{flex:none;width:300px;min-height:230px}
+.va-h-fill{animation:va-fillx linear both;animation-timeline:--tl;animation-range:contain 5% contain 95%}
+}
+@keyframes va-lids{0%{opacity:0;background-position:75% 0}7%{opacity:1;background-position:75% 0}7.6%{background-position:100% 0}8.3%{background-position:75% 0}8.9%{opacity:0}39.5%{opacity:1;background-position:75% 0}40%{background-position:100% 0}40.7%{background-position:75% 0}41.2%{opacity:0}42.4%{opacity:1;background-position:75% 0}42.9%{background-position:100% 0}43.6%{background-position:75% 0}44.1%{opacity:0}77.5%{opacity:1;background-position:75% 0}78.1%{background-position:100% 0}78.8%{background-position:75% 0}79.4%{opacity:0}100%{opacity:0}}
+@keyframes va-glance{0%{background-position:0% 0}22%{background-position:25% 0}27%{background-position:0% 0}58%{background-position:50% 0}62%{background-position:0% 0}100%{background-position:0% 0}}
+.va-me{position:absolute;inset:0;background-image:url(/_blob/f766e467df9aaa483f90523ad76af2bc);background-size:500% 100%;background-repeat:no-repeat;image-rendering:pixelated}
+.va-me-lids{opacity:0;animation:va-lids 11s step-end infinite}
+.va-me.va-w-gp{background-image:url(/_blob/8cdb2257532f013f2777429a5412c1e4)}
+.va-me.va-w-gaming{background-image:url(/_blob/563e27ae5e555b72cf717aa5fccaec87)}
+.va-me.va-w-run{background-image:url(/_blob/71aeda1093b836bdb9e37d4ff71029b7)}
+.va-me.va-w-ai{background-image:url(/_blob/53e76633ca0d73ec4431573fb53f3f45)}
+@keyframes va-flowdash{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+.va-strip{position:absolute;inset:0;background-size:800% 100%;background-repeat:no-repeat;image-rendering:pixelated}
+.va-strip-gp{background-image:url(/_blob/11c3f95d3e8560ca3fc7c70bebc623f3)}
+.va-strip-gaming{background-image:url(/_blob/8b0bf37939a363cae79fea9253694bf4)}
+.va-strip-run{background-image:url(/_blob/38fb303c1e43ee61785003ea944b63a8)}
+.va-strip-ai{background-image:url(/_blob/d909d804cc370e87f36bba08db205747)}
+@keyframes va-tick{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.va-tile{transition:transform .12s ease}
+.va-tile:hover,.va-tile:focus-visible{transform:translate(-4px,-4px)}
+.va-tile:focus-visible{outline:3px solid #f5d547;outline-offset:3px}
+@keyframes va-worldwipe{0%{clip-path:inset(0 100% 0 0)}35%{clip-path:inset(0 0 0 0)}65%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 100%)}}
+@keyframes va-reticle{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes va-flag{0%,100%{opacity:1}50%{opacity:.55}}
+.va-pad{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.va-pad button{touch-action:none}
+.va-pad button:active{filter:brightness(1.25)}
+.va-card{transition:transform .15s ease}
+.va-card:hover{transform:translate(-3px,-3px)}
+.va-press{transition:transform .1s ease}
+.va-press:hover{transform:translate(-2px,-2px)}
+.va-press:active{transform:translate(2px,2px)}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="background: {{c.bg}}; color: {{c.ink}}; font-family: 'Barlow', system-ui, sans-serif; font-size: 17px; line-height: 1.55; min-height: 100vh; font-synthesis: none; overflow-x: clip; transition: background-color .4s ease, color .4s ease">
+
+<sc-if value="{{wipeOn}}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: fixed; inset: 0; z-index: 65; pointer-events: none; background: {{wipeBg}}; display: flex; align-items: center; justify-content: center; animation: va-worldwipe .9s cubic-bezier(.7,0,.3,1) forwards">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+<div style="font-family: 'Silkscreen', monospace; font-size: 14px; color: {{wipeInk}}; letter-spacing: .08em">{{wipeSub}}</div>
+<div style="font-family: {{wipeFont}}; font-weight: 900; font-size: clamp(48px, 9vw, 140px); line-height: 1; text-transform: uppercase; color: {{wipeInk}}; letter-spacing: -.01em">{{wipeName}}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{introOn}}" hint-placeholder-val="{{ false }}">
+<div ref="{{introRef}}" tabIndex="-1" role="dialog" aria-modal="true" aria-labelledby="intro-title" onKeyDown="{{introKey}}" style="position: fixed; inset: 0; z-index: 70; background: #0b0b10; color: #f3f1ea; display: flex; flex-direction: column; overflow-y: auto; overscroll-behavior: contain; outline: none">
+<div style="max-width: 1280px; width: 100%; margin: auto; padding: 32px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<div>
+<div style="font-family: 'Silkscreen', monospace; font-size: 13px; color: #b9b6ad; letter-spacing: .06em">Vishal Agarwal · AI engineer · Live</div>
+<h1 id="intro-title" style="margin: 6px 0 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: clamp(44px, 7vw, 96px); line-height: .9; text-transform: uppercase">Choose your world</h1>
+<p style="margin: 10px 0 0; max-width: 520px; color: #b9b6ad; font-size: 17px">Same story, five ways to watch it. Each world has its own look, sound and game.</p>
+</div>
+<button type="button" class="va-press" onClick="{{introSound}}" aria-pressed="{{soundPressed}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; background: {{introSoundBg}}; color: {{introSoundInk}}; border: 2px solid #f3f1ea; box-shadow: 3px 3px 0 #f5d547; font-family: 'Silkscreen', monospace; font-size: 12px; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"></path><path d="M17 9c1.2 1.6 1.2 4.4 0 6"></path></svg>
+{{soundText}}
+</button>
+</div>
+<div role="group" aria-label="Worlds" onPointerEnter="{{introHold}}" onPointerLeave="{{introGo}}" onFocus="{{introHold}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px">
+<sc-for list="{{introTiles}}" as="wt" hint-placeholder-count="5">
+<button type="button" class="va-tile" onClick="{{wt.pick}}" onPointerEnter="{{wt.hover}}" aria-label="{{wt.label}}" style="display: flex; flex-direction: column; padding: 0; background: {{wt.bg}}; color: {{wt.ink}}; border: 2px solid #f3f1ea; box-shadow: 5px 5px 0 {{wt.accent}}; cursor: pointer; text-align: left; font: inherit">
+<span aria-hidden="true" style="display: block; position: relative; height: 130px; background: {{wt.stage}}; border-bottom: 2px solid #f3f1ea; overflow: hidden">
+<span style="position: absolute; left: calc(50% - 48px); bottom: 0; width: 96px; height: 112px">
+<span class="va-me {{wt.cls}}"></span>
+<span class="va-me va-me-lids {{wt.cls}}" style="animation-delay: {{wt.delay}}"></span>
+</span>
+</span>
+<span style="display: flex; flex-direction: column; gap: 4px; padding: 14px 16px 16px">
+<span style="font-family: 'Silkscreen', monospace; font-size: 11px; color: {{wt.muted}}">{{wt.num}} · {{wt.tag}}</span>
+<span style="font-family: {{wt.font}}; font-weight: 900; font-size: 30px; line-height: 1; text-transform: uppercase">{{wt.name}}</span>
+<span style="font-size: 14px; line-height: 1.4; color: {{wt.muted}}">{{wt.blurb}}</span>
+</span>
+</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px">
+<button type="button" class="va-press" onClick="{{introRandom}}" style="min-height: 48px; padding: 0 20px; background: #f5d547; color: #0b0b10; border: 2px solid #f3f1ea; box-shadow: 4px 4px 0 #3a3a44; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; text-transform: uppercase; cursor: pointer">Surprise me</button>
+<div style="flex: 1 1 240px; display: flex; align-items: center; gap: 12px; font-family: 'Silkscreen', monospace; font-size: 12px; color: #b9b6ad">
+<span>{{introCount}}</span>
+<span aria-hidden="true" style="flex: 1; height: 6px; background: #2a2a33; position: relative; overflow: hidden"><span style="position: absolute; inset: 0; background: #f5d547; transform-origin: left; animation: va-tick {{introSecs}} linear forwards; animation-play-state: {{introPlay}}"></span></span>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{playOn}}" hint-placeholder-val="{{ false }}">
+<div ref="{{overlayRef}}" tabIndex="0" role="dialog" aria-modal="true" aria-label="{{play.title}}" onKeyDown="{{padKeyDown}}" onKeyUp="{{padKeyUp}}" onBlur="{{padBlur}}" style="position: fixed; inset: 0; z-index: 80; background: {{c.bg}}; color: {{c.ink}}; display: flex; flex-direction: column; outline: none; overflow: hidden">
+
+<sc-if value="{{desk}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 24px; border-bottom: 2px solid {{c.line}}">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="background: {{accent}}; color: {{onAccent}}; font-family: {{f.label}}; font-size: 12px; padding: 4px 8px">{{play.kicker}}</span>
+<span style="font-family: {{f.display}}; font-weight: 800; font-size: 28px; text-transform: uppercase; line-height: 1">{{play.title}}</span>
+</div>
+<button type="button" class="va-press" onClick="{{exitPlay}}" style="min-height: 44px; padding: 0 16px; background: {{c.surface}}; color: {{c.ink}}; border: 2px solid {{c.line}}; box-shadow: 3px 3px 0 {{c.shadow}}; font-family: {{f.label}}; font-size: 12px; cursor: pointer">Exit · Esc</button>
+</div>
+<div style="flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 20px">
+<div style="width: {{boxW}}; height: {{boxH}}; border: 2px solid {{c.line}}; box-shadow: 8px 8px 0 {{c.shadow}}; overflow: hidden; position: relative">
+<sc-if value="{{play.isFootball}}" hint-placeholder-val="{{ true }}"><dc-import name="FootballGame" mode="play" pad="{{pad}}" play-key="{{playKey}}" height="{{gameH}}" accent="{{accent}}" sound="{{soundOn}}" hint-size="100%,100%"></dc-import></sc-if>
+<sc-if value="{{play.isRace}}" hint-placeholder-val="{{ false }}"><dc-import name="RaceGame" mode="play" pad="{{pad}}" play-key="{{playKey}}" height="{{gameH}}" sound="{{soundOn}}" hint-size="100%,100%"></dc-import></sc-if>
+<sc-if value="{{play.isMarathon}}" hint-placeholder-val="{{ false }}"><dc-import name="MarathonGame" mode="play" pad="{{pad}}" play-key="{{playKey}}" height="{{gameH}}" sound="{{soundOn}}" hint-size="100%,100%"></dc-import></sc-if>
+<sc-if value="{{play.isLabel}}" hint-placeholder-val="{{ false }}"><dc-import name="LabelRushGame" mode="play" pad="{{pad}}" play-key="{{playKey}}" height="{{gameH}}" sound="{{soundOn}}" hint-size="100%,100%"></dc-import></sc-if>
+<sc-if value="{{play.isSnake}}" hint-placeholder-val="{{ false }}"><dc-import name="SnakeDemo" mode="play" pad="{{pad}}" play-key="{{playKey}}" height="{{gameH}}" accent="{{accent}}" sound="{{soundOn}}" hint-size="100%,100%"></dc-import></sc-if>
+</div>
+</div>
+<div style="padding: 0 24px 18px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; font-family: {{f.label}}; font-size: 12px; color: {{c.muted}}">
+<sc-for list="{{play.legend}}" as="k" hint-placeholder-count="4">
+<span><span style="display: inline-block; padding: 2px 7px; margin-right: 6px; border: 2px solid {{c.line}}; background: {{c.surface}}; color: {{c.ink}}">{{k.key}}</span>{{k.does}}</span>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{phone}}" hint-placeholder-val="{{ false }}">
+<div style="height: 50%; display: flex; flex-direction: column; padding: 10px 10px 8px; background: {{shell.body}}; box-sizing: border-box">
+<div style="flex: 1; min-height: 0; display: flex; flex-direction: column; background: {{shell.bezel}}; border-radius: 10px 10px 34px 10px; padding: 10px 12px 8px">
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; font-family: {{f.label}}; font-size: 10px; color: {{shell.bezelInk}}">
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 7px; height: 7px; border-radius: 50%; background: #ff3b3b"></span>{{play.kicker}}</span>
+<span>{{play.title}}</span>
+</div>
+<div style="flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden">
+<div style="width: 100%; height: {{gameH}}; overflow: hidden; border: 2px solid #000000; position: relative">
+<sc-if value="{{play.isFootball}}" hint-placeholder-val="{{ true }}"><dc-import name="FootballGame" mode="play" pad="{{pad}}" play-key="{{playKey}}" height="{{gameH}}" accent="{{accent}}" sound="{{soundOn}}" hint-size="100%,100%"></dc-import></sc-if>
+<sc-if value="{{play.isRace}}" hint-placeholder-val="{{ false }}"><dc-import name="RaceGame" mode="play" pad="{{pad}}" play-key="{{playKey}}" height="{{gameH}}" sound="{{soundOn}}" hint-size="100%,100%"></dc-import></sc-if>
+<sc-if value="{{play.isMarathon}}" hint-placeholder-val="{{ false }}"><dc-import name="MarathonGame" mode="play" pad="{{pad}}" play-key="{{playKey}}" height="{{gameH}}" sound="{{soundOn}}" hint-size="100%,100%"></dc-import></sc-if>
+<sc-if value="{{play.isLabel}}" hint-placeholder-val="{{ false }}"><dc-import name="LabelRushGame" mode="play" pad="{{pad}}" play-key="{{playKey}}" height="{{gameH}}" sound="{{soundOn}}" hint-size="100%,100%"></dc-import></sc-if>
+<sc-if value="{{play.isSnake}}" hint-placeholder-val="{{ false }}"><dc-import name="SnakeDemo" mode="play" pad="{{pad}}" play-key="{{playKey}}" height="{{gameH}}" accent="{{accent}}" sound="{{soundOn}}" hint-size="100%,100%"></dc-import></sc-if>
+</div>
+</div>
+</div>
+</div>
+
+<div class="va-pad" style="height: 50%; position: relative; background: {{shell.body}}; display: flex; flex-direction: column; justify-content: space-between; padding: 12px 18px 22px; box-sizing: border-box">
+<div style="display: flex; justify-content: space-between; align-items: center; font-family: {{f.display}}; font-weight: 800; font-size: 18px; text-transform: uppercase; color: {{shell.ink}}">
+<span>{{shell.brand}}</span>
+<sc-if value="{{play.hasR}}" hint-placeholder-val="{{ false }}">
+<button type="button" aria-label="{{play.rLabel}}" onPointerDown="{{rOn}}" onPointerUp="{{rOff}}" onPointerLeave="{{rOff}}" onPointerCancel="{{rOff}}" style="min-width: 96px; min-height: 40px; border-radius: 20px 20px 8px 8px; background: {{shell.btn}}; color: {{shell.btnInk}}; border: 2px solid #000000; font-family: {{f.label}}; font-size: 11px; cursor: pointer">R · {{play.rLabel}}</button>
+</sc-if>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center">
+<div style="display: grid; grid-template-columns: repeat(3, 54px); grid-template-rows: repeat(3, 54px)">
+<span></span>
+<button type="button" aria-label="Up" onPointerDown="{{upOn}}" onPointerUp="{{upOff}}" onPointerLeave="{{upOff}}" onPointerCancel="{{upOff}}" style="background: {{shell.dpad}}; border: 0; border-radius: 6px 6px 0 0; color: #ffffff; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M6 15l6-6 6 6"></path></svg></button>
+<span></span>
+<button type="button" aria-label="Left" onPointerDown="{{leftOn}}" onPointerUp="{{leftOff}}" onPointerLeave="{{leftOff}}" onPointerCancel="{{leftOff}}" style="background: {{shell.dpad}}; border: 0; border-radius: 6px 0 0 6px; color: #ffffff; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+<span style="background: {{shell.dpad}}"></span>
+<button type="button" aria-label="Right" onPointerDown="{{rightOn}}" onPointerUp="{{rightOff}}" onPointerLeave="{{rightOff}}" onPointerCancel="{{rightOff}}" style="background: {{shell.dpad}}; border: 0; border-radius: 0 6px 6px 0; color: #ffffff; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+<span></span>
+<button type="button" aria-label="Down" onPointerDown="{{downOn}}" onPointerUp="{{downOff}}" onPointerLeave="{{downOff}}" onPointerCancel="{{downOff}}" style="background: {{shell.dpad}}; border: 0; border-radius: 0 0 6px 6px; color: #ffffff; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<span></span>
+</div>
+
+<div style="position: relative; width: 150px; height: 130px; transform: rotate(-22deg)">
+<sc-if value="{{play.hasB}}" hint-placeholder-val="{{ true }}">
+<div style="position: absolute; left: 0; top: 46px; display: flex; flex-direction: column; align-items: center; gap: 4px">
+<button type="button" aria-label="{{play.bLabel}}" onPointerDown="{{bOn}}" onPointerUp="{{bOff}}" onPointerLeave="{{bOff}}" onPointerCancel="{{bOff}}" style="width: 62px; height: 62px; border-radius: 50%; background: {{shell.btn}}; color: {{shell.btnInk}}; border: 2px solid #000000; box-shadow: 0 4px 0 #000000; font-family: {{f.display}}; font-weight: 800; font-size: 22px; cursor: pointer">B</button>
+<span style="font-family: {{f.label}}; font-size: 10px; color: {{shell.ink}}; white-space: nowrap">{{play.bLabel}}</span>
+</div>
+</sc-if>
+<sc-if value="{{play.hasA}}" hint-placeholder-val="{{ true }}">
+<div style="position: absolute; right: 0; top: 0; display: flex; flex-direction: column; align-items: center; gap: 4px">
+<button type="button" aria-label="{{play.aLabel}}" onPointerDown="{{aOn}}" onPointerUp="{{aOff}}" onPointerLeave="{{aOff}}" onPointerCancel="{{aOff}}" style="width: 62px; height: 62px; border-radius: 50%; background: {{shell.btn}}; color: {{shell.btnInk}}; border: 2px solid #000000; box-shadow: 0 4px 0 #000000; font-family: {{f.display}}; font-weight: 800; font-size: 22px; cursor: pointer">A</button>
+<span style="font-family: {{f.label}}; font-size: 10px; color: {{shell.ink}}; white-space: nowrap">{{play.aLabel}}</span>
+</div>
+</sc-if>
+</div>
+</div>
+
+<div style="display: flex; justify-content: center; gap: 22px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+<button type="button" onClick="{{exitPlay}}" style="min-width: 76px; min-height: 30px; border-radius: 15px; background: {{shell.pill}}; color: {{shell.btnInk}}; border: 2px solid #000000; font-family: {{f.label}}; font-size: 10px; cursor: pointer">Exit</button>
+<span style="font-family: {{f.label}}; font-size: 9px; color: {{shell.ink}}">Select</span>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+<button type="button" onClick="{{restartPlay}}" style="min-width: 76px; min-height: 30px; border-radius: 15px; background: {{shell.pill}}; color: {{shell.btnInk}}; border: 2px solid #000000; font-family: {{f.label}}; font-size: 10px; cursor: pointer">Restart</button>
+<span style="font-family: {{f.label}}; font-size: 9px; color: {{shell.ink}}">Start</span>
+</div>
+</div>
+<div aria-hidden="true" style="position: absolute; right: 22px; bottom: 16px; display: flex; gap: 5px; transform: rotate(-22deg)">
+<span style="width: 5px; height: 34px; border-radius: 3px; background: {{shell.grille}}"></span><span style="width: 5px; height: 34px; border-radius: 3px; background: {{shell.grille}}"></span><span style="width: 5px; height: 34px; border-radius: 3px; background: {{shell.grille}}"></span><span style="width: 5px; height: 34px; border-radius: 3px; background: {{shell.grille}}"></span>
+</div>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+
+<div class="va-progress" aria-hidden="true" style="position: fixed; left: 0; top: 0; width: 100%; height: 4px; background: {{accent}}; transform-origin: left; z-index: 55"></div>
+
+<sc-if value="{{lightsOn}}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden">
+<div style="position: absolute; inset: 0; background: #000000; opacity: 0; animation: va-lights-on 1.3s linear forwards"></div>
+<div style="position: absolute; left: 0; top: -6%; width: 46%; height: 150%; transform-origin: top center; transform: rotate(-32deg); background: linear-gradient(180deg, rgba(255,246,206,.6), rgba(255,246,206,0) 72%); clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%); opacity: 0; animation: va-beam-on 1.3s ease-out forwards"></div>
+<div style="position: absolute; right: 0; top: -6%; width: 46%; height: 150%; transform-origin: top center; transform: rotate(32deg); background: linear-gradient(180deg, rgba(255,246,206,.6), rgba(255,246,206,0) 72%); clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%); opacity: 0; animation: va-beam-on 1.3s ease-out forwards"></div>
+</div>
+</sc-if>
+<sc-if value="{{lightsOff}}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden">
+<div style="position: absolute; left: 0; top: -6%; width: 46%; height: 150%; transform-origin: top center; transform: rotate(-32deg); background: linear-gradient(180deg, rgba(255,246,206,.6), rgba(255,246,206,0) 72%); clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%); animation: va-beam-off 1.3s linear forwards"></div>
+<div style="position: absolute; right: 0; top: -6%; width: 46%; height: 150%; transform-origin: top center; transform: rotate(32deg); background: linear-gradient(180deg, rgba(255,246,206,.6), rgba(255,246,206,0) 72%); clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%); animation: va-beam-off 1.3s linear forwards"></div>
+<div style="position: absolute; inset: 0; background: #000000; opacity: 0; animation: va-lights-off 1.3s linear forwards"></div>
+</div>
+</sc-if>
+
+<header style="border-bottom: 2px solid {{c.line}}; background: {{c.bg}}; transition: background-color .4s ease">
+<div style="max-width: 1280px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; justify-content: space-between">
+<div style="display: flex; align-items: stretch; border: 2px solid {{c.line}}; box-shadow: 5px 5px 0 {{c.shadow}}; font-family: {{f.display}}; font-weight: 700; font-size: 20px; letter-spacing: .02em; text-transform: uppercase">
+<div style="display: flex; align-items: center; gap: 8px; padding: 6px 12px; background: {{w.liveBg}}; color: {{w.liveInk}}; font-family: {{f.label}}; font-size: 13px; font-weight: 400"><span style="width: 8px; height: 8px; background: {{w.liveInk}}; display: inline-block; animation: va-pulse 1.2s steps(1) infinite"></span>{{w.sb.live}}</div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 6px 14px; background: {{c.surface}}"><span style="width: 14px; height: 14px; background: {{c.blue}}; display: inline-block; border: 2px solid {{c.ink}}"></span>{{w.sb.home}}<span style="padding: 0 10px; background: {{accent}}; color: {{onAccent}}">{{w.sb.score}}</span>{{w.sb.away}}</div>
+</div>
+<nav aria-label="Sections" style="display: flex; flex-wrap: wrap; gap: 4px 20px; font-family: {{f.display}}; font-weight: 700; font-size: 18px; text-transform: uppercase; letter-spacing: .04em">
+<a href="#lineup" style="text-decoration: none; padding: 10px 0">Line-up</a>
+<a href="#timeline" style="text-decoration: none; padding: 10px 0">Timeline</a>
+<a href="#highlights" style="text-decoration: none; padding: 10px 0">Highlights</a>
+<a href="#pundit" style="text-decoration: none; padding: 10px 0">{{w.pundit}}</a>
+<a href="#fulltime" style="text-decoration: none; padding: 10px 0">Contact</a>
+</nav>
+<div style="display: flex; gap: 10px">
+<button type="button" class="va-press" onClick="{{toggleSound}}" aria-pressed="{{soundPressed}}" aria-label="{{soundLabel}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; background: {{c.surface}}; color: {{c.ink}}; border: 2px solid {{c.line}}; box-shadow: 3px 3px 0 {{c.shadow}}; font-family: {{f.label}}; font-size: 12px; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"></path><path d="M17 9c1.2 1.6 1.2 4.4 0 6"></path></svg>
+{{soundText}}
+</button>
+<button type="button" class="va-press" onClick="{{toggleNight}}" aria-label="{{themeLabel}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; background: {{c.surface}}; color: {{c.ink}}; border: 2px solid {{c.line}}; box-shadow: 3px 3px 0 {{c.shadow}}; font-family: {{f.label}}; font-size: 12px; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 21V9"></path><path d="M18 21V9"></path><rect x="3" y="3" width="6" height="6" fill="{{lampFill}}"></rect><rect x="15" y="3" width="6" height="6" fill="{{lampFill}}"></rect></svg>
+{{themeText}}
+</button>
+</div>
+</div>
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 24px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px">
+<span id="world-label" style="font-family: {{f.label}}; font-size: 12px; color: {{c.muted}}; margin-right: 4px">Choose your world</span>
+<div role="group" aria-labelledby="world-label" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{worldButtons}}" as="wb" hint-placeholder-count="5">
+<button type="button" class="va-press" onClick="{{wb.pick}}" aria-pressed="{{wb.pressed}}" style="display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px; background: {{wb.bg}}; color: {{wb.fg}}; border: 2px solid {{c.line}}; box-shadow: {{wb.shadow}}; font-family: {{f.label}}; font-size: 12px; cursor: pointer"><span aria-hidden="true" style="width: 12px; height: 12px; background: {{wb.swatch}}; border: 2px solid {{c.ink}}"></span>{{wb.name}}</button>
+</sc-for>
+</div>
+</div>
+<div style="border-top: 2px solid {{c.line}}; background: {{accent}}; color: {{onAccent}}; overflow: hidden; white-space: nowrap; font-family: {{f.display}}; font-weight: 700; font-size: 17px; text-transform: uppercase; letter-spacing: .03em">
+<div style="display: inline-flex; animation: va-marquee 38s linear infinite; padding: 6px 0">
+<sc-for list="{{tickerTwice}}" as="t" hint-placeholder-count="10">
+<span style="padding: 0 28px; display: inline-flex; align-items: center; gap: 28px">{{t}}<span aria-hidden="true" style="width: 6px; height: 6px; background: {{onAccent}}; display: inline-block"></span></span>
+</sc-for>
+</div>
+</div>
+</header>
+
+<section aria-labelledby="hero-title" onPointerMove="{{onLook}}" onPointerLeave="{{onLookEnd}}" style="max-width: 1280px; margin: 0 auto; padding: 64px 24px 40px; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
+<div class="va-hero-text" style="flex: 1 1 400px; min-width: 0">
+<div style="display: flex; flex-direction: column; gap: 24px; animation: va-in .6s ease-out both">
+<div style="font-family: {{f.label}}; font-size: 13px; color: {{c.muted}}; letter-spacing: .06em">{{w.kicker}}</div>
+<h1 id="hero-title" style="margin: 0; font-family: {{f.display}}; font-weight: 800; font-size: calc(clamp(52px, 7vw, 100px) * {{f.scale}}); line-height: .92; text-transform: uppercase; letter-spacing: -.01em">AI engineer.<span style="display: block; color: {{accentText}}">Builds models that see.</span></h1>
+<p style="margin: 0; max-width: 480px; color: {{c.muted}}; font-size: 19px">I'm Vishal, an AI Engineer at Samsung Electro-Mechanics. I build vision systems that retrain themselves, and ship side projects on weekends.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<a href="#highlights" class="va-press" onClick="{{whistleClick}}" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; background: {{accent}}; color: {{onAccent}}; border: 2px solid {{c.ink}}; box-shadow: 5px 5px 0 {{c.shadow}}; text-decoration: none; font-family: {{f.display}}; font-weight: 800; font-size: 20px; text-transform: uppercase">{{w.cta1}}</a>
+<a href="#pundit" class="va-press" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; background: {{c.surface}}; color: {{c.ink}}; border: 2px solid {{c.ink}}; box-shadow: 5px 5px 0 {{c.shadow}}; text-decoration: none; font-family: {{f.display}}; font-weight: 800; font-size: 20px; text-transform: uppercase">Ask the {{w.pundit}}</a>
+</div>
+</div>
+</div>
+
+<div class="va-hero-pitch" style="flex: 1 1 480px; min-width: 0; transform-origin: center top">
+<div style="position: relative; height: 460px; overflow: hidden; border: 2px solid {{c.line}}; box-shadow: 8px 8px 0 {{c.shadow}}; background: {{stageBg}}">
+<sc-if value="{{isFootball}}" hint-placeholder-val="{{ true }}">
+<div aria-hidden="true" style="position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: {{c.chalk}}"></div>
+<div aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: 180px; height: 180px; margin: -92px 0 0 -92px; border: 2px solid {{c.chalk}}; border-radius: 50%"></div>
+</sc-if>
+<sc-if value="{{isGp}}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 22px; background: repeating-linear-gradient(90deg, #ffffff 0px, #ffffff 28px, #c8102e 28px, #c8102e 56px); border-top: 2px solid #160003"></div>
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 40%; height: 3px; background: repeating-linear-gradient(90deg, #ffffff 0px, #ffffff 40px, transparent 40px, transparent 80px); opacity: .5"></div>
+</sc-if>
+<sc-if value="{{isGaming}}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0px, rgba(255,255,255,.05) 1px, transparent 1px, transparent 3px)"></div>
+</sc-if>
+<sc-if value="{{isRun}}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 46%; background: repeating-linear-gradient(0deg, #1747a6 0px, #1747a6 34px, #ffffff 34px, #ffffff 37px)"></div>
+<div aria-hidden="true" style="position: absolute; left: 12%; bottom: 0; width: 8px; height: 46%; background: #d8ff3a"></div>
+</sc-if>
+<div style="position: absolute; left: 14px; top: 12px; font-family: {{f.label}}; font-size: 12px; color: #eef3ea; background: #08130e; padding: 4px 8px">{{w.cam}}</div>
+<div style="position: absolute; left: 50%; bottom: 0; width: 288px; height: 336px; margin-left: -144px; animation: va-bob .9s steps(1) infinite">
+<div data-sprite="hero" role="img" aria-label="{{heroLabel}}" style="position: relative; width: 288px; height: 336px">
+<div style="position: absolute; inset: 0; opacity: {{heroLayersOp}}">
+<div class="va-me {{heroClass}}" style="background-position: {{gazePos}}; animation: {{gazeAnim}}"></div>
+<div class="va-me va-me-lids {{heroClass}}"></div>
+</div>
+<sc-if value="{{stripOn}}" hint-placeholder-val="{{ false }}">
+<div class="va-strip {{stripClass}}" style="background-position: {{stripPos}}"></div>
+</sc-if>
+</div>
+</div>
+<sc-if value="{{offHintOn}}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: absolute; right: 14px; top: 12px; font-family: {{f.label}}; font-size: 12px; color: {{onAccent}}; background: {{accent}}; padding: 4px 8px">{{offHint}}</div>
+</sc-if>
+<button type="button" onClick="{{kickBall}}" aria-label="{{prop.label}}" style="position: absolute; left: calc(50% + 168px); bottom: 22px; width: 48px; height: 48px; padding: 4px; background: transparent; border: 0; cursor: pointer; animation: {{ballAnim}}">
+<svg viewBox="0 0 8 8" width="40" height="40" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="4" height="8" fill="{{prop.a}}"></rect><rect x="0" y="2" width="8" height="4" fill="{{prop.a}}"></rect><rect x="1" y="1" width="6" height="6" fill="{{prop.a}}"></rect><rect x="3" y="3" width="2" height="2" fill="{{prop.b}}"></rect><rect x="1" y="1" width="1" height="1" fill="{{prop.c}}"></rect><rect x="6" y="5" width="1" height="1" fill="{{prop.c}}"></rect></svg>
+</button>
+<sc-if value="{{varOn}}" hint-placeholder-val="{{ true }}">
+<div aria-hidden="true" style="position: absolute; left: calc(50% - 150px); bottom: 0; width: 296px; height: 352px; border: 2px solid {{accent}}; pointer-events: none">
+<span style="position: absolute; left: -2px; top: -26px; background: {{accent}}; color: {{onAccent}}; font-family: {{f.label}}; font-size: 12px; padding: 3px 8px; white-space: nowrap">{{boxLabel}}</span>
+<sc-if value="{{isGaming}}" hint-placeholder-val="{{ false }}">
+<span style="position: absolute; left: 50%; top: 32%; width: 84px; height: 84px; margin: -42px 0 0 -42px; border: 3px solid {{accent}}; border-radius: 50%; animation: va-reticle 1.2s ease-in-out infinite"></span>
+<span style="position: absolute; left: 50%; top: 32%; width: 120px; height: 3px; margin: -1px 0 0 -60px; background: {{accent}}"></span>
+<span style="position: absolute; left: 50%; top: 32%; width: 3px; height: 120px; margin: -60px 0 0 -1px; background: {{accent}}"></span>
+</sc-if>
+<span style="position: absolute; left: 0; right: 0; height: 3px; background: {{accent}}; opacity: .55; animation: va-scan 2.4s linear infinite alternate"></span>
+</div>
+</sc-if>
+<sc-if value="{{gpBanner}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: 14px; right: 14px; top: 48px; display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; font-family: {{f.label}}; font-size: 11px; animation: va-flag 1s steps(1) infinite">
+<span style="background: #ffd400; color: #160003; padding: 4px 8px; border: 2px solid #160003">Race control</span>
+<span style="background: #160003; color: #ffffff; padding: 4px 8px; border: 2px solid #160003">Car 4 · track limits · under investigation</span>
+</div>
+</sc-if>
+<sc-if value="{{runStrip}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; right: 14px; top: 12px; display: flex; border: 2px solid #0b2a6b; font-family: {{f.label}}; font-size: 11px">
+<span style="background: #d8ff3a; color: #0b2a6b; padding: 4px 8px">km 21</span>
+<span style="background: #0b2a6b; color: #ffffff; padding: 4px 8px">5:45 /km · chip #4</span>
+</div>
+</sc-if>
+<sc-if value="{{aiStrip}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; right: 14px; top: 12px; font-family: {{f.label}}; font-size: 12px; background: #0a0614; color: #2de2e6; border: 2px solid #ff2a6d; padding: 4px 8px; white-space: nowrap">yolo · 14 ms · 1 human, 0 bugs</div>
+</sc-if>
+<button type="button" class="va-press" onClick="{{toggleVar}}" aria-pressed="{{varPressed}}" style="position: absolute; left: 14px; bottom: 14px; min-height: 44px; padding: 0 14px; background: #08130e; color: #eef3ea; border: 2px solid #eef3ea; font-family: {{f.label}}; font-size: 12px; cursor: pointer">{{varText}}</button>
+</div>
+<div style="font-family: {{f.label}}; font-size: 11px; color: {{c.muted}}; margin-top: 14px">{{prop.hint}}</div>
+</div>
+</section>
+
+<section class="va-stmt" aria-label="What I do">
+<div class="va-stmt-pin">
+<div style="font-family: {{f.label}}; font-size: 13px; color: {{c.muted}}; margin-bottom: 18px">{{w.talk}}</div>
+<p class="va-words" style="margin: 0; font-family: {{f.display}}; font-weight: 800; font-size: calc(clamp(42px, 6.6vw, 96px) * {{f.scale}}); line-height: .98; text-transform: uppercase; max-width: 1100px"><span>I </span><span>build </span><span>models </span><span>that </span><span style="color: {{accentText}}">see, </span><span>pipelines </span><span>that </span><span style="color: {{accentText}}">retrain </span><span style="color: {{accentText}}">themselves, </span><span>and </span><span>products </span><span>people </span><span>actually </span><span style="color: {{accentText}}">use. </span></p>
+<div class="va-stmt-ball" aria-hidden="true" style="margin-top: 40px; width: 40px; height: 40px"><svg viewBox="0 0 8 8" width="40" height="40" shape-rendering="crispEdges"><rect x="2" y="0" width="4" height="8" fill="#f3eee2"></rect><rect x="0" y="2" width="8" height="4" fill="#f3eee2"></rect><rect x="1" y="1" width="6" height="6" fill="#f3eee2"></rect><rect x="3" y="3" width="2" height="2" fill="#120e14"></rect><rect x="1" y="1" width="1" height="1" fill="#120e14"></rect><rect x="6" y="5" width="1" height="1" fill="#120e14"></rect></svg></div>
+</div>
+</section>
+
+<section id="lineup" aria-labelledby="lineup-title" style="max-width: 1280px; margin: 0 auto; padding: 64px 24px">
+<div style="font-family: {{f.label}}; font-size: 13px; color: {{c.muted}}">{{w.s1.kicker}}</div>
+<h2 class="va-reveal" id="lineup-title" style="margin: 4px 0 28px; font-family: {{f.display}}; font-weight: 800; font-size: calc(56px * {{f.scale}}); line-height: 1; text-transform: uppercase">{{w.s1.title}} <span style="color: {{c.muted}}; font-size: 28px">{{w.s1.sub}}</span></h2>
+<div class="va-reveal" style="border: 2px solid {{c.line}}; box-shadow: 8px 8px 0 {{c.shadow}}; padding: 28px 16px; background: {{formationBg}}; overflow: hidden">
+<sc-if value="{{isFootball}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 30px">
+<sc-for list="{{lines}}" as="line" hint-placeholder-count="4">
+<div style="display: flex; justify-content: space-around; gap: 8px">
+<sc-for list="{{line.players}}" as="p" hint-placeholder-count="3">
+<div class="va-card" style="display: flex; flex-direction: column; align-items: center; gap: 6px; width: 110px">
+<div style="width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; background: {{w.shirtBg}}; color: {{w.shirtInk}}; border: 3px solid {{w.shirtLine}}; box-shadow: 3px 3px 0 {{w.shirtLine}}; border-radius: {{w.shirtRadius}}; font-family: {{f.display}}; font-weight: 800; font-size: 24px">{{p.n}}</div>
+<div style="background: {{w.tagBg}}; color: {{w.tagInk}}; padding: 2px 8px; font-weight: 600; font-size: 14px; text-align: center">{{p.name}}</div>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{isGp}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<div aria-hidden="true" style="display: flex; gap: 8px; padding: 8px 10px; background: #0e0e12; border: 2px solid #000000">
+<span style="width: 18px; height: 18px; border-radius: 50%; background: #e10600"></span><span style="width: 18px; height: 18px; border-radius: 50%; background: #e10600"></span><span style="width: 18px; height: 18px; border-radius: 50%; background: #e10600"></span><span style="width: 18px; height: 18px; border-radius: 50%; background: #e10600"></span><span style="width: 18px; height: 18px; border-radius: 50%; background: #e10600"></span>
+</div>
+<span style="font-family: {{f.label}}; font-size: 12px; color: #ffffff; background: #0e0e12; padding: 4px 8px">Grid order · pole sitter first</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 28px; max-width: 760px; width: 100%; margin: 0 auto; padding-bottom: 34px">
+<sc-for list="{{gridSlots}}" as="g" hint-placeholder-count="11">
+<div style="margin-top: {{g.dy}}; display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 10px 12px; border: 3px solid #ffffff; border-right-color: transparent; color: #ffffff">
+<span style="font-family: {{f.display}}; font-weight: 900; font-size: 26px; line-height: 1; min-width: 42px">{{g.pos}}</span>
+<span style="display: flex; flex-direction: column; gap: 3px; min-width: 0">
+<span style="font-family: {{f.label}}; font-size: 11px; color: #d6d6dc">{{g.car}}</span>
+<span style="background: {{w.shirtBg}}; color: {{w.shirtInk}}; padding: 2px 8px; font-weight: 700; font-size: 15px">{{g.name}}</span>
+</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isGaming}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-family: {{f.label}}; font-size: 12px; color: #c8cde6">
+<span>Select your party · 11 of 12</span>
+<span>P1 · Python</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 16px 10px">
+<sc-for list="{{chars}}" as="ch" hint-placeholder-count="12">
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px 12px; background: {{ch.bg}}; border: 3px solid {{ch.border}}; box-shadow: {{ch.shadow}}">
+<sc-if value="{{ch.sel}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: -13px; left: 8px; background: #ff4d8d; color: #0d0e13; font-family: {{f.label}}; font-size: 10px; padding: 1px 6px; animation: va-flag 1s steps(1) infinite">P1</span></sc-if>
+<span style="width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; background: {{ch.face}}; color: {{ch.faceInk}}; border: 3px solid #0d0e13; font-family: {{f.display}}; font-weight: 900; font-size: 18px">{{ch.ini}}</span>
+<span style="font-weight: 700; font-size: 14px; color: #e8ecff; text-align: center">{{ch.name}}</span>
+<span style="font-family: {{f.label}}; font-size: 10px; color: #a3a8bd">{{ch.role}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isRun}}" hint-placeholder-val="{{ false }}">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 22px 32px">
+<sc-for list="{{waves}}" as="wv" hint-placeholder-count="4">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 12px">
+<span style="min-width: 104px; font-family: {{f.label}}; font-size: 12px; color: #ffffff; background: #0b2a6b; padding: 4px 8px">{{wv.label}}</span>
+<sc-for list="{{wv.bibs}}" as="bb" hint-placeholder-count="3">
+<div class="va-card" style="position: relative; width: 104px; box-sizing: border-box; background: #ffffff; color: #0b2a6b; border: 2px solid #0b2a6b; box-shadow: 3px 3px 0 #0b2a6b; padding: 0 0 8px; display: flex; flex-direction: column; align-items: center">
+<span aria-hidden="true" style="align-self: stretch; height: 6px; background: #d9363e"></span>
+<span aria-hidden="true" style="position: absolute; left: 5px; top: 10px; width: 5px; height: 5px; border-radius: 50%; background: #9aa5bd"></span>
+<span aria-hidden="true" style="position: absolute; right: 5px; top: 10px; width: 5px; height: 5px; border-radius: 50%; background: #9aa5bd"></span>
+<span style="font-family: {{f.display}}; font-size: 30px; line-height: 1.1; margin-top: 4px">{{bb.n}}</span>
+<span style="font-size: 13px; font-weight: 700">{{bb.name}}</span>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{isAi}}" hint-placeholder-val="{{ false }}">
+<div style="position: relative; height: 400px">
+<sc-for list="{{layerCaps}}" as="lc" hint-placeholder-count="4">
+<span style="position: absolute; top: 0; left: {{lc.x}}; transform: translateX(-50%); font-family: {{f.label}}; font-size: 11px; color: {{c.muted}}; white-space: nowrap">{{lc.name}}</span>
+</sc-for>
+<svg aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; left: 0; top: 28px; width: 100%; height: calc(100% - 28px); overflow: visible">
+<sc-for list="{{edges}}" as="ed" hint-placeholder-count="25">
+<line x1="{{ed.x1}}" y1="{{ed.y1}}" x2="{{ed.x2}}" y2="{{ed.y2}}" stroke="{{c.chalk}}" stroke-opacity=".35" stroke-width="1.5" vector-effect="non-scaling-stroke"></line>
+<line x1="{{ed.x1}}" y1="{{ed.y1}}" x2="{{ed.x2}}" y2="{{ed.y2}}" pathLength="100" stroke="{{accent}}" stroke-width="2" stroke-dasharray="8 92" vector-effect="non-scaling-stroke" style="animation: va-flowdash 2.4s linear infinite; animation-delay: {{ed.delay}}"></line>
+</sc-for>
+</svg>
+<div style="position: absolute; left: 0; top: 28px; right: 0; bottom: 0">
+<sc-for list="{{nodes}}" as="nd" hint-placeholder-count="11">
+<div style="position: absolute; left: {{nd.x}}; top: {{nd.y}}; transform: translate(-50%, -24px); display: flex; flex-direction: column; align-items: center; gap: 4px; width: 92px">
+<span style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: {{w.shirtBg}}; color: {{w.shirtInk}}; border: 2px solid {{w.shirtLine}}; box-shadow: 0 0 0 4px {{c.bg}}; font-family: {{f.display}}; font-weight: 700; font-size: 18px">{{nd.n}}</span>
+<span style="background: {{w.tagBg}}; color: {{w.tagInk}}; padding: 1px 6px; font-weight: 600; font-size: 12px; white-space: nowrap">{{nd.name}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 22px">
+<span style="font-family: {{f.label}}; font-size: 12px; color: {{c.muted}}; margin-right: 6px">{{w.s1.bench}}</span>
+<sc-for list="{{bench}}" as="b" hint-placeholder-count="6">
+<span style="border: 2px solid {{c.line}}; padding: 2px 10px; font-size: 14px; font-weight: 600">{{b}}</span>
+</sc-for>
+</div>
+</section>
+
+<section id="timeline" class="va-h" aria-labelledby="timeline-title">
+<div class="va-h-pin">
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 24px; box-sizing: border-box; width: 100%">
+<div style="font-family: {{f.label}}; font-size: 13px; color: {{c.muted}}">{{w.s2.kicker}}</div>
+<h2 id="timeline-title" style="margin: 4px 0 20px; font-family: {{f.display}}; font-weight: 800; font-size: calc(56px * {{f.scale}}); line-height: 1; text-transform: uppercase">{{w.s2.title}}</h2>
+<div style="height: 10px; background: {{c.surface2}}; border: 2px solid {{c.line}}; margin-bottom: 28px; position: relative"><div class="va-h-fill" style="position: absolute; left: 0; top: 0; bottom: 0; background: {{accent}}"></div></div>
+</div>
+<div class="va-h-track">
+<sc-for list="{{events}}" as="e" hint-placeholder-count="8">
+<div style="box-sizing: border-box; border: 2px solid {{c.line}}; background: {{c.surface}}; box-shadow: 6px 6px 0 {{c.shadow}}; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<span style="background: {{e.tagBg}}; color: #0b1610; font-family: {{f.label}}; font-size: 11px; padding: 3px 7px">{{e.tag}}</span>
+<span style="font-size: 14px; color: {{c.muted}}">{{e.when}}</span>
+</div>
+<span style="font-family: {{f.display}}; font-weight: 800; font-size: {{e.minSize}}; line-height: .9">{{e.min}}</span>
+<div style="font-weight: 600; font-size: 18px; line-height: 1.3">{{e.title}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="highlights" aria-labelledby="hl-title" style="max-width: 1280px; margin: 0 auto; padding: 64px 24px">
+<div style="font-family: {{f.label}}; font-size: 13px; color: {{c.muted}}">{{w.s3.kicker}}</div>
+<h2 class="va-reveal" id="hl-title" style="margin: 4px 0 8px; font-family: {{f.display}}; font-weight: 800; font-size: calc(56px * {{f.scale}}); line-height: 1; text-transform: uppercase">{{w.s3.title}}</h2>
+<p style="margin: 0 0 28px; color: {{c.muted}}">Every highlight is playable. Press the buttons.</p>
+<article id="printsafe" class="va-reveal" aria-labelledby="ps-title" style="display: flex; flex-wrap: wrap; border: 2px solid {{c.line}}; background: {{c.surface}}; box-shadow: 8px 8px 0 {{c.shadow}}; margin-bottom: 28px">
+<div style="flex: 999 1 560px; min-width: 0; height: 360px; position: relative; overflow: hidden; border-right: 2px solid {{c.line}}; border-bottom: 2px solid {{c.line}}; margin: 0 -2px -2px 0">
+<dc-import name="PrintSafeDemo" height="360px" accent="{{accent}}" sound="{{soundOn}}" hint-size="100%,360px"></dc-import>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="background: {{accent}}; color: {{onAccent}}; font-family: {{f.display}}; font-weight: 800; font-size: 18px; padding: 0 8px">{{ps.min}}</span>
+<span style="font-family: {{f.label}}; font-size: 11px; color: {{c.muted}}">{{w.top}}</span>
+</div>
+<h3 id="ps-title" style="margin: 0; font-family: {{f.display}}; font-weight: 800; font-size: 34px; line-height: 1; text-transform: uppercase">{{ps.title}}</h3>
+<p style="margin: 0; color: {{c.muted}}; font-size: 15px">{{ps.blurb}}</p>
+<div style="border: 2px dashed {{c.line}}; padding: 10px 12px">
+<div style="font-family: {{f.label}}; font-size: 11px; color: {{c.muted}}; margin-bottom: 6px">{{w.check}}</div>
+<sc-for list="{{ps.checks}}" as="ck" hint-placeholder-count="3">
+<div style="display: flex; gap: 8px; align-items: flex-start; font-size: 14px; line-height: 1.35; margin-top: 4px">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{c.green}}" stroke-width="3" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M4 12l5 5L20 6"></path></svg>
+<span>{{ck}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{ps.stack}}" as="st" hint-placeholder-count="5">
+<span style="font-size: 12px; font-weight: 600; padding: 1px 8px; background: {{c.surface2}}">{{st}}</span>
+</sc-for>
+</div>
+<div style="margin-top: auto; font-family: {{f.display}}; font-weight: 700; font-size: 18px; text-transform: uppercase">
+<a href="{{ps.href}}" style="display: inline-block; padding: 8px 0">{{ps.cta}}</a>
+</div>
+</div>
+</article>
+
+<article id="match" class="va-reveal" aria-labelledby="fv-title" style="display: flex; flex-wrap: wrap; border: 2px solid {{c.line}}; background: {{c.surface}}; box-shadow: 8px 8px 0 {{c.shadow}}; margin-bottom: 28px">
+<div style="flex: 999 1 560px; min-width: 0; height: 360px; position: relative; overflow: hidden; border-right: 2px solid {{c.line}}; border-bottom: 2px solid {{c.line}}; margin: 0 -2px -2px 0">
+<sc-if value="{{cardMatch}}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{isFootball}}" hint-placeholder-val="{{ true }}"><dc-import name="FootballGame" mode="attract" height="360px" accent="{{accent}}" sound="{{soundOn}}" hint-size="100%,360px"></dc-import></sc-if>
+<sc-if value="{{isGp}}" hint-placeholder-val="{{ false }}"><dc-import name="RaceGame" mode="attract" height="360px" sound="{{soundOn}}" hint-size="100%,360px"></dc-import></sc-if>
+<sc-if value="{{isGaming}}" hint-placeholder-val="{{ false }}"><dc-import name="SnakeDemo" mode="attract" height="360px" accent="{{accent}}" sound="{{soundOn}}" hint-size="100%,360px"></dc-import></sc-if>
+<sc-if value="{{isRun}}" hint-placeholder-val="{{ false }}"><dc-import name="MarathonGame" mode="attract" height="360px" sound="{{soundOn}}" hint-size="100%,360px"></dc-import></sc-if>
+<sc-if value="{{isAi}}" hint-placeholder-val="{{ false }}"><dc-import name="LabelRushGame" mode="attract" height="360px" sound="{{soundOn}}" hint-size="100%,360px"></dc-import></sc-if>
+</sc-if>
+<button type="button" class="va-press" onClick="{{playMatch}}" style="position: absolute; left: 14px; bottom: 14px; z-index: 2; min-height: 48px; padding: 0 18px; background: {{accent}}; color: {{onAccent}}; border: 2px solid {{c.ink}}; box-shadow: 4px 4px 0 #000000; font-family: {{f.display}}; font-weight: 800; font-size: 18px; text-transform: uppercase; cursor: pointer">{{w.game.start}} · play</button>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="background: {{accent}}; color: {{onAccent}}; font-family: {{f.display}}; font-weight: 800; font-size: 18px; padding: 0 8px">{{feat.min}}</span>
+<span style="font-family: {{f.label}}; font-size: 11px; color: {{c.muted}}">{{w.game.kicker}}</span>
+</div>
+<h3 id="fv-title" style="margin: 0; font-family: {{f.display}}; font-weight: 800; font-size: 34px; line-height: 1; text-transform: uppercase">{{feat.title}}</h3>
+<p style="margin: 0; font-size: 15px">{{feat.line}}</p>
+<p style="margin: 0; color: {{c.muted}}; font-size: 15px">{{w.game.blurb}}</p>
+<div style="border: 2px dashed {{c.line}}; padding: 10px 12px">
+<div style="font-family: {{f.label}}; font-size: 11px; color: {{c.muted}}; margin-bottom: 6px">{{w.check}}</div>
+<sc-for list="{{feat.checks}}" as="ck" hint-placeholder-count="3">
+<div style="display: flex; gap: 8px; align-items: flex-start; font-size: 14px; line-height: 1.35; margin-top: 4px">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{c.green}}" stroke-width="3" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M4 12l5 5L20 6"></path></svg>
+<span>{{ck}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{feat.stack}}" as="st" hint-placeholder-count="4">
+<span style="font-size: 12px; font-weight: 600; padding: 1px 8px; background: {{c.surface2}}">{{st}}</span>
+</sc-for>
+</div>
+<div style="margin-top: auto; font-family: {{f.display}}; font-weight: 700; font-size: 18px; text-transform: uppercase">
+<a href="{{feat.href}}" style="display: inline-block; padding: 8px 0">{{feat.cta}}</a>
+</div>
+</div>
+</article>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px">
+<sc-for list="{{projects}}" as="p" hint-placeholder-count="6">
+<div class="va-reveal" style="display: flex">
+<article class="va-card" style="flex: 1; min-width: 0; border: 2px solid {{c.line}}; background: {{c.surface}}; box-shadow: 6px 6px 0 {{c.shadow}}; display: flex; flex-direction: column">
+<div style="height: 220px; position: relative; overflow: hidden; border-bottom: 2px solid {{c.line}}; background: #0b1a12">
+
+<sc-if value="{{p.kPs}}" hint-placeholder-val="{{ false }}">
+<dc-import name="PrintSafeDemo" accent="{{accent}}" sound="{{soundOn}}" hint-size="100%,220px"></dc-import>
+</sc-if>
+<sc-if value="{{p.kSnake}}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{cardSnake}}" hint-placeholder-val="{{ true }}">
+<dc-import name="SnakeDemo" mode="attract" height="220px" accent="{{accent}}" sound="{{soundOn}}" hint-size="100%,220px"></dc-import>
+</sc-if>
+<button type="button" class="va-press" onClick="{{playSnake}}" style="position: absolute; left: 10px; bottom: 10px; z-index: 2; min-height: 44px; padding: 0 12px; background: {{accent}}; color: {{onAccent}}; border: 2px solid #0b1610; box-shadow: 3px 3px 0 #000000; font-family: {{f.label}}; font-size: 11px; cursor: pointer">Take control</button>
+</sc-if>
+<sc-if value="{{p.kRetrain}}" hint-placeholder-val="{{ false }}">
+<dc-import name="RetrainDemo" accent="{{accent}}" sound="{{soundOn}}" hint-size="100%,220px"></dc-import>
+</sc-if>
+<sc-if value="{{p.kGen}}" hint-placeholder-val="{{ false }}">
+<dc-import name="GenDemo" accent="{{accent}}" sound="{{soundOn}}" hint-size="100%,220px"></dc-import>
+</sc-if>
+
+<sc-if value="{{p.kBnw}}" hint-placeholder-val="{{ false }}">
+<img src="/_blob/ed52782cda96414b1639c36f9ed6b59a" alt="U-Net colour output of a cartoon frame" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #f2f2f2">
+<img src="/_blob/91ad3f6cf75739cf2bd986a091a2f83a" alt="The same cartoon frame in grayscale, the model's input" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #e6e6e6; animation: va-wipe 6s ease-in-out infinite">
+<span aria-hidden="true" style="position: absolute; top: 0; bottom: 0; width: 3px; margin-left: -1px; background: {{accent}}; animation: va-wipeline 6s ease-in-out infinite"></span>
+<span style="position: absolute; right: 10px; bottom: 10px; font-family: {{f.label}}; font-size: 11px; color: #eef3ea; background: #08130e; padding: 3px 7px">input → U-Net output</span>
+</sc-if>
+
+<sc-if value="{{p.kFire}}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: #1b1612">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 46px; background: #2a221c; border-top: 2px solid #3a3029"></div>
+<div style="position: absolute; left: 12%; bottom: 46px; width: 34%; height: 84px; background: #4a4f57; border: 2px solid #0b0b0b; box-shadow: 4px 4px 0 #0b0b0b">
+<div style="position: absolute; left: 10px; top: 10px; width: 8px; height: 8px; background: #6fd08c; animation: va-pulse 1s steps(1) infinite"></div>
+<div style="position: absolute; left: 24px; top: 10px; width: 8px; height: 8px; background: #f5d547"></div>
+<div style="position: absolute; left: 10px; right: 10px; bottom: 12px; height: 18px; background: #343940"></div>
+</div>
+<div style="position: absolute; left: 60%; bottom: 46px; width: 30px; height: 50px">
+<div style="position: absolute; left: 0; bottom: 0; width: 30px; height: 44px; background: #e5432f; transform-origin: bottom; animation: va-flame .45s steps(3) infinite"></div>
+<div style="position: absolute; left: 5px; bottom: 0; width: 20px; height: 30px; background: #ff8a3d; transform-origin: bottom; animation: va-flame .38s steps(3) infinite reverse"></div>
+<div style="position: absolute; left: 10px; bottom: 0; width: 10px; height: 16px; background: #f5d547; transform-origin: bottom; animation: va-flame .3s steps(3) infinite"></div>
+</div>
+<div style="position: absolute; left: 61%; bottom: 100px; width: 16px; height: 16px; background: #7a7a7a; animation: va-smoke 2.4s linear infinite"></div>
+<div style="position: absolute; left: 63%; bottom: 100px; width: 14px; height: 14px; background: #8a8a8a; animation: va-smoke 2.4s linear .8s infinite"></div>
+<div style="position: absolute; left: 60%; bottom: 100px; width: 18px; height: 18px; background: #6b6b6b; animation: va-smoke 2.4s linear 1.6s infinite"></div>
+<div style="position: absolute; left: calc(60% - 8px); bottom: 42px; width: 44px; height: 60px; border: 2px solid #ff8a3d"><span style="position: absolute; left: -2px; bottom: -22px; font-family: {{f.label}}; font-size: 10px; background: #ff8a3d; color: #0b1610; padding: 1px 5px; white-space: nowrap">fire 0.93</span></div>
+<div style="position: absolute; left: calc(60% - 6px); bottom: 106px; width: 62px; height: 96px; border: 2px solid #a7bcae"><span style="position: absolute; right: -2px; top: -2px; font-family: {{f.label}}; font-size: 10px; background: #a7bcae; color: #0b1610; padding: 1px 5px; white-space: nowrap">smoke 0.88</span></div>
+<span style="position: absolute; left: 10px; top: 10px; font-family: {{f.label}}; font-size: 11px; color: #eef3ea; background: #08130e; padding: 3px 7px">client 3 of 5 · federated</span>
+</div>
+</sc-if>
+
+<span style="position: absolute; right: 10px; top: 10px; background: {{accent}}; color: {{onAccent}}; font-family: {{f.display}}; font-weight: 800; font-size: 18px; padding: 0 8px; pointer-events: none">{{p.min}}</span>
+</div>
+<div style="padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1">
+<h3 style="margin: 0; font-family: {{f.display}}; font-weight: 800; font-size: 28px; line-height: 1; text-transform: uppercase">{{p.title}}</h3>
+<p style="margin: 0; color: {{c.muted}}; font-size: 15px">{{p.blurb}}</p>
+<div style="border: 2px dashed {{c.line}}; padding: 10px 12px">
+<div style="font-family: {{f.label}}; font-size: 11px; color: {{c.muted}}; margin-bottom: 6px">{{w.check}}</div>
+<sc-for list="{{p.checks}}" as="ck" hint-placeholder-count="3">
+<div style="display: flex; gap: 8px; align-items: flex-start; font-size: 14px; line-height: 1.35; margin-top: 4px">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{c.green}}" stroke-width="3" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M4 12l5 5L20 6"></path></svg>
+<span>{{ck}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{p.stack}}" as="s" hint-placeholder-count="3">
+<span style="font-size: 12px; font-weight: 600; padding: 1px 8px; background: {{c.surface2}}">{{s}}</span>
+</sc-for>
+</div>
+<div style="display: flex; gap: 16px; margin-top: auto; padding-top: 6px; font-family: {{f.display}}; font-weight: 700; font-size: 18px; text-transform: uppercase">
+<a href="{{p.href}}" style="padding: 8px 0">{{p.cta}}</a>
+</div>
+</div>
+</article>
+</div>
+</sc-for>
+</div>
+<div class="va-reveal" style="margin-top: 28px; border: 2px solid {{c.line}}; padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: baseline">
+<span style="font-family: {{f.label}}; font-size: 12px; color: {{c.muted}}">Also in the squad</span>
+<sc-for list="{{squad}}" as="s" hint-placeholder-count="5">
+<span style="font-weight: 600">{{s}}</span>
+</sc-for>
+</div>
+</section>
+
+<section id="offpitch" aria-labelledby="off-title" style="max-width: 1280px; margin: 0 auto; padding: 64px 24px">
+<div style="font-family: {{f.label}}; font-size: 13px; color: {{c.muted}}">{{w.s4.kicker}}</div>
+<h2 class="va-reveal" id="off-title" style="margin: 4px 0 28px; font-family: {{f.display}}; font-weight: 800; font-size: calc(56px * {{f.scale}}); line-height: 1; text-transform: uppercase">{{w.s4.title}}</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 28px">
+<div class="va-reveal" style="flex: 999 1 520px; min-width: 0; border: 2px solid {{c.line}}; background: {{c.surface}}; box-shadow: 8px 8px 0 {{c.shadow}}; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<div style="font-family: {{f.label}}; font-size: 11px; color: {{onAccent}}; background: {{accent}}; align-self: flex-start; padding: 3px 8px">Wipro Bengaluru Marathon · Sep 2026</div>
+<div style="font-family: {{f.display}}; font-weight: 800; font-size: 72px; line-height: .9; text-transform: uppercase">21.097 km</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 2px solid {{c.line}}">
+<div style="padding: 10px 14px; border-right: 2px solid {{c.line}}"><div style="font-family: {{f.display}}; font-weight: 800; font-size: 30px; line-height: 1">≈2:16</div><div style="font-size: 13px; color: {{c.muted}}">finish, from watch splits</div></div>
+<div style="padding: 10px 14px; border-right: 2px solid {{c.line}}"><div style="font-family: {{f.display}}; font-weight: 800; font-size: 30px; line-height: 1">6:21</div><div style="font-size: 13px; color: {{c.muted}}">average per km</div></div>
+<div style="padding: 10px 14px"><div style="font-family: {{f.display}}; font-weight: 800; font-size: 30px; line-height: 1">5:45</div><div style="font-size: 13px; color: {{c.muted}}">fastest km: the 21st</div></div>
+</div>
+<div role="img" aria-label="Pace per kilometre: started at 7:09, settled between 6:00 and 6:50, finished with a 5:45 final kilometre and a 5:10 pace sprint." style="display: flex; align-items: flex-end; gap: 4px; height: 160px; border-bottom: 2px solid {{c.line}}; padding-top: 8px">
+<sc-for list="{{splits}}" as="s" hint-placeholder-count="22">
+<div title="{{s.label}}" style="flex: 1; height: {{s.h}}; background: {{s.bg}}; transform-origin: bottom; animation: va-grow .5s ease-out both; animation-delay: {{s.delay}}"></div>
+</sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; font-family: {{f.label}}; font-size: 11px; color: {{c.muted}}; margin-top: -10px"><span>km 1</span><span>km 10</span><span>km 21 + sprint</span></div>
+<p style="margin: 0; color: {{c.muted}}">Saved the fastest kilometre for last. Then built PaceCoach to plan the next one.</p>
+</div>
+<img class="va-reveal" src="/_blob/54319459d17fd57f520fdef6b25246af" alt="The silver 21.097K Bengaluru Marathon finisher medal in front of the stadium pitch" style="flex: 1 1 280px; min-width: 0; height: 440px; object-fit: cover; object-position: center 60%; border: 2px solid {{c.line}}; box-shadow: 8px 8px 0 {{c.shadow}}">
+</div>
+<div class="va-reveal" data-kitroom="1" style="margin-top: 28px; border: 2px solid {{c.line}}; background: #070c0a; box-shadow: 8px 8px 0 {{c.shadow}}; padding: 24px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 24px; margin-bottom: 12px">
+<div>
+<div style="font-family: {{f.label}}; font-size: 11px; color: #a7bcae">The kit room</div>
+<div style="font-family: {{f.display}}; font-weight: 800; font-size: 44px; line-height: .95; text-transform: uppercase; color: #eef3ea">Always No. 4</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px">
+<p style="margin: 0; color: #a7bcae; max-width: 380px">Hockey at Mayo College, then MIT. Different shirts, same number. Tap a shirt to turn it round.</p>
+<button type="button" class="va-press" onClick="{{kitLights}}" style="min-height: 44px; padding: 0 14px; background: #08130e; color: #eef3ea; border: 2px solid #eef3ea; font-family: {{f.label}}; font-size: 11px; cursor: pointer">Lights again</button>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 28px 20px; justify-items: center">
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 78px; width: 100%">
+<div aria-hidden="true" style="position: absolute; top: 0; left: 50%; width: 36px; height: 12px; margin-left: -18px; background: #1b1f1d; border: 2px solid #3a3f3c; display: flex; align-items: flex-end; justify-content: center; z-index: 2"><span style="width: 14px; height: 4px; background: {{k0.bulb}}; transition: background-color .2s"></span></div>
+<div aria-hidden="true" style="position: absolute; top: 12px; left: 50%; width: 300px; height: 400px; margin-left: -150px; background: linear-gradient(180deg, rgba(255,240,200,.42), rgba(255,240,200,0) 88%); clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%); opacity: {{k0.cone}}; transition: opacity .25s ease; pointer-events: none"></div>
+<div aria-hidden="true" style="width: 64px; height: 16px; border: 3px solid #d9d4c7; border-bottom: 0; border-radius: 40px 40px 0 0; margin-bottom: -10px; position: relative; z-index: 1"></div>
+<button type="button" onClick="{{k0.flip}}" aria-label="{{k0.label}}" style="position: relative; z-index: 1; width: 192px; height: 240px; padding: 0; border: 0; background: transparent; cursor: pointer; transform-origin: top center; animation: va-sway 3.1s ease-in-out infinite alternate">
+<div style="width: 100%; height: 100%; perspective: 800px; transition: filter .4s ease; filter: {{k0.filter}}; animation: {{k0.flash}}">
+<div style="position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .6s ease; transform: {{k0.rot}}">
+<img src="/_blob/266ccc7407073ab99203c9551d3869fa" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; -webkit-backface-visibility: hidden; backface-visibility: hidden">
+<img src="/_blob/99efeb0bd819deef5aef2e4ff36a1d73" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; -webkit-backface-visibility: hidden; backface-visibility: hidden; transform: rotateY(180deg)">
+</div>
+</div>
+</button>
+<div aria-hidden="true" style="width: 180px; height: 22px; margin-top: -14px; background: radial-gradient(ellipse at center, rgba(255,240,200,.32), rgba(255,240,200,0) 70%); opacity: {{k0.cone}}; transition: opacity .25s ease"></div>
+<div style="text-align: center; position: relative; z-index: 1">
+<div style="font-family: {{f.display}}; font-weight: 800; font-size: 22px; line-height: 1.1; text-transform: uppercase; color: #eef3ea">{{k0.title}}</div>
+<div style="display: inline-block; margin: 4px 0 2px; padding: 1px 8px; background: {{k0.resultBg}}; color: #0b1610; font-family: {{f.label}}; font-size: 11px">{{k0.result}}</div>
+<div style="font-size: 14px; color: #a7bcae">{{k0.note}}</div>
+<div style="font-family: {{f.label}}; font-size: 10px; color: #a7bcae; margin-top: 4px">{{k0.side}}</div>
+</div>
+</div>
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 78px; width: 100%">
+<div aria-hidden="true" style="position: absolute; top: 0; left: 50%; width: 36px; height: 12px; margin-left: -18px; background: #1b1f1d; border: 2px solid #3a3f3c; display: flex; align-items: flex-end; justify-content: center; z-index: 2"><span style="width: 14px; height: 4px; background: {{k1.bulb}}; transition: background-color .2s"></span></div>
+<div aria-hidden="true" style="position: absolute; top: 12px; left: 50%; width: 300px; height: 400px; margin-left: -150px; background: linear-gradient(180deg, rgba(255,240,200,.42), rgba(255,240,200,0) 88%); clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%); opacity: {{k1.cone}}; transition: opacity .25s ease; pointer-events: none"></div>
+<div aria-hidden="true" style="width: 64px; height: 16px; border: 3px solid #d9d4c7; border-bottom: 0; border-radius: 40px 40px 0 0; margin-bottom: -10px; position: relative; z-index: 1"></div>
+<button type="button" onClick="{{k1.flip}}" aria-label="{{k1.label}}" style="position: relative; z-index: 1; width: 192px; height: 240px; padding: 0; border: 0; background: transparent; cursor: pointer; transform-origin: top center; animation: va-sway 3.7s ease-in-out infinite alternate">
+<div style="width: 100%; height: 100%; perspective: 800px; transition: filter .4s ease; filter: {{k1.filter}}; animation: {{k1.flash}}">
+<div style="position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .6s ease; transform: {{k1.rot}}">
+<img src="/_blob/f8448dceb8f2f5ac91e1acde3c91ffab" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; -webkit-backface-visibility: hidden; backface-visibility: hidden">
+<img src="/_blob/6d14a6f7fcb413bcdbcfb459094397b8" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; -webkit-backface-visibility: hidden; backface-visibility: hidden; transform: rotateY(180deg)">
+</div>
+</div>
+</button>
+<div aria-hidden="true" style="width: 180px; height: 22px; margin-top: -14px; background: radial-gradient(ellipse at center, rgba(255,240,200,.32), rgba(255,240,200,0) 70%); opacity: {{k1.cone}}; transition: opacity .25s ease"></div>
+<div style="text-align: center; position: relative; z-index: 1">
+<div style="font-family: {{f.display}}; font-weight: 800; font-size: 22px; line-height: 1.1; text-transform: uppercase; color: #eef3ea">{{k1.title}}</div>
+<div style="display: inline-block; margin: 4px 0 2px; padding: 1px 8px; background: {{k1.resultBg}}; color: #0b1610; font-family: {{f.label}}; font-size: 11px">{{k1.result}}</div>
+<div style="font-size: 14px; color: #a7bcae">{{k1.note}}</div>
+<div style="font-family: {{f.label}}; font-size: 10px; color: #a7bcae; margin-top: 4px">{{k1.side}}</div>
+</div>
+</div>
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 78px; width: 100%">
+<div aria-hidden="true" style="position: absolute; top: 0; left: 50%; width: 36px; height: 12px; margin-left: -18px; background: #1b1f1d; border: 2px solid #3a3f3c; display: flex; align-items: flex-end; justify-content: center; z-index: 2"><span style="width: 14px; height: 4px; background: {{k2.bulb}}; transition: background-color .2s"></span></div>
+<div aria-hidden="true" style="position: absolute; top: 12px; left: 50%; width: 300px; height: 400px; margin-left: -150px; background: linear-gradient(180deg, rgba(255,240,200,.42), rgba(255,240,200,0) 88%); clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%); opacity: {{k2.cone}}; transition: opacity .25s ease; pointer-events: none"></div>
+<div aria-hidden="true" style="width: 64px; height: 16px; border: 3px solid #d9d4c7; border-bottom: 0; border-radius: 40px 40px 0 0; margin-bottom: -10px; position: relative; z-index: 1"></div>
+<button type="button" onClick="{{k2.flip}}" aria-label="{{k2.label}}" style="position: relative; z-index: 1; width: 192px; height: 240px; padding: 0; border: 0; background: transparent; cursor: pointer; transform-origin: top center; animation: va-sway 2.9s ease-in-out infinite alternate">
+<div style="width: 100%; height: 100%; perspective: 800px; transition: filter .4s ease; filter: {{k2.filter}}; animation: {{k2.flash}}">
+<div style="position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .6s ease; transform: {{k2.rot}}">
+<img src="/_blob/84ba7ceec8ced80ac5560741dd5c71c1" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; -webkit-backface-visibility: hidden; backface-visibility: hidden">
+<img src="/_blob/4baeffe6280a342dae7041f411762dd3" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; -webkit-backface-visibility: hidden; backface-visibility: hidden; transform: rotateY(180deg)">
+</div>
+</div>
+</button>
+<div aria-hidden="true" style="width: 180px; height: 22px; margin-top: -14px; background: radial-gradient(ellipse at center, rgba(255,240,200,.32), rgba(255,240,200,0) 70%); opacity: {{k2.cone}}; transition: opacity .25s ease"></div>
+<div style="text-align: center; position: relative; z-index: 1">
+<div style="font-family: {{f.display}}; font-weight: 800; font-size: 22px; line-height: 1.1; text-transform: uppercase; color: #eef3ea">{{k2.title}}</div>
+<div style="display: inline-block; margin: 4px 0 2px; padding: 1px 8px; background: {{k2.resultBg}}; color: #0b1610; font-family: {{f.label}}; font-size: 11px">{{k2.result}}</div>
+<div style="font-size: 14px; color: #a7bcae">{{k2.note}}</div>
+<div style="font-family: {{f.label}}; font-size: 10px; color: #a7bcae; margin-top: 4px">{{k2.side}}</div>
+</div>
+</div>
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 78px; width: 100%">
+<div aria-hidden="true" style="position: absolute; top: 0; left: 50%; width: 36px; height: 12px; margin-left: -18px; background: #1b1f1d; border: 2px solid #3a3f3c; display: flex; align-items: flex-end; justify-content: center; z-index: 2"><span style="width: 14px; height: 4px; background: {{k3.bulb}}; transition: background-color .2s"></span></div>
+<div aria-hidden="true" style="position: absolute; top: 12px; left: 50%; width: 300px; height: 400px; margin-left: -150px; background: linear-gradient(180deg, rgba(255,240,200,.42), rgba(255,240,200,0) 88%); clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%); opacity: {{k3.cone}}; transition: opacity .25s ease; pointer-events: none"></div>
+<div aria-hidden="true" style="width: 64px; height: 16px; border: 3px solid #d9d4c7; border-bottom: 0; border-radius: 40px 40px 0 0; margin-bottom: -10px; position: relative; z-index: 1"></div>
+<button type="button" onClick="{{k3.flip}}" aria-label="{{k3.label}}" style="position: relative; z-index: 1; width: 192px; height: 240px; padding: 0; border: 0; background: transparent; cursor: pointer; transform-origin: top center; animation: va-sway 3.4s ease-in-out infinite alternate">
+<div style="width: 100%; height: 100%; perspective: 800px; transition: filter .4s ease; filter: {{k3.filter}}; animation: {{k3.flash}}">
+<div style="position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .6s ease; transform: {{k3.rot}}">
+<img src="/_blob/61cd2329d89bd69aa89f29565ba2d22f" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; -webkit-backface-visibility: hidden; backface-visibility: hidden">
+<img src="/_blob/0f7152028890b419b03ad819fe8b7d66" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; -webkit-backface-visibility: hidden; backface-visibility: hidden; transform: rotateY(180deg)">
+</div>
+</div>
+</button>
+<div aria-hidden="true" style="width: 180px; height: 22px; margin-top: -14px; background: radial-gradient(ellipse at center, rgba(255,240,200,.32), rgba(255,240,200,0) 70%); opacity: {{k3.cone}}; transition: opacity .25s ease"></div>
+<div style="text-align: center; position: relative; z-index: 1">
+<div style="font-family: {{f.display}}; font-weight: 800; font-size: 22px; line-height: 1.1; text-transform: uppercase; color: #eef3ea">{{k3.title}}</div>
+<div style="display: inline-block; margin: 4px 0 2px; padding: 1px 8px; background: {{k3.resultBg}}; color: #0b1610; font-family: {{f.label}}; font-size: 11px">{{k3.result}}</div>
+<div style="font-size: 14px; color: #a7bcae">{{k3.note}}</div>
+<div style="font-family: {{f.label}}; font-size: 10px; color: #a7bcae; margin-top: 4px">{{k3.side}}</div>
+</div>
+</div>
+</div>
+</div>
+<div class="va-reveal" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; margin-top: 28px">
+<div class="va-card" style="border: 2px solid {{c.line}}; background: {{c.surface}}; padding: 20px 22px">
+<div style="font-family: {{f.label}}; font-size: 11px; color: {{c.muted}}">Youth academy · 2012–2021</div>
+<div style="font-family: {{f.display}}; font-weight: 800; font-size: 26px; text-transform: uppercase; margin-top: 4px">Mayo College, Ajmer</div>
+<p style="margin: 6px 0 0; color: {{c.muted}}">Hockey team. Sitar in the college orchestra. College monitor.</p>
+</div>
+<div class="va-card" style="border: 2px solid {{c.line}}; background: {{c.surface}}; padding: 20px 22px">
+<div style="font-family: {{f.label}}; font-size: 11px; color: {{c.muted}}">Away day · Dec 2019</div>
+<div style="font-family: {{f.display}}; font-weight: 800; font-size: 26px; text-transform: uppercase; margin-top: 4px">Borneo service project</div>
+<p style="margin: 6px 0 0; color: {{c.muted}}">15 days on a Round Square International Service Project, working with 60 students from around the world.</p>
+</div>
+</div>
+</section>
+
+<section id="pundit" aria-labelledby="pundit-title" style="max-width: 1280px; margin: 0 auto; padding: 64px 24px">
+<div style="font-family: {{f.label}}; font-size: 13px; color: {{c.muted}}">{{w.s5.kicker}}</div>
+<h2 class="va-reveal" id="pundit-title" style="margin: 4px 0 28px; font-family: {{f.display}}; font-weight: 800; font-size: calc(56px * {{f.scale}}); line-height: 1; text-transform: uppercase">Ask the {{w.pundit}}</h2>
+<div class="va-reveal" style="display: flex; flex-wrap: wrap; border: 2px solid {{c.line}}; box-shadow: 8px 8px 0 {{c.shadow}}; background: {{c.surface}}">
+<div style="flex: 1 1 240px; padding: 24px; border-right: 2px solid {{c.line}}; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; background: {{c.surface2}}">
+<div style="width: 160px; height: 187px; border: 2px solid {{c.line}}; background: {{c.pitchA}}; overflow: hidden">
+<div aria-hidden="true" data-sprite="pundit" style="position: relative; width: 160px; height: 187px; animation: va-bob 1.1s steps(1) infinite">
+<div style="position: absolute; inset: 0; opacity: {{sp.op}}">
+<div class="va-me {{sp.cls}}" style="background-position: 0% 0; animation: va-glance 15s step-end -4s infinite"></div>
+<div class="va-me va-me-lids {{sp.cls}}" style="animation-duration: 9.3s; animation-delay: -2.1s"></div>
+</div>
+<sc-if value="{{sp.strip}}" hint-placeholder-val="{{ false }}">
+<div class="va-strip {{stripClass}}" style="background-position: {{sp.pos}}"></div>
+</sc-if>
+</div>
+</div>
+<div style="font-family: {{f.display}}; font-weight: 800; font-size: 24px; text-transform: uppercase; line-height: 1">The {{w.pundit}}</div>
+<div style="font-size: 14px; color: {{c.muted}}">Answers questions about my work in full commentary mode, grounded in my resume and projects.</div>
+</div>
+<div style="flex: 999 1 460px; min-width: 0; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{questions}}" as="q" hint-placeholder-count="4">
+<button type="button" class="va-press" onClick="{{q.pick}}" aria-pressed="{{q.pressed}}" style="min-height: 44px; padding: 0 14px; background: {{q.bg}}; color: {{q.fg}}; border: 2px solid {{c.line}}; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer">{{q.q}}</button>
+</sc-for>
+</div>
+<div style="align-self: flex-end; max-width: 80%; background: {{c.surface2}}; border: 2px solid {{c.line}}; padding: 10px 14px; font-weight: 600">{{active.q}}</div>
+<div style="max-width: 88%; background: {{c.bg}}; border: 2px solid {{accent}}; padding: 14px 16px">
+<div style="font-family: {{f.label}}; font-size: 11px; color: {{accentLabel}}; margin-bottom: 6px">{{w.pundit}} · live</div>
+<div>{{active.a}}<span aria-hidden="true" style="display: inline-block; width: 9px; height: 18px; margin-left: 4px; vertical-align: -3px; background: {{accent}}; animation: va-blink 1s steps(1) infinite"></span></div>
+</div>
+<div style="display: flex; gap: 10px; margin-top: 8px; position: relative">
+<label for="pundit-q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Your question</label>
+<input id="pundit-q" type="text" placeholder="Ask about a project, a stack choice, anything…" style="flex: 1; min-width: 0; min-height: 48px; padding: 0 14px; background: {{c.bg}}; color: {{c.ink}}; border: 2px solid {{c.line}}; font-family: 'Barlow', sans-serif; font-size: 16px">
+<button type="button" class="va-press" style="min-height: 48px; padding: 0 20px; background: {{accent}}; color: {{onAccent}}; border: 2px solid {{c.ink}}; box-shadow: 3px 3px 0 {{c.shadow}}; font-family: {{f.display}}; font-weight: 800; font-size: 18px; text-transform: uppercase; cursor: pointer">Ask</button>
+</div>
+</div>
+</div>
+</section>
+
+<footer id="fulltime" style="border-top: 2px solid {{c.line}}; margin-top: 40px; background: {{c.surface}}">
+<div style="max-width: 1280px; margin: 0 auto; padding: 56px 24px 40px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-end">
+<div style="width: 140px; height: 163px; border: 2px solid {{c.line}}; background: {{c.pitchA}}; box-shadow: 6px 6px 0 {{c.shadow}}; overflow: hidden">
+<div role="img" aria-label="Pixel-art Vishal" data-sprite="footer" style="position: relative; width: 140px; height: 163px">
+<div style="position: absolute; inset: 0; opacity: {{sf.op}}">
+<div class="va-me {{sf.cls}}" style="background-position: 0% 0; animation: va-glance 12s step-end -7s infinite"></div>
+<div class="va-me va-me-lids {{sf.cls}}" style="animation-duration: 13.7s; animation-delay: -6s"></div>
+</div>
+<sc-if value="{{sf.strip}}" hint-placeholder-val="{{ false }}">
+<div class="va-strip {{stripClass}}" style="background-position: {{sf.pos}}"></div>
+</sc-if>
+</div>
+</div>
+<div style="flex: 1 1 360px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: {{f.label}}; font-size: 13px; color: {{c.muted}}">{{w.full}}</div>
+<div style="font-family: {{f.display}}; font-weight: 800; font-size: calc(clamp(44px, 6vw, 80px) * {{f.scale}}); line-height: .95; text-transform: uppercase">Let's build<span style="display: block; color: {{accentText}}">something that sees.</span></div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; font-family: {{f.display}}; font-weight: 700; font-size: 20px; text-transform: uppercase">
+<a href="mailto:agarwal.vishal2003@gmail.com" class="va-press" onClick="{{whistleClick}}" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; border: 2px solid {{c.ink}}; box-shadow: 4px 4px 0 {{c.shadow}}; background: {{accent}}; color: {{onAccent}}; text-decoration: none">Email</a>
+<a href="https://github.com/vishalagar" class="va-press" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; border: 2px solid {{c.ink}}; box-shadow: 4px 4px 0 {{c.shadow}}; text-decoration: none">GitHub</a>
+<a href="https://www.linkedin.com/in/vishal-agarwal123/" class="va-press" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; border: 2px solid {{c.ink}}; box-shadow: 4px 4px 0 {{c.shadow}}; text-decoration: none">LinkedIn</a>
+<a href="#fulltime" class="va-press" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; border: 2px solid {{c.ink}}; box-shadow: 4px 4px 0 {{c.shadow}}; text-decoration: none">Resume [PDF]</a>
+</div>
+</div>
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 24px 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 13px; color: {{c.muted}}">
+<span>© 2026 Vishal Agarwal</span>
+<span style="font-family: {{f.label}}; font-size: 11px">psst — type VAR anywhere</span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"intro":{"editor":"boolean","default":true,"section":"Worlds"},"night":{"editor":"boolean","default":true,"section":"Theme"},"accent":{"editor":"color","default":"#f5d547","options":["#f5d547","#8fb0d9","#ff8a3d"],"section":"Theme"},"$preview":{"width":1440,"height":10500}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { night: null, varOn: true, q: 0, sound: false, kicking: false, lights: null, gaze: null, kitBack: [true, true, true, true], kitOn: [false, false, false, false], world: 'football', wipe: null, wipeSub: '', playing: null, pad: {}, playKey: 0, vw: 1280, vh: 800, intro: props.intro ?? true, introLeft: 8, introHold: false, unmask: 0, unmaskP: 0, unmaskF: 0 };
+    this.timers = [];
+    this.amb = null;
+    // sound sits in the background: everything at vol.master, looping beds and loops at vol.amb of that
+    this.vol = { master: 0.55, amb: 0.45 };
+  }
+  componentDidMount() {
+    this.onResize = () => this.setState({ vw: window.innerWidth, vh: window.innerHeight });
+    window.addEventListener('resize', this.onResize);
+    this.onResize();
+    this.onScroll = () => this.updateUnmask();
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    this.updateUnmask();
+    if (this.state.intro) {
+      this.introTimer = setInterval(() => {
+        if (!this.state.intro) { clearInterval(this.introTimer); return; }
+        if (this.state.introHold) return;
+        const left = this.state.introLeft - 1;
+        if (left <= 0) this.closeIntro(this.randomWorld(), true);
+        else this.setState({ introLeft: left });
+      }, 1000);
+    }
+    const room = document.querySelector('[data-kitroom]');
+    if (!room || !('IntersectionObserver' in window)) {
+      this.setState({ kitOn: [true, true, true, true] });
+      return;
+    }
+    this.kitObserver = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        this.kitObserver.disconnect();
+        this.kitShow();
+      }
+    }, { threshold: 0.45 });
+    this.kitObserver.observe(room);
+  }
+  kitShow() {
+    const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (calm) {
+      this.setState({ kitOn: [true, true, true, true] });
+      return;
+    }
+    this.setState({ kitOn: [false, false, false, false] });
+    [0, 1, 2, 3].forEach((i) => this.later(() => {
+      if (this.state.sound) this.spotSound(i);
+      this.setState({ kitOn: this.state.kitOn.map((v, j) => (j === i ? true : v)) });
+    }, 500 + i * 420));
+  }
+  spotSound(i) {
+    this.tone('sine', 130 - i * 8, 45, 0.14, 0.3, 0);
+    this.tone('square', 2600, 1700, 0.025, 0.035, 0);
+    this.tone('sawtooth', 90, 110, 0.35, 0.012, 0.05);
+  }
+  whoosh() {
+    const ac = this.audio();
+    if (!ac) return;
+    const len = Math.floor(ac.sampleRate * 0.4);
+    const buf = ac.createBuffer(1, len, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / len);
+    const src = ac.createBufferSource();
+    src.buffer = buf;
+    const bp = ac.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.Q.value = 1.2;
+    const t = ac.currentTime;
+    bp.frequency.setValueAtTime(450, t);
+    bp.frequency.exponentialRampToValueAtTime(2600, t + 0.35);
+    const g = ac.createGain();
+    g.gain.value = 0.25;
+    src.connect(bp).connect(g).connect(this.master);
+    src.start();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('scroll', this.onScroll);
+    clearInterval(this.introTimer);
+    if (this.kitObserver) this.kitObserver.disconnect();
+    this.stopAmbient();
+    this.timers.forEach((t) => clearTimeout(t));
+  }
+  later(fn, ms) {
+    this.timers.push(setTimeout(fn, ms));
+  }
+  audio() {
+    if (!this.ac) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      this.ac = new AC();
+      this.master = this.ac.createGain();
+      this.master.gain.value = this.vol.master;
+      this.master.connect(this.ac.destination);
+    }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  }
+  tone(type, f0, f1, dur, vol, delay) {
+    const ac = this.audio();
+    if (!ac) return;
+    const t = ac.currentTime + (delay || 0);
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(this.master);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  }
+  whistle() {
+    const ac = this.audio();
+    if (!ac) return;
+    [[0, 0.16], [0.24, 0.5]].forEach(([d, len]) => {
+      const t = ac.currentTime + d;
+      const o = ac.createOscillator();
+      const lfo = ac.createOscillator();
+      const lg = ac.createGain();
+      const g = ac.createGain();
+      o.type = 'sine';
+      o.frequency.value = 2800;
+      lfo.frequency.value = 30;
+      lg.gain.value = 160;
+      lfo.connect(lg).connect(o.frequency);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.09, t + 0.02);
+      g.gain.setValueAtTime(0.09, t + len - 0.04);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+      o.connect(g).connect(this.master);
+      o.start(t); lfo.start(t);
+      o.stop(t + len + 0.02); lfo.stop(t + len + 0.02);
+    });
+  }
+  thud(delay) {
+    this.tone('sine', 140, 45, 0.18, 0.35, delay || 0);
+    this.tone('triangle', 900, 300, 0.05, 0.05, delay || 0);
+  }
+  blip(world) {
+    const wid = world || this.state.world;
+    const t = this.now();
+    if (wid === 'gp') { this.hit(t, 0.07, { type: 'bandpass', f0: 1900, q: 1.4, vol: 0.3 }); this.pluck(t + 0.02, 1320, 0.07, { type: 'square', vol: 0.06, lp: 2400 }); }
+    else if (wid === 'gaming') this.tone('square', 988, 1319, 0.06, 0.035, 0);
+    else if (wid === 'run') this.pluck(t, 3400, 0.06, { type: 'square', vol: 0.08, lp: 5000 });
+    else if (wid === 'ai') this.pluck(t, 1318.5, 0.22, { type: 'triangle', vol: 0.12, echo: 0.35, verb: 0.2 });
+    else this.tone('square', 660, 990, 0.07, 0.04, 0);
+  }
+  lightsSound(on) {
+    if (on) {
+      this.thud(0); this.thud(0.16); this.thud(0.5);
+      this.tone('sawtooth', 70, 120, 0.9, 0.025, 0.5);
+    } else {
+      this.tone('sawtooth', 120, 40, 0.6, 0.03, 0);
+      this.thud(0.3);
+    }
+  }
+  noise(dur, opt) {
+    const ac = this.audio();
+    if (!ac) return;
+    const o = opt || {};
+    const t = ac.currentTime + (o.delay || 0);
+    const len = Math.max(1, Math.floor(ac.sampleRate * dur));
+    const buf = ac.createBuffer(1, len, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    const src = ac.createBufferSource();
+    src.buffer = buf;
+    const f = ac.createBiquadFilter();
+    f.type = o.type || 'bandpass';
+    f.frequency.setValueAtTime(o.f0 || 1000, t);
+    if (o.f1) f.frequency.exponentialRampToValueAtTime(o.f1, t + dur);
+    f.Q.value = o.q || 1;
+    const g = ac.createGain();
+    g.gain.setValueAtTime(o.vol || 0.2, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.connect(f).connect(g).connect(this.master);
+    src.start(t);
+    src.stop(t + dur + 0.02);
+  }
+  notes(type, freqs, step, len, vol, delay) {
+    freqs.forEach((fq, i) => { if (fq) this.tone(type, fq, fq, len, vol, (delay || 0) + i * step); });
+  }
+  // ---- shared mix bus: compressor, a generated hall reverb and a filtered echo
+  now() {
+    const ac = this.audio();
+    return ac ? ac.currentTime + 0.01 : 0;
+  }
+  bus() {
+    const ac = this.audio();
+    if (!ac) return null;
+    if (this.fx && this.fx.ac === ac) return this.fx;
+    const comp = ac.createDynamicsCompressor();
+    comp.threshold.value = -16;
+    comp.ratio.value = 4;
+    comp.connect(this.master);
+    const out = ac.createGain();
+    out.gain.value = 0.9;
+    out.connect(comp);
+    const verb = ac.createConvolver();
+    const len = Math.floor(ac.sampleRate * 2.4);
+    const ir = ac.createBuffer(2, len, ac.sampleRate);
+    for (let ch = 0; ch < 2; ch++) {
+      const d = ir.getChannelData(ch);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+    }
+    verb.buffer = ir;
+    const verbOut = ac.createGain();
+    verbOut.gain.value = 0.45;
+    verb.connect(verbOut).connect(comp);
+    const echo = ac.createDelay(1);
+    echo.delayTime.value = 0.23;
+    const fb = ac.createGain();
+    fb.gain.value = 0.38;
+    const dark = ac.createBiquadFilter();
+    dark.type = 'lowpass';
+    dark.frequency.value = 3200;
+    echo.connect(dark).connect(fb).connect(echo);
+    const echoOut = ac.createGain();
+    echoOut.gain.value = 0.55;
+    dark.connect(echoOut).connect(comp);
+    const white = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate);
+    const wd = white.getChannelData(0);
+    for (let i = 0; i < wd.length; i++) wd[i] = Math.random() * 2 - 1;
+    this.fx = { ac, out, verb, echo, white };
+    return this.fx;
+  }
+  send(node, o) {
+    const fx = this.bus();
+    if (!fx) return;
+    let tail = node;
+    if (o.pan !== undefined && fx.ac.createStereoPanner) {
+      const pn = fx.ac.createStereoPanner();
+      pn.pan.value = o.pan;
+      tail.connect(pn);
+      tail = pn;
+    }
+    tail.connect(fx.out);
+    if (o.verb) { const g = fx.ac.createGain(); g.gain.value = o.verb; tail.connect(g).connect(fx.verb); }
+    if (o.echo) { const g = fx.ac.createGain(); g.gain.value = o.echo; tail.connect(g).connect(fx.echo); }
+  }
+  env(g, t, attack, peak, dur) {
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(peak, t + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  }
+  // one oscillator note with a fast attack and exponential decay
+  pluck(t, freq, dur, opt) {
+    const fx = this.bus();
+    if (!fx) return;
+    const o = opt || {};
+    const ac = fx.ac;
+    const osc = ac.createOscillator();
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(freq, t);
+    if (o.f1) osc.frequency.exponentialRampToValueAtTime(o.f1, t + dur);
+    const g = ac.createGain();
+    this.env(g, t, o.attack || 0.005, o.vol || 0.05, dur);
+    let node = osc;
+    if (o.lp) { const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = o.lp; node.connect(f); node = f; }
+    node.connect(g);
+    this.send(g, o);
+    osc.start(t);
+    osc.stop(t + dur + 0.05);
+  }
+  // a filtered noise burst
+  hit(t, dur, opt) {
+    const fx = this.bus();
+    if (!fx) return;
+    const o = opt || {};
+    const ac = fx.ac;
+    const src = ac.createBufferSource();
+    src.buffer = fx.white;
+    const f = ac.createBiquadFilter();
+    f.type = o.type || 'bandpass';
+    f.frequency.setValueAtTime(o.f0 || 1000, t);
+    if (o.f1) f.frequency.exponentialRampToValueAtTime(o.f1, t + dur);
+    f.Q.value = o.q || 0.8;
+    const g = ac.createGain();
+    this.env(g, t, o.attack || 0.002, o.vol || 0.1, dur);
+    src.connect(f).connect(g);
+    this.send(g, o);
+    src.start(t, Math.random() * 1.5);
+    src.stop(t + dur + 0.05);
+  }
+  driveCurve() {
+    if (!this.curve) {
+      const n = 1024;
+      this.curve = new Float32Array(n);
+      for (let i = 0; i < n; i++) { const x = (i / (n - 1)) * 2 - 1; this.curve[i] = Math.tanh(3 * x); }
+    }
+    return this.curve;
+  }
+  // a raspy high-revving race engine: detuned saws + an octave up + a sub, driven, filter follows the revs.
+  // pts = [[seconds, hz], ...]; returns the output gain so the caller can pan or filter it.
+  engine(t, pts, vol, opt) {
+    const fx = this.bus();
+    if (!fx) return null;
+    const ac = fx.ac;
+    const o = opt || {};
+    const end = t + pts[pts.length - 1][0];
+    const mix = ac.createGain();
+    mix.gain.value = 0.4;
+    const follow = (param, mul, cap) => pts.forEach(([dt, hz], i) => {
+      const v = Math.min(cap || 20000, hz * mul);
+      if (i === 0) param.setValueAtTime(v, t + dt); else param.linearRampToValueAtTime(v, t + dt);
+    });
+    [['sawtooth', 1], ['sawtooth', 1.008], ['sawtooth', 2.003], ['square', 0.5]].forEach(([type, mul]) => {
+      const osc = ac.createOscillator();
+      osc.type = type;
+      follow(osc.frequency, mul);
+      osc.connect(mix);
+      osc.start(t);
+      osc.stop(end + 0.1);
+    });
+    const shaper = ac.createWaveShaper();
+    shaper.curve = this.driveCurve();
+    const lp = ac.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.Q.value = 3;
+    follow(lp.frequency, o.bright || 5, 9000);
+    const g = ac.createGain();
+    const attack = o.attack || 0.04;
+    const release = o.release || 0.3;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + attack);
+    g.gain.setValueAtTime(vol, Math.max(t + attack, end - release));
+    g.gain.exponentialRampToValueAtTime(0.0001, end);
+    mix.connect(shaper).connect(lp).connect(g);
+    return { out: g, end };
+  }
+  // detuned saw chord through a sweeping low-pass
+  pad(t, freqs, dur, vol, opt) {
+    const fx = this.bus();
+    if (!fx) return [];
+    const ac = fx.ac;
+    const o = opt || {};
+    const lp = ac.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.Q.value = 2;
+    const sw = o.sweep || [600, 600, 600];
+    lp.frequency.setValueAtTime(sw[0], t);
+    lp.frequency.exponentialRampToValueAtTime(sw[1], t + dur * 0.45);
+    lp.frequency.exponentialRampToValueAtTime(sw[2], t + dur);
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + (o.attack || 0.5));
+    g.gain.setValueAtTime(vol, t + dur * 0.6);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    lp.connect(g);
+    this.send(g, { verb: o.verb || 0.6 });
+    freqs.forEach((fq) => [-7, 7].forEach((cents) => {
+      const osc = ac.createOscillator();
+      osc.type = 'sawtooth';
+      osc.frequency.value = fq;
+      osc.detune.value = cents;
+      osc.connect(lp);
+      osc.start(t);
+      osc.stop(t + dur + 0.05);
+    }));
+  }
+  // a crowd "ahh": noise through three vowel-ish formants, each wobbling on its own
+  cheer(t, dur, vol) {
+    const fx = this.bus();
+    if (!fx) return;
+    const ac = fx.ac;
+    [[480, 1.1, 1], [1150, 1.4, 0.7], [2600, 1.8, 0.35]].forEach(([fq, q, share]) => {
+      const src = ac.createBufferSource();
+      src.buffer = fx.white;
+      src.loop = true;
+      const f = ac.createBiquadFilter();
+      f.type = 'bandpass';
+      f.frequency.value = fq;
+      f.Q.value = q;
+      const wob = ac.createOscillator();
+      const wg = ac.createGain();
+      wob.frequency.value = 3 + Math.random() * 4;
+      wg.gain.value = fq * 0.06;
+      wob.connect(wg).connect(f.frequency);
+      const g = ac.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol * share, t + 0.35);
+      g.gain.setValueAtTime(vol * share, t + dur * 0.55);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(f).connect(g);
+      this.send(g, { verb: 0.35 });
+      src.start(t, Math.random());
+      wob.start(t);
+      src.stop(t + dur + 0.05);
+      wob.stop(t + dur + 0.05);
+    });
+  }
+  claps(t, dur, n, vol) {
+    for (let i = 0; i < n; i++) {
+      this.hit(t + Math.random() * dur, 0.03 + Math.random() * 0.02, { type: 'bandpass', f0: 1000 + Math.random() * 1000, q: 0.9, vol: (vol || 0.08) * (0.5 + Math.random() * 0.5), verb: 0.25, pan: Math.random() * 1.4 - 0.7 });
+    }
+  }
+  footstep(t, side, level) {
+    const k = level || 1;
+    this.hit(t, 0.07, { type: 'bandpass', f0: 1100, f1: 380, q: 0.9, vol: 0.1 * k, pan: side * 0.15 });
+    this.pluck(t, 80, 0.08, { f1: 40, vol: 0.14 * k });
+  }
+  breath(t, inhale, level) {
+    this.hit(t, inhale ? 0.38 : 0.5, { type: 'bandpass', f0: inhale ? 1800 : 1100, q: 0.6, vol: 0.022 * (level || 1), attack: inhale ? 0.14 : 0.06 });
+  }
+  // FM bell: modulator at 3.5x the carrier, its depth dying away
+  bell(t, freq, dur, vol, opt) {
+    const fx = this.bus();
+    if (!fx) return;
+    const ac = fx.ac;
+    const car = ac.createOscillator();
+    const mod = ac.createOscillator();
+    const depth = ac.createGain();
+    car.frequency.value = freq;
+    mod.frequency.value = freq * 3.5;
+    depth.gain.setValueAtTime(freq * 1.2, t);
+    depth.gain.exponentialRampToValueAtTime(1, t + dur);
+    mod.connect(depth).connect(car.frequency);
+    const g = ac.createGain();
+    this.env(g, t, 0.004, vol, dur);
+    car.connect(g);
+    this.send(g, opt || { echo: 0.45, verb: 0.35 });
+    car.start(t); mod.start(t);
+    car.stop(t + dur + 0.05); mod.stop(t + dur + 0.05);
+  }
+  // the opening sound of each world
+  signature(world) {
+    const wid = world || this.state.world;
+    const t = this.now();
+    if (wid === 'gp') {
+      // engine blips on the grid, five red lights, lights out, launch through the gears
+      const idle = this.engine(t, [[0, 120], [0.25, 230], [0.45, 130], [1.1, 135], [1.25, 260], [1.45, 140], [2.2, 130]], 0.045, { release: 0.2, bright: 4 });
+      if (idle) this.send(idle.out, { verb: 0.2 });
+      for (let i = 0; i < 5; i++) { this.pluck(t + i * 0.36, 880, 0.14, { vol: 0.05, verb: 0.3 }); this.hit(t + i * 0.36, 0.05, { type: 'lowpass', f0: 500, vol: 0.18 }); }
+      const go = t + 5 * 0.36 + 0.4;
+      this.hit(go, 0.3, { type: 'bandpass', f0: 3300, q: 7, vol: 0.06, verb: 0.2 });
+      const run = this.engine(go, [[0, 170], [0.07, 260], [0.5, 590], [0.55, 410], [0.95, 640], [1.0, 450], [1.45, 680], [2.1, 650]], 0.11, { release: 0.7 });
+      if (run) {
+        const pn = this.fx.ac.createStereoPanner ? this.fx.ac.createStereoPanner() : null;
+        if (pn) { pn.pan.setValueAtTime(0, go); pn.pan.linearRampToValueAtTime(0.8, run.end); run.out.connect(pn); this.send(pn, { verb: 0.3 }); }
+        else this.send(run.out, { verb: 0.3 });
+      }
+    } else if (wid === 'gaming') {
+      this.notes('square', [523, 659, 784, 1047], 0.09, 0.08, 0.035, 0);
+      this.tone('square', 1047, 1047, 0.28, 0.035, 0.36);
+    } else if (wid === 'run') {
+      // starting pistol: crack, body, an echo off the buildings, then the crowd goes
+      this.hit(t, 0.09, { type: 'highpass', f0: 900, vol: 0.55, verb: 0.7 });
+      this.hit(t, 0.3, { type: 'lowpass', f0: 2600, f1: 280, vol: 0.3, verb: 0.5 });
+      this.pluck(t, 150, 0.2, { f1: 42, vol: 0.32 });
+      this.hit(t + 0.34, 0.14, { type: 'bandpass', f0: 1300, vol: 0.07, verb: 0.6 });
+      this.cheer(t + 0.25, 2.4, 0.16);
+      this.claps(t + 0.45, 2, 28, 0.1);
+    } else if (wid === 'ai') {
+      // boot: a wide chord opening up, a rising arpeggio with echoes, one high shimmer
+      this.pad(t, [110, 164.81, 220, 277.18, 329.63, 493.88], 3, 0.02, { sweep: [280, 3400, 1100], attack: 0.6 });
+      [659.25, 880, 987.77, 1108.73, 1318.51].forEach((fq, i) => this.pluck(t + 0.35 + i * 0.09, fq, 0.4, { type: 'triangle', vol: 0.04, echo: 0.45, verb: 0.3, pan: i % 2 ? 0.4 : -0.4 }));
+      this.bell(t + 0.95, 1760, 1.4, 0.03);
+    } else {
+      this.whistle();
+    }
+  }
+  propSound(world) {
+    const wid = world || this.state.world;
+    const t = this.now();
+    if (wid === 'gp') {
+      // tyre: rubber thump, then a squeal with a little wobble
+      this.pluck(t, 120, 0.15, { f1: 50, vol: 0.3 });
+      this.hit(t + 0.03, 0.5, { type: 'bandpass', f0: 2700, f1: 2300, q: 9, vol: 0.16, verb: 0.25 });
+      this.pluck(t + 0.03, 1900, 0.45, { type: 'sawtooth', f1: 1500, vol: 0.03, lp: 3000, verb: 0.2 });
+    } else if (wid === 'gaming') {
+      this.tone('square', 988, 988, 0.08, 0.04, 0);
+      this.tone('square', 1319, 1319, 0.3, 0.04, 0.08);
+    } else if (wid === 'run') {
+      // squeeze the bottle, bubbles, a gulp
+      this.hit(t, 0.2, { type: 'lowpass', f0: 1400, f1: 400, vol: 0.12 });
+      for (let i = 0; i < 4; i++) { const fq = 500 + Math.random() * 600; this.pluck(t + 0.06 + i * 0.06, fq, 0.05, { f1: fq * 1.7, vol: 0.05 }); }
+      this.pluck(t + 0.38, 270, 0.12, { f1: 130, vol: 0.13 });
+    } else if (wid === 'ai') {
+      this.bell(t, 1046.5, 0.9, 0.15);
+    } else {
+      this.thud(0);
+    }
+  }
+  // headgear coming off (off = true) or going back on as the visitor scrolls
+  gearSound(world, off) {
+    const t = this.now();
+    if (world === 'gaming') { this.whoosh(); this.tone('sine', off ? 500 : 900, off ? 900 : 500, 0.08, 0.1, 0); return; }
+    this.whoosh();
+    if (world === 'gp') {
+      // visor clack and the chin strap
+      this.hit(t, 0.04, { type: 'lowpass', f0: 1500, vol: 0.3 });
+      this.hit(t + 0.06, 0.22, { type: 'highpass', f0: 1800, vol: 0.06 });
+      this.hit(t + 0.12, 0.18, { type: 'highpass', f0: 2200, vol: 0.05 });
+    } else if (world === 'run') {
+      // elastic stretch, then snap
+      this.pluck(t, off ? 220 : 520, 0.22, { type: 'triangle', f1: off ? 520 : 220, vol: 0.05 });
+      this.hit(t + 0.22, 0.03, { type: 'highpass', f0: 2600, vol: 0.1 });
+      this.pluck(t + 0.22, 700, 0.08, { f1: 180, vol: 0.1 });
+    } else if (world === 'ai') {
+      // power down (or up) with a few glitchy blips
+      this.pluck(t, off ? 880 : 55, 0.6, { type: 'sawtooth', f1: off ? 55 : 880, vol: 0.035, lp: off ? 1800 : 2600, verb: 0.3 });
+      [1600, 1200, 800].forEach((fq, i) => this.pluck(t + 0.05 + i * 0.07, off ? fq : 2400 - fq, 0.03, { type: 'square', vol: 0.015 }));
+      if (!off) this.bell(t + 0.55, 1318.5, 0.8, 0.03);
+    }
+  }
+  bed(freq, q, vol, lfoRate, lfoDepth) {
+    const ac = this.audio();
+    if (!ac) return null;
+    const len = ac.sampleRate * 3;
+    const buf = ac.createBuffer(1, len, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < len; i++) {
+      last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02;
+      d[i] = last * 3.5;
+    }
+    const src = ac.createBufferSource();
+    src.buffer = buf;
+    src.loop = true;
+    const bp = ac.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = freq;
+    bp.Q.value = q;
+    const g = ac.createGain();
+    g.gain.value = vol;
+    const lfo = ac.createOscillator();
+    const lg = ac.createGain();
+    lfo.frequency.value = lfoRate;
+    lg.gain.value = lfoDepth;
+    lfo.connect(lg).connect(g.gain);
+    src.connect(bp).connect(g).connect(this.master);
+    src.start(); lfo.start();
+    return [src, lfo];
+  }
+  // one car flying past: pitch drops through the doppler shift as it pans across and the filter opens
+  carPass(level) {
+    const fx = this.bus();
+    if (!fx) return;
+    const ac = fx.ac;
+    const t = this.now();
+    const dir = Math.random() < 0.5 ? -1 : 1;
+    const base = 460 + Math.random() * 140;
+    const e = this.engine(t, [[0, base * 1.16], [1.0, base * 1.2], [1.22, base * 0.85], [2.7, base * 0.8]], 0.06 * (level || 1), { attack: 1.0, release: 1.4, bright: 4 });
+    if (!e) return;
+    const near = ac.createBiquadFilter();
+    near.type = 'lowpass';
+    near.frequency.setValueAtTime(700, t);
+    near.frequency.exponentialRampToValueAtTime(6000, t + 1.1);
+    near.frequency.exponentialRampToValueAtTime(800, t + 2.7);
+    e.out.connect(near);
+    if (ac.createStereoPanner) {
+      const pn = ac.createStereoPanner();
+      pn.pan.setValueAtTime(-0.9 * dir, t);
+      pn.pan.linearRampToValueAtTime(0.9 * dir, t + 2.7);
+      near.connect(pn);
+      this.send(pn, { verb: 0.3 });
+    } else this.send(near, { verb: 0.3 });
+  }
+  // looping background per world: crowd, cars passing, chiptune bass, crowd + footsteps + breathing, synth pad
+  startAmbient(world) {
+    this.stopAmbient();
+    const fx = this.bus();
+    if (!fx) return;
+    const ac = fx.ac;
+    const nodes = [];
+    const timers = [];
+    const amb = { nodes, timers };
+    this.amb = amb;
+    const every = (ms, fn) => timers.push(setInterval(fn, ms));
+    const randomly = (min, max, fn) => {
+      const go = () => { if (this.amb !== amb) return; fn(); timers.push(setTimeout(go, min + Math.random() * (max - min))); };
+      timers.push(setTimeout(go, Math.random() * min));
+    };
+    if (world === 'gp') {
+      nodes.push(...(this.bed(260, 0.6, 0.014 * this.vol.amb, 0.09, 0.006 * this.vol.amb) || []));
+      randomly(2600, 5200, () => this.carPass(this.vol.amb));
+    } else if (world === 'gaming') {
+      const bass = [110, 110, 165, 110, 147, 110, 196, 165];
+      let i = 0;
+      every(230, () => { this.tone('square', bass[i % 8], bass[i % 8], 0.16, 0.018 * this.vol.amb, 0); i += 1; });
+    } else if (world === 'run') {
+      nodes.push(...(this.bed(700, 0.5, 0.018 * this.vol.amb, 0.11, 0.008 * this.vol.amb) || []));
+      nodes.push(...(this.bed(1700, 0.8, 0.006 * this.vol.amb, 0.17, 0.003 * this.vol.amb) || []));
+      let step = 0;
+      every(353, () => {
+        const t = this.now();
+        this.footstep(t, step % 2 ? 1 : -1, this.vol.amb);
+        if (step % 4 === 0) this.breath(t, true, this.vol.amb);
+        if (step % 4 === 2) this.breath(t, false, this.vol.amb);
+        step += 1;
+      });
+      randomly(6000, 10000, () => { const t = this.now(); this.cheer(t, 2.6, 0.09 * this.vol.amb); this.claps(t + 0.2, 2.2, 18, 0.07 * this.vol.amb); });
+    } else if (world === 'ai') {
+      const lp = ac.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.value = 520;
+      lp.Q.value = 2;
+      const sweep = ac.createOscillator();
+      const sg = ac.createGain();
+      sweep.frequency.value = 0.05;
+      sg.gain.value = 300;
+      sweep.connect(sg).connect(lp.frequency);
+      const g = ac.createGain();
+      g.gain.value = 0.014 * this.vol.amb;
+      lp.connect(g);
+      this.send(g, { verb: 0.7 });
+      [55, 82.41, 110, 138.59, 164.81].forEach((fq) => [-8, 8].forEach((cents) => {
+        const o = ac.createOscillator();
+        o.type = 'sawtooth';
+        o.frequency.value = fq;
+        o.detune.value = cents;
+        o.connect(lp);
+        o.start();
+        nodes.push(o);
+      }));
+      sweep.start();
+      nodes.push(sweep);
+      const scale = [880, 987.77, 1108.73, 1318.51, 1479.98, 1760];
+      randomly(1400, 3200, () => this.pluck(this.now(), scale[Math.floor(Math.random() * scale.length)], 0.3, { type: 'triangle', vol: 0.018 * this.vol.amb, echo: 0.6, verb: 0.4, pan: Math.random() * 1.6 - 0.8 }));
+    } else {
+      nodes.push(...(this.bed(480, 0.6, 0.05 * this.vol.amb, 0.15, 0.02 * this.vol.amb) || []));
+    }
+  }
+  stopAmbient() {
+    if (!this.amb) return;
+    this.amb.timers.forEach((t) => { clearInterval(t); clearTimeout(t); });
+    this.amb.nodes.forEach((n) => { try { n.stop(); } catch (e) { /* already stopped */ } });
+    this.amb = null;
+  }
+  randomWorld() {
+    const ids = Object.keys(this.worldDefs());
+    return ids[Math.floor(Math.random() * ids.length)];
+  }
+  // 0 = full costume, 7 = his own shirt. Hero: from the moment it is fully on screen, over 280 px of scroll.
+  // Pundit and footer: once they are near the bottom of the screen, over 160 px.
+  updateUnmask() {
+    const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const toFrame = (p) => (calm ? (p >= 0.5 ? 7 : 0) : Math.round(Math.min(1, Math.max(0, p)) * 7));
+    const vh = window.innerHeight;
+    const next = {};
+    const hero = document.querySelector('section[aria-labelledby="hero-title"]');
+    if (hero) {
+      const spriteBottom = hero.getBoundingClientRect().bottom - 40 + window.scrollY;
+      const start = Math.max(0, spriteBottom - vh) + 24;
+      next.unmask = toFrame((window.scrollY - start) / 280);
+    }
+    [['pundit', 'unmaskP'], ['footer', 'unmaskF']].forEach(([id, key]) => {
+      const el = document.querySelector('[data-sprite="' + id + '"]');
+      if (el) next[key] = toFrame((vh * 0.92 - el.getBoundingClientRect().top) / 160);
+    });
+    const wid = this.state.world;
+    const changed = Object.keys(next).filter((k) => next[k] !== this.state[k]);
+    if (!changed.length) return;
+    if (this.state.sound && wid !== 'football') {
+      if (changed.some((k) => this.state[k] === 0)) this.gearSound(wid, true);
+      else if (changed.some((k) => next[k] === 0)) this.gearSound(wid, false);
+    }
+    this.setState(next);
+  }
+  enterWorld(id, sub) {
+    this.setState({ wipe: id, wipeSub: sub || '' });
+    this.later(() => {
+      this.setState({ world: id });
+      if (this.state.sound) { this.startAmbient(id); this.signature(id); }
+    }, 320);
+    this.later(() => this.setState({ wipe: null }), 920);
+  }
+  closeIntro(id, random) {
+    if (!this.state.intro) return;
+    clearInterval(this.introTimer);
+    this.setState({ intro: false });
+    this.enterWorld(id, random ? 'Random pick' : 'Welcome to');
+  }
+
+  worldDefs() {
+    return {
+      football: {
+        name: 'Football', swatch: '#2f7a43',
+        f: { display: "'Barlow Condensed', sans-serif", label: "'Silkscreen', monospace", scale: 1 },
+        sb: { live: 'Live', home: 'VA', score: '6 – 0', away: 'Bugs' },
+        kicker: 'Matchday · Live from Bengaluru', cam: 'Cam 1', cta1: 'Watch highlights', pundit: 'Pundit', talk: 'Half-time team talk',
+        boxLabel: 'vishal 0.99', varWord: 'VAR', check: 'VAR check complete', full: 'Full time · post-match interview',
+        s1: { kicker: '01 · Team sheet', title: 'Starting XI', sub: '4-3-3', bench: 'Bench' },
+        s2: { kicker: '02 · Match timeline', title: 'Career so far' },
+        s3: { kicker: '03 · Highlights', title: 'Goals & VAR reviews' },
+        s4: { kicker: '04 · Off the pitch', title: 'Match fitness' },
+        s5: { kicker: '05 · Studio' },
+        tags: { 'Kick-off': 'Kick-off', 'Sub on': 'Sub on', Goal: 'Goal', Promoted: 'Promoted' }, theme: ['Floodlights on', 'Day match'],
+        top: 'Goal of the season', game: { kicker: 'Match of the day', start: 'Kick off', blurb: 'Here it is tracking a real mini match: you are #4 with #9 alongside, against the CPU. Sprint, pass, charge your shot. Ninety seconds.' },
+        prop: { a: '#f3eee2', b: '#120e14', c: '#120e14', label: 'Kick the ball', hint: 'tap the ball' },
+        shirt: { bg: '#f3eee2', ink: '#0b1610', line: '#08130e', radius: '0', tagBg: '#08130e', tagInk: '#eef3ea' },
+        shell: { body: '#2f6b3a', bezel: '#1b1f1d', bezelInk: '#cfe0d4', ink: '#eef3ea', btn: '#f5d547', btnInk: '#0b1610', dpad: '#14181a', pill: '#4f5a52', grille: '#1d4527' }
+      },
+      gp: {
+        name: 'Grand Prix', swatch: '#c8102e', gear: 'helmet',
+        f: { display: "'Titillium Web', sans-serif", label: "'Silkscreen', monospace", scale: 0.92 },
+        c: { bg: '#0e0e12', surface: '#17171d', surface2: '#202029', line: '#3a3a46', ink: '#f4f4f6', muted: '#b4b4c0', pitchA: '#3a3a40', pitchB: '#34343a', chalk: '#ffffff', shadow: '#000000', blue: '#f4f4f6', red: '#e10600', green: '#ffd400' },
+        accent: '#e10600', onAccent: '#ffffff', accentText: '#ff4d42', live: ['#ffd400', '#0e0e12'],
+        sb: { live: 'Live', home: 'VA', score: 'P1', away: 'Lap 6/6' },
+        kicker: 'Race day · Live from Bengaluru', cam: 'Onboard · car 4', cta1: 'Watch onboards', pundit: 'Race Engineer', talk: 'Pit radio',
+        boxLabel: 'driver 0.99', varWord: 'Review', check: 'Stewards: no further action', full: 'Chequered flag · post-race interview',
+        s1: { kicker: '01 · Garage', title: 'Starting grid', sub: '11 cars', bench: 'Reserve drivers' },
+        s2: { kicker: '02 · Race history', title: 'Career laps' },
+        s3: { kicker: '03 · Highlights', title: 'Overtakes & steward reviews' },
+        s4: { kicker: '04 · Off track', title: 'Driver fitness' },
+        s5: { kicker: '05 · Pit wall' },
+        tags: { 'Kick-off': 'Lights out', 'Sub on': 'Driver change', Goal: 'Race win', Promoted: 'Race seat' }, theme: ['Night race', 'Day race'],
+        top: 'Race win of the season', game: { kicker: 'Race of the day', start: 'Lights out', blurb: 'It works on any sport, so here it is tracking a Grand Prix. You start last in car 4: steer past seven rivals, brake when it gets tight and use DRS three times. Three laps.' },
+        prop: { a: '#16161a', b: '#c8102e', c: '#ffffff', label: 'Spin the tyre', hint: 'tap the tyre' },
+        stage: 'repeating-linear-gradient(90deg, #3a3a40 0px, #3a3a40 64px, #34343a 64px, #34343a 128px)',
+        formation: 'repeating-linear-gradient(0deg, #3a3a40 0px, #3a3a40 56px, #34343a 56px, #34343a 112px)',
+        shirt: { bg: '#e10600', ink: '#ffffff', line: '#000000', radius: '0', tagBg: '#f4f4f6', tagInk: '#0e0e12' },
+        shell: { body: '#202029', bezel: '#0e0e12', bezelInk: '#b4b4c0', ink: '#f4f4f6', btn: '#e10600', btnInk: '#ffffff', dpad: '#0e0e12', pill: '#3a3a46', grille: '#3a3a46' },
+        alt: { mode: 'day',
+          c: { bg: '#f4f4f1', surface: '#ffffff', surface2: '#e7e7e2', line: '#15151a', ink: '#15151a', muted: '#4b4b55', pitchA: '#3a3a40', pitchB: '#34343a', chalk: '#ffffff', shadow: '#15151a', blue: '#15151a', red: '#c8102e', green: '#1f7a3c' },
+          accent: '#c8102e', onAccent: '#ffffff', accentText: '#b00d28', live: ['#c8102e', '#ffffff'],
+          shirt: { bg: '#ffffff', ink: '#c8102e', line: '#15151a', radius: '0', tagBg: '#15151a', tagInk: '#ffffff' },
+          shell: { body: '#c8102e', bezel: '#16161a', bezelInk: '#ffd9d4', ink: '#ffffff', btn: '#ffffff', btnInk: '#c8102e', dpad: '#16161a', pill: '#8a0a1f', grille: '#8a0a1f' } }
+      },
+      gaming: {
+        name: 'Gaming', swatch: '#9fa2ad', gear: 'headset',
+        f: { display: "'Orbitron', sans-serif", label: "'Silkscreen', monospace", scale: 0.6 },
+        c: { bg: '#c3c4c9', surface: '#d9dade', surface2: '#b0b2b9', line: '#22232b', ink: '#15161c', muted: '#3a3c46', pitchA: '#14151d', pitchB: '#191a24', chalk: '#4a5170', shadow: '#22232b', blue: '#2346b8', red: '#d6336c', green: '#2b8a3e' },
+        accent: '#2346b8', onAccent: '#ffffff', accentText: '#1d3a9e', live: ['#d6336c', '#ffffff'],
+        sb: { live: '1P', home: 'VA', score: 'LV 6', away: '0 bugs' },
+        kicker: 'Player 1 · Press start', cam: 'Player 1', cta1: 'Press start', pundit: 'Guide', talk: 'Cutscene',
+        boxLabel: 'player 1 · 0.99', varWord: 'Aim assist', check: 'Achievement unlocked', full: 'Game over · continue?',
+        s1: { kicker: '01 · Party', title: 'Character select', sub: '11 unlocked', bench: 'Inventory' },
+        s2: { kicker: '02 · Save file', title: 'Story so far' },
+        s3: { kicker: '03 · Trophies', title: 'Boss fights & replays' },
+        s4: { kicker: '04 · Side quests', title: 'Real-life stats' },
+        s5: { kicker: '05 · Strategy guide' },
+        tags: { 'Kick-off': 'New game', 'Sub on': 'Party member', Goal: 'Boss beaten', Promoted: 'Level up' }, theme: ['Lights off', 'Lights on'],
+        top: 'Main quest', game: { kicker: 'Game of the day', start: 'Press start', blurb: 'Watch the bot play, then press start and take over: arrows or WASD to steer, and try to beat its score.' },
+        prop: { a: '#ffd43b', b: '#b8860b', c: '#fff3b0', label: 'Grab the coin', hint: 'tap the coin' },
+        stage: 'radial-gradient(ellipse at 50% 60%, #26305a 0%, #0d0e14 72%)',
+        formation: 'repeating-linear-gradient(0deg, #14151d 0px, #14151d 56px, #191a24 56px, #191a24 112px)',
+        shirt: { bg: '#2346b8', ink: '#ffffff', line: '#15161c', radius: '50%', tagBg: '#15161c', tagInk: '#e8ecff' },
+        shell: { body: '#b9bac1', bezel: '#2a2b33', bezelInk: '#c8cde6', ink: '#15161c', btn: '#2346b8', btnInk: '#ffffff', dpad: '#2a2b33', pill: '#8c8e98', grille: '#8c8e98' },
+        alt: { mode: 'night',
+          c: { bg: '#0d0e13', surface: '#16171f', surface2: '#1e2029', line: '#3b3f52', ink: '#e8eaf2', muted: '#a3a8bd', pitchA: '#14151d', pitchB: '#191a24', chalk: '#4a5170', shadow: '#000000', blue: '#5b84ff', red: '#ff4d8d', green: '#39c26a' },
+          accent: '#5b84ff', onAccent: '#0d0e13', accentText: '#8aa6ff', live: ['#ff4d8d', '#0d0e13'],
+          shirt: { bg: '#5b84ff', ink: '#0d0e13', line: '#e8eaf2', radius: '50%', tagBg: '#e8eaf2', tagInk: '#0d0e13' },
+          shell: { body: '#1c1d24', bezel: '#0d0e13', bezelInk: '#a3a8bd', ink: '#e8eaf2', btn: '#5b84ff', btnInk: '#0d0e13', dpad: '#0d0e13', pill: '#3b3f52', grille: '#3b3f52' } }
+      },
+      run: {
+        name: 'Running', swatch: '#1d4fbf', gear: 'headband',
+        f: { display: "'Anton', sans-serif", label: "'Silkscreen', monospace", scale: 1 },
+        c: { bg: '#1d4fbf', surface: '#2459cf', surface2: '#1a46aa', line: '#0b2a6b', ink: '#ffffff', muted: '#dbe6ff', pitchA: '#1747a6', pitchB: '#1a4db3', chalk: '#ffffff', shadow: '#0b2a6b', blue: '#d8ff3a', red: '#ff6b6b', green: '#d8ff3a' },
+        accent: '#d8ff3a', onAccent: '#0b2a6b', accentText: '#d8ff3a', live: ['#ffffff', '#1d4fbf'],
+        sb: { live: 'Live', home: 'VA', score: '21.1 km', away: '≈2:16' },
+        kicker: 'Race day · Bengaluru half marathon', cam: 'Cam 4 · km 21', cta1: 'See the splits', pundit: 'Coach', talk: 'Halfway split',
+        boxLabel: 'runner #4 · 0.99', varWord: 'Chip timing', check: 'Chip time verified', full: 'Finish line · cool-down',
+        s1: { kicker: '01 · Start line', title: 'Start corrals', sub: '11 runners', bench: 'Waitlist' },
+        s2: { kicker: '02 · Splits', title: 'Career splits' },
+        s3: { kicker: '03 · Highlights', title: 'PBs & photo finishes' },
+        s4: { kicker: '04 · Cross-training', title: 'Race day' },
+        s5: { kicker: "05 · Coach's corner" },
+        tags: { 'Kick-off': 'Start gun', 'Sub on': 'Joined pack', Goal: 'PB', Promoted: 'Pace group' }, theme: ['Night run', 'Morning run'],
+        top: 'Season PB', game: { kicker: 'Run of the day', start: 'Start gun', blurb: 'Now hold its plan: 6:20 per km for a half marathon. Alternate left and right (A and B on a phone) to run, change lanes to get past, grab water at km 7 and 14. Every km is scored on pace, too fast or too slow.' },
+        prop: { a: '#7fd3ff', b: '#1d4fbf', c: '#ffffff', label: 'Grab the water', hint: 'tap the bottle' },
+        stage: 'linear-gradient(180deg, #7fb4ff 0%, #bcd8ff 54%, #1747a6 54%)',
+        formation: 'repeating-linear-gradient(0deg, #1747a6 0px, #1747a6 53px, #ffffff 53px, #ffffff 56px)',
+        shirt: { bg: '#ffffff', ink: '#0b2a6b', line: '#0b2a6b', radius: '4px', tagBg: '#0b2a6b', tagInk: '#ffffff' },
+        shell: { body: '#1d4fbf', bezel: '#0b2a6b', bezelInk: '#dbe6ff', ink: '#ffffff', btn: '#d8ff3a', btnInk: '#0b2a6b', dpad: '#0b2a6b', pill: '#1747a6', grille: '#1747a6' },
+        alt: { mode: 'day',
+          c: { bg: '#f2f5fb', surface: '#ffffff', surface2: '#e2e9f7', line: '#0b2a6b', ink: '#0b2a6b', muted: '#3f557f', pitchA: '#1d4fbf', pitchB: '#2459cf', chalk: '#ffffff', shadow: '#0b2a6b', blue: '#1d4fbf', red: '#d9363e', green: '#2b8a3e' },
+          accent: '#d8ff3a', onAccent: '#0b2a6b', accentText: '#1d4fbf', live: ['#1d4fbf', '#ffffff'],
+          formation: 'repeating-linear-gradient(0deg, #2459cf 0px, #2459cf 53px, #ffffff 53px, #ffffff 56px)' }
+      },
+      ai: {
+        name: 'AI', swatch: '#2de2e6', gear: 'visor',
+        f: { display: "'Chakra Petch', sans-serif", label: "'Share Tech Mono', monospace", scale: 0.86 },
+        c: { bg: '#0a0614', surface: '#140c26', surface2: '#1d1236', line: '#4b2d8a', ink: '#efeaff', muted: '#b2a8dc', pitchA: '#120a24', pitchB: '#160d2c', chalk: '#7a4dff', shadow: '#ff2a6d', blue: '#2de2e6', red: '#ff2a6d', green: '#2de2e6' },
+        accent: '#2de2e6', onAccent: '#0a0614', accentText: '#2de2e6', live: ['#ff2a6d', '#0a0614'],
+        sb: { live: 'Online', home: 'VA', score: 'acc 0.99', away: '0 bugs' },
+        kicker: 'Boot sequence · node: bengaluru', cam: 'cam://node-01', cta1: 'Run inference', pundit: 'Agent', talk: 'System prompt',
+        boxLabel: 'human 0.99 · cyborg 0.01', varWord: 'Inference', check: 'Eval passed', full: 'EOF · end of stream',
+        s1: { kicker: '01 · Model card', title: 'Architecture', sub: '11 neurons', bench: 'Fine-tuning pool' },
+        s2: { kicker: '02 · Training log', title: 'Career epochs' },
+        s3: { kicker: '03 · Benchmarks', title: 'Evals & ablations' },
+        s4: { kicker: '04 · Offline', title: 'Human mode' },
+        s5: { kicker: '05 · Terminal' },
+        tags: { 'Kick-off': 'Init', 'Sub on': 'New data', Goal: 'Release', Promoted: 'To prod' }, theme: ['Dark mode', 'Light mode'],
+        top: 'Flagship model', game: { kicker: 'Eval of the day', start: 'Run batch', blurb: 'Its in-house annotation tool feeds the pipeline, so here you are the annotator. MLCC chips roll through the scan zone: label crack (A) or clean (B) before the model guesses. Every 8 labels it retrains and speeds up.' },
+        prop: { a: '#2de2e6', b: '#ff2a6d', c: '#ffffff', label: 'Ping the cube', hint: 'tap the cube' },
+        stage: 'linear-gradient(#7a4dff33 1px, transparent 1px) 0 0 / 32px 32px, linear-gradient(90deg, #7a4dff33 1px, transparent 1px) 0 0 / 32px 32px, radial-gradient(ellipse at 50% 80%, #2a1450 0%, #0a0614 70%)',
+        formation: 'linear-gradient(#7a4dff33 1px, transparent 1px) 0 0 / 28px 28px, linear-gradient(90deg, #7a4dff33 1px, transparent 1px) 0 0 / 28px 28px, #120a24',
+        shirt: { bg: '#0a0614', ink: '#2de2e6', line: '#2de2e6', radius: '0', tagBg: '#ff2a6d', tagInk: '#0a0614' },
+        shell: { body: '#140c26', bezel: '#0a0614', bezelInk: '#b2a8dc', ink: '#efeaff', btn: '#2de2e6', btnInk: '#0a0614', dpad: '#2a1d4d', pill: '#ff2a6d', grille: '#4b2d8a' },
+        alt: { mode: 'day',
+          c: { bg: '#f5f3fb', surface: '#ffffff', surface2: '#ebe6f8', line: '#2a1a55', ink: '#140c26', muted: '#4d4370', pitchA: '#ece8f7', pitchB: '#e4def5', chalk: '#7a4dff', shadow: '#ff2a6d', blue: '#0f8f94', red: '#d81b60', green: '#0f8f94' },
+          accent: '#2de2e6', onAccent: '#140c26', accentText: '#6a2cd8', live: ['#ff2a6d', '#140c26'],
+          stage: 'linear-gradient(#7a4dff26 1px, transparent 1px) 0 0 / 32px 32px, linear-gradient(90deg, #7a4dff26 1px, transparent 1px) 0 0 / 32px 32px, radial-gradient(ellipse at 50% 80%, #e3d9ff 0%, #f5f3fb 70%)',
+          formation: 'linear-gradient(#7a4dff1f 1px, transparent 1px) 0 0 / 28px 28px, linear-gradient(90deg, #7a4dff1f 1px, transparent 1px) 0 0 / 28px 28px, #f5f3fb',
+          shirt: { bg: '#ffffff', ink: '#6a2cd8', line: '#2a1a55', radius: '0', tagBg: '#140c26', tagInk: '#2de2e6' },
+          shell: { body: '#ebe6f8', bezel: '#140c26', bezelInk: '#b2a8dc', ink: '#140c26', btn: '#2de2e6', btnInk: '#140c26', dpad: '#2a1a55', pill: '#ff2a6d', grille: '#b2a8dc' } }
+      }
+    };
+  }
+  modeOf(id, night) {
+    const d = this.worldDefs()[id];
+    return d.alt && d.alt.mode === (night ? 'night' : 'day') ? { ...d, ...d.alt } : d;
+  }
+  playDefs(world) {
+    const common = [{ key: 'Enter', does: 'restart' }, { key: 'Esc', does: 'exit' }];
+    const match = {
+      football: { flag: 'isFootball', title: 'Sports Detection', kicker: 'Match of the day', a: 'Shoot', b: 'Pass', r: 'Sprint', desk: 2, phone: 1.3,
+        legend: [{ key: 'Arrows / WASD', does: 'move' }, { key: 'Space (hold)', does: 'shoot, tap to tackle' }, { key: 'X', does: 'pass' }, { key: 'Shift', does: 'sprint' }] },
+      gp: { flag: 'isRace', title: 'Grand Prix', kicker: 'Race of the day', a: 'DRS', b: 'Brake', r: null, desk: 1.6, phone: 0.85,
+        legend: [{ key: '← →', does: 'steer' }, { key: 'Space', does: 'DRS, 3 per race' }, { key: 'X or ↓', does: 'brake' }] },
+      run: { flag: 'isMarathon', title: 'PaceCoach pace run', kicker: 'Run of the day', a: 'Left foot', b: 'Right foot', r: null, desk: 2, phone: 1.35,
+        legend: [{ key: '← → alternate', does: 'run' }, { key: 'Space / X alternate', does: 'run' }, { key: '↑ ↓', does: 'change lane' }] },
+      ai: { flag: 'isLabel', title: 'Label Rush', kicker: 'Eval of the day', a: 'Crack', b: 'Clean', r: null, desk: 2, phone: 1.35,
+        legend: [{ key: 'Space or ←', does: 'label crack' }, { key: 'X or →', does: 'label clean' }] }
+    };
+    const snake = { flag: 'isSnake', title: 'Snake DQN', kicker: 'Take control', a: 'Again', b: null, r: null, desk: 1.6, phone: 1.6,
+      legend: [{ key: 'Arrows / WASD', does: 'steer' }, { key: 'Space', does: 'play again' }] };
+    const d = this.state.playing === 'snake' || world === 'gaming' ? snake : match[world];
+    return { ...d, legend: d.legend.concat(common) };
+  }
+  parseMin(str) {
+    return String(str).replace(/[^0-9+]/g, '').split('+').filter(Boolean).reduce((a, b) => a + Number(b), 0);
+  }
+  unit(world, m, original) {
+    // stoppage and extra time land on the last lap / the finish line instead of running past them
+    if (world === 'gp') return 'L' + (m === 0 ? 1 : Math.min(58, Math.round((m / 90) * 57) + 1));
+    if (world === 'gaming') return 'Lv ' + (1 + Math.floor(m / 6));
+    if (world === 'run') return 'km ' + Math.min(21.1, (m / 90) * 21.1).toFixed(1);
+    if (world === 'ai') return 'ep ' + m;
+    return original;
+  }
+  setPad(key, on) {
+    if (!!this.state.pad[key] === on) return;
+    this.setState({ pad: { ...this.state.pad, [key]: on } });
+  }
+  pickWorld(id) {
+    if (id === this.state.world || this.state.wipe) return;
+    if (this.state.sound) this.blip();
+    this.enterWorld(id);
+  }
+  renderVals() {
+    const night = this.state.night === null ? (this.props.night ?? true) : this.state.night;
+    let accent = this.props.accent ?? '#f5d547';
+    const sound = this.state.sound;
+    let c = night ? {
+      bg: '#08130e', surface: '#0f1f17', surface2: '#16291f', line: '#3a6150', ink: '#eef3ea',
+      muted: '#a7bcae', pitchA: '#103020', pitchB: '#143826', chalk: '#cfe0d4', shadow: '#020604',
+      blue: '#8fb0d9', red: '#e5432f', green: '#6fd08c'
+    } : {
+      bg: '#eef2e8', surface: '#ffffff', surface2: '#e1e9da', line: '#0d1f16', ink: '#0d1f16',
+      muted: '#43574a', pitchA: '#3f8a50', pitchB: '#47965a', chalk: '#f4f8f1', shadow: '#0d1f16',
+      blue: '#8fb0d9', red: '#d23a2a', green: '#1f7a3c'
+    };
+    const wid = this.state.world;
+    const worlds = this.worldDefs();
+    const w0 = this.modeOf(wid, night);
+    let onAccent = '#0b1610';
+    let accentText = night ? accent : '#7a5f00';
+    let live = [c.red, '#ffffff'];
+    if (wid !== 'football') {
+      c = w0.c;
+      accent = w0.accent;
+      onAccent = w0.onAccent;
+      accentText = w0.accentText;
+      live = w0.live;
+    }
+    const w = { ...w0, liveBg: live[0], liveInk: live[1], shirtBg: w0.shirt.bg, shirtInk: w0.shirt.ink, shirtLine: w0.shirt.line, shirtRadius: w0.shirt.radius, tagBg: w0.shirt.tagBg, tagInk: w0.shirt.tagInk };
+    const isFootball = wid === 'football';
+    const vw = this.state.vw;
+    const vh = this.state.vh;
+    const phone = vw < 700 || (vw < 1000 && window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+    const pd = this.playDefs(wid);
+    let boxW = 0;
+    let boxH = 0;
+    let gameH = 0;
+    if (phone) {
+      const availW = vw - 48;
+      const availH = vh * 0.5 - 62;
+      gameH = Math.floor(Math.min(availH, availW / pd.phone));
+    } else {
+      const availW = Math.min(vw - 48, 1280);
+      const availH = vh - 170;
+      boxW = Math.floor(Math.min(availW, availH * pd.desk));
+      boxH = Math.floor(boxW / pd.desk);
+      gameH = boxH - 4;
+    }
+    const playing = this.state.playing;
+    const flags = { isFootball: false, isRace: false, isMarathon: false, isLabel: false, isSnake: false };
+    const hold = (key) => ({ on: () => this.setPad(key, true), off: () => this.setPad(key, false) });
+    const keyMap = { ArrowUp: 'up', w: 'up', W: 'up', ArrowDown: 'down', s: 'down', S: 'down', ArrowLeft: 'left', a: 'left', A: 'left', ArrowRight: 'right', d: 'right', D: 'right', ' ': 'a', j: 'a', J: 'a', x: 'b', X: 'b', k: 'b', K: 'b', Shift: 'r', l: 'r', L: 'r' };
+    const H = { up: hold('up'), down: hold('down'), left: hold('left'), right: hold('right'), a: hold('a'), b: hold('b'), r: hold('r') };
+    const exitPlay = () => this.setState({ playing: null, pad: {} });
+    const restartPlay = () => this.setState({ playKey: this.state.playKey + 1, pad: {} });
+    const qa = [
+      { q: 'What does he do at Samsung?', a: 'Right, so he has built an autonomous model-retraining platform. FastAPI workflows for classification, segmentation and YOLO across 8+ factory machines. Accuracy drops, the system spots it, retrains, and checks the result. Manual intervention down by half. Lovely bit of engineering, that.' },
+      { q: 'Best goal this season?', a: 'Has to be PrintSafe. His visa documents were sitting on a print shop’s WhatsApp, so he built the fix: encrypted in the browser, a one-time link, gone after printing. Top corner.' },
+      { q: 'How does he build?', a: 'Spec first, screens second, code third. Clear requirements, test it like a real user, then a firm yes or no. Very disciplined going forward.' },
+      { q: 'Toughest bug?', a: 'Netweb, summer 2024. His VPC module worked alone but clashed with the Transit Gateway’s address plan. He went back, read the whole multi-account IP plan, reassigned the CIDRs and passed review. Then fixed the team’s Terraform state collisions with S3 plus DynamoDB locking. Learns from the miss, that one.' }
+    ];
+    const tag = { goal: wid === 'gaming' || wid === 'gp' ? '#ffd43b' : accent, sub: '#8fb0d9', up: '#6fd08c', ko: '#eef3ea' };
+    const ticker = [
+      'Sports Detection ships in extra time',
+      'PrintSafe.in passes 500+ visits',
+      'Half marathon done: 21.097 km',
+      'Promoted: ML Intern to AI Engineer, Samsung E-M',
+      'Capstone mAP@0.5 up from 0.734 to 0.812'
+    ];
+    const projectList = [
+      { kind: 'ps', min: "90+4'", title: 'PrintSafe.in', blurb: 'Self-destructing document sharing, born from visa paperwork stuck on a print shop’s WhatsApp. Upload, one-time link, printed, gone.', checks: ['AES-256-GCM in the browser; key lives in the URL fragment, never sent to the server', 'Direct-to-R2 presigned uploads to get past Vercel’s body limit', 'Auto-delete after viewing; 500+ visits'], stack: ['Next.js', 'TypeScript', 'Cloudflare R2', 'Upstash', 'Supabase'], href: 'https://printsafe.in', cta: 'Live site' },
+      { kind: 'retrain', min: "83'", title: 'Autonomous Retraining', blurb: 'At Samsung Electro-Mechanics: agents that notice a model’s accuracy drop, then retrain and re-tune it.', checks: ['Dataset and model versioning schema, in-house annotation tool', '450+ backend tests after decoupling from other teams’ modules', 'Manual intervention down 50% across 8+ factory machines'], stack: ['FastAPI', 'MySQL', 'Optuna', 'YOLO'], href: '#highlights', cta: 'Case study' },
+      { kind: 'gen', min: "75'", title: 'Image Generation Platform', blurb: 'Synthetic training data for when real defects are rare. GANs, diffusion and blending behind one set of APIs.', checks: ['Transfer learning across SiT S/2 to XL, layers modified for new channel setups', 'Image-set generation cut from ~1 day to half a day (FID-checked)', 'APIs for 8 modules, used by 5+ teams'], stack: ['PyTorch', 'Diffusion', 'GANs', 'LLMs'], href: '#highlights', cta: 'Case study' },
+      { kind: 'snake', min: "55'", title: 'Snake DQN', blurb: 'Tabular Q-learning for chess hit the state-space wall, so he pivoted to a Deep Q-Network for Snake. Beat the bot, or take control.', checks: ['11-feature state: danger, direction, food position', '11 → 256 → 3 network, 100k-transition replay memory', 'Avg 37 points over 1,000 eval games, best 75'], stack: ['PyTorch', 'Pygame', 'RL'], href: 'https://github.com/vishalagar/RL-Project', cta: 'Code' },
+      { kind: 'fire', min: "79'", title: 'Fire & Smoke Detection', blurb: 'Capstone: privacy-preserving detector for manufacturing-site incident prevention.', checks: ['Five-client federated training', '1,000+ Wan 2.1 synthetic rare-event images', 'mAP@0.5 0.734 → 0.812; false positives 14 → 3.2 per shift'], stack: ['YOLOv8', 'Federated learning', 'Wan 2.1'], href: '#highlights', cta: 'Case study' },
+      { kind: 'bnw', min: "60'", title: 'B&W Cartoon Colorization', blurb: 'Final-year deep learning project: give a grayscale cartoon frame its colours back, where one shade of grey could be many colours.', checks: ['4,500 grayscale + 4,500 colour training frames', 'CNN vs autoencoder vs U-Net, moved to Kaggle GPUs', 'U-Net won: SSIM 0.897, MSE 0.0206'], stack: ['PyTorch', 'U-Net', 'OpenCV'], href: 'https://github.com/vishalagar/COLORIZATION-OF-B-W-IMAGES', cta: 'Code' }
+    ];
+    const byKind = (k) => projectList.find((p) => p.kind === k);
+    const unitOf = (min) => this.unit(wid, this.parseMin(min), min);
+    const ps0 = byKind('ps');
+    const ps = { ...ps0, min: unitOf(ps0.min) };
+    // the game card shows the project that game really belongs to
+    const sportsDetection = { title: 'Sports Detection', min: "ET 102'", line: 'Drop in a match clip and it tracks players, ball, possession and passes, entirely in the browser.', checks: ['YOLOv8n via ONNX Runtime Web', 'WebGPU, WebAssembly fallback', 'Footage never leaves the device'], stack: ['TypeScript', 'ONNX Runtime Web', 'WebGPU'], href: 'https://github.com/vishalagar/football-analysis', cta: 'Code' };
+    const fromProject = (k, line) => { const pr = byKind(k); return { title: pr.title, min: pr.min, line, checks: pr.checks, stack: pr.stack, href: pr.href, cta: pr.cta }; };
+    const featKind = { gaming: 'snake', ai: 'retrain' }[wid] || null;
+    const feat0 = {
+      football: sportsDetection,
+      gp: sportsDetection,
+      gaming: fromProject('snake', 'Tabular Q-learning for chess hit the state-space wall, so he pivoted to a Deep Q-Network for Snake.'),
+      run: { title: 'PaceCoach', min: "ET 98'", line: 'An AI running coach built for OpenAI Build Week (July 2026): set a race, log or import your runs, and the plan adapts after every one.', checks: ['GPT-5.6 vision reads screenshots of past runs from any app; you review the rows before they are saved', 'Versioned plans, a conservative finish-time estimate and a coach note explaining every re-plan', 'Weather-aware via Open-Meteo; reporting pain switches to a rest-only week'], stack: ['FastAPI', 'React', 'SQLite', 'GPT-5.6', 'Open-Meteo'], href: 'https://github.com/vishalagar/RunningCoach', cta: 'Code' },
+      ai: { ...fromProject('retrain', 'At Samsung Electro-Mechanics: agents that notice a model’s accuracy drop, then retrain and re-tune it.'), href: '#pundit', cta: 'Ask the ' + w0.pundit }
+    }[wid];
+    const feat = { ...feat0, min: unitOf(feat0.min) };
+    const spriteVals = (frame) => {
+      const mid = !isFootball && frame > 0 && frame < 7;
+      return { cls: isFootball || frame === 7 ? '' : 'va-w-' + wid, op: mid ? 0 : 1, strip: mid, pos: (frame / 7 * 100).toFixed(3) + '% 0' };
+    };
+    const kinds = ['ps', 'snake', 'retrain', 'gen', 'bnw', 'fv', 'fire'];
+    const lineList = [
+      { players: [{ n: 9, name: 'YOLOv8' }, { n: 10, name: 'Next.js' }, { n: 11, name: 'TypeScript' }] },
+      { players: [{ n: 6, name: 'OpenCV' }, { n: 8, name: 'PyTorch' }, { n: 7, name: 'FastAPI' }] },
+      { players: [{ n: 2, name: 'NumPy' }, { n: 4, name: 'MySQL' }, { n: 5, name: 'Pandas' }, { n: 3, name: 'Azure' }] },
+      { players: [{ n: 1, name: 'Python' }] }
+    ];
+    const roles = ['Striker', 'Mage', 'Support', 'Tank'];
+    const squad = [3, 0, 1, 2].flatMap((li) => lineList[li].players.map((pl) => ({ ...pl, role: roles[li] })));
+    // AI: input (Python) -> hidden (data) -> hidden (models) -> output (what ships)
+    const layerXs = [12, 38, 63, 88];
+    const layers = [lineList[3].players, lineList[2].players, lineList[1].players, lineList[0].players];
+    const pts = layers.map((ps, li) => ps.map((pl, i) => ({ ...pl, x: layerXs[li], y: Math.round(((i + 1) / (ps.length + 1)) * 1000) / 10 })));
+    const nodes = pts.flat().map((pt) => ({ n: pt.n, name: pt.name, x: pt.x + '%', y: pt.y + '%' }));
+    const edges = [];
+    pts.slice(0, -1).forEach((col, li) => col.forEach((a) => pts[li + 1].forEach((b) => edges.push({ x1: a.x, y1: a.y, x2: b.x, y2: b.y, delay: (-((edges.length * 0.37) % 2.4)).toFixed(2) + 's' }))));
+    return {
+      c, accent, onAccent, accentText,
+      accentLabel: accentText,
+      w, f: w0.f, isFootball, isGp: wid === 'gp', isGaming: wid === 'gaming', isRun: wid === 'run', isAi: wid === 'ai',
+      spriteClass: isFootball ? '' : 'va-w-' + wid,
+      stageBg: isFootball ? 'repeating-linear-gradient(90deg, ' + c.pitchA + ' 0px, ' + c.pitchA + ' 64px, ' + c.pitchB + ' 64px, ' + c.pitchB + ' 128px)' : w0.stage,
+      formationBg: isFootball ? 'repeating-linear-gradient(0deg, ' + c.pitchA + ' 0px, ' + c.pitchA + ' 56px, ' + c.pitchB + ' 56px, ' + c.pitchB + ' 112px)' : w0.formation,
+      prop: w0.prop,
+      gpBanner: wid === 'gp' && this.state.varOn,
+      runStrip: wid === 'run' && this.state.varOn,
+      aiStrip: wid === 'ai' && this.state.varOn,
+      worldButtons: Object.keys(worlds).map((id) => ({
+        name: worlds[id].name,
+        swatch: worlds[id].swatch,
+        pressed: id === wid ? 'true' : 'false',
+        bg: id === wid ? accent : c.surface,
+        fg: id === wid ? onAccent : c.ink,
+        shadow: id === wid ? '3px 3px 0 ' + c.shadow : 'none',
+        pick: () => this.pickWorld(id)
+      })),
+      wipeOn: !!this.state.wipe,
+      wipeBg: this.state.wipe ? (this.modeOf(this.state.wipe, night).c ? this.modeOf(this.state.wipe, night).c.bg : c.bg) : '#000000',
+      wipeInk: this.state.wipe ? (this.modeOf(this.state.wipe, night).c ? this.modeOf(this.state.wipe, night).c.ink : '#f5d547') : '#ffffff',
+      wipeFont: this.state.wipe ? worlds[this.state.wipe].f.display : 'sans-serif',
+      wipeName: this.state.wipe ? worlds[this.state.wipe].name : '',
+      wipeSub: this.state.wipeSub,
+      introOn: this.state.intro,
+      introRef: (el) => { if (el && el !== this.introEl) { this.introEl = el; el.focus({ preventScroll: true }); } if (!el) this.introEl = null; },
+      introKey: (e) => {
+        if (e.key === 'Escape') { e.preventDefault(); this.closeIntro(this.randomWorld(), true); return; }
+        const n = Number(e.key);
+        const ids = Object.keys(worlds);
+        if (n >= 1 && n <= ids.length) { e.preventDefault(); this.closeIntro(ids[n - 1], false); }
+      },
+      introHold: () => { if (!this.state.introHold) this.setState({ introHold: true }); },
+      introGo: () => { if (this.state.introHold && !(this.introEl && this.introEl.contains(document.activeElement) && document.activeElement !== this.introEl)) this.setState({ introHold: false }); },
+      introRandom: () => this.closeIntro(this.randomWorld(), true),
+      introSound: () => {
+        const on = !sound;
+        if (on) this.blip('football');
+        this.setState({ sound: on });
+      },
+      introSoundBg: sound ? '#f5d547' : '#16161d',
+      introSoundInk: sound ? '#0b0b10' : '#f3f1ea',
+      introCount: this.state.introHold ? 'Take your time' : 'Random pick in ' + this.state.introLeft + 's',
+      introSecs: '8s',
+      introPlay: this.state.introHold ? 'paused' : 'running',
+      introTiles: Object.keys(worlds).map((id, i) => {
+        const d = this.modeOf(id, night);
+        const info = {
+          football: ['Matchday', 'Floodlights, VAR and a 2v2 match.'],
+          gp: ['Race day', 'Helmet on, lights out, three laps.'],
+          gaming: ['Press start', 'Boss fights and Snake against the bot.'],
+          run: ['21.1 km', 'Splits, race bibs and a PaceCoach pace run.'],
+          ai: ['Boot sequence', 'Neon, evals and Label Rush.']
+        }[id];
+        return {
+          name: d.name,
+          num: String(i + 1),
+          tag: info[0],
+          blurb: info[1],
+          label: d.name + ': ' + info[1],
+          font: d.f.display,
+          bg: d.c ? d.c.bg : (night ? '#08130e' : '#eef2e8'),
+          ink: d.c ? d.c.ink : (night ? '#eef3ea' : '#0d1f16'),
+          muted: d.c ? d.c.muted : (night ? '#a7bcae' : '#43574a'),
+          accent: d.c ? d.accent : '#f5d547',
+          stage: d.stage || 'repeating-linear-gradient(90deg, #103020 0px, #103020 32px, #143826 32px, #143826 64px)',
+          cls: id === 'football' ? '' : 'va-w-' + id,
+          delay: (-1.7 * i).toFixed(1) + 's',
+          pick: () => this.closeIntro(id, false),
+          hover: () => { if (sound) this.blip(id); }
+        };
+      }),
+      heroClass: isFootball || this.state.unmask === 7 ? '' : 'va-w-' + wid,
+      stripOn: !isFootball && this.state.unmask > 0 && this.state.unmask < 7,
+      heroLayersOp: !isFootball && this.state.unmask > 0 && this.state.unmask < 7 ? 0 : 1,
+      stripClass: 'va-strip-' + wid,
+      sp: spriteVals(this.state.unmaskP),
+      sf: spriteVals(this.state.unmaskF),
+      stripPos: (this.state.unmask / 7 * 100).toFixed(3) + '% 0',
+      offHintOn: !isFootball && this.state.unmask < 7,
+      offHint: w0.gear ? 'Scroll · ' + w0.gear + ' off' : '',
+      boxLabel: !isFootball && this.state.unmask === 7 ? 'vishal 0.99' : w0.boxLabel,
+      heroLabel: isFootball || this.state.unmask === 7
+        ? 'Pixel-art Vishal: curly black hair, round glasses, white shirt with blue elephant print. His eyes follow your cursor and he blinks.'
+        : 'Pixel-art Vishal wearing his ' + w0.name + ' ' + w0.gear + '. Scroll down and he takes it off.',
+      ps,
+      feat,
+      cardMatch: playing !== (wid === 'gaming' ? 'snake' : 'match'),
+      cardSnake: playing !== 'snake',
+      playMatch: () => { if (sound) this.signature(); this.setState({ playing: wid === 'gaming' ? 'snake' : 'match', playKey: this.state.playKey + 1, pad: {} }); },
+      playSnake: () => { if (sound) this.blip(); this.setState({ playing: 'snake', playKey: this.state.playKey + 1, pad: {} }); },
+      playOn: !!playing,
+      desk: !phone,
+      phone,
+      play: { ...flags, [pd.flag]: true, title: pd.title, kicker: pd.kicker, legend: pd.legend, aLabel: pd.a || '', bLabel: pd.b || '', rLabel: pd.r || '', hasA: !!pd.a, hasB: !!pd.b, hasR: !!pd.r },
+      shell: { ...w0.shell, brand: 'VA-4 · ' + w0.name },
+      boxW: boxW + 'px',
+      boxH: boxH + 'px',
+      gameH: gameH + 'px',
+      pad: this.state.pad,
+      playKey: this.state.playKey,
+      overlayRef: (el) => { if (el && el !== this.overlayEl) { this.overlayEl = el; el.focus({ preventScroll: true }); } if (!el) this.overlayEl = null; },
+      padKeyDown: (e) => {
+        if (e.key === 'Escape') { e.preventDefault(); exitPlay(); return; }
+        if (e.key === 'Enter') { e.preventDefault(); restartPlay(); return; }
+        const k = keyMap[e.key];
+        if (!k || e.metaKey || e.ctrlKey || e.altKey) return;
+        e.preventDefault();
+        this.setPad(k, true);
+      },
+      padKeyUp: (e) => {
+        const k = keyMap[e.key];
+        if (!k) return;
+        e.preventDefault();
+        this.setPad(k, false);
+      },
+      padBlur: () => { if (Object.values(this.state.pad).some(Boolean)) this.setState({ pad: {} }); },
+      exitPlay,
+      restartPlay,
+      upOn: H.up.on, upOff: H.up.off, downOn: H.down.on, downOff: H.down.off,
+      leftOn: H.left.on, leftOff: H.left.off, rightOn: H.right.on, rightOff: H.right.off,
+      aOn: H.a.on, aOff: H.a.off, bOn: H.b.on, bOff: H.b.off, rOn: H.r.on, rOff: H.r.off,
+      soundOn: sound,
+      tickerTwice: ticker.concat(ticker),
+      lightsOn: this.state.lights === 'on',
+      lightsOff: this.state.lights === 'off',
+      lampFill: night ? accent : 'none',
+      themeText: night ? w0.theme[0] : w0.theme[1],
+      themeLabel: night ? 'Switch to ' + w0.theme[1].toLowerCase() + ' (light theme)' : 'Switch to ' + w0.theme[0].toLowerCase() + ' (dark theme)',
+      toggleNight: () => {
+        if (this.state.lights) return;
+        const goingNight = !night;
+        if (sound) this.lightsSound(goingNight);
+        this.setState({ lights: goingNight ? 'on' : 'off' });
+        this.later(() => this.setState({ night: goingNight }), goingNight ? 420 : 380);
+        this.later(() => this.setState({ lights: null }), 1350);
+      },
+      soundText: sound ? 'Sound on' : 'Sound off',
+      soundLabel: sound ? 'Turn stadium sound off' : 'Turn stadium sound on',
+      soundPressed: sound ? 'true' : 'false',
+      toggleSound: () => {
+        if (sound) { this.stopAmbient(); this.setState({ sound: false }); }
+        else { this.signature(); this.startAmbient(wid); this.setState({ sound: true }); }
+      },
+      whistleClick: () => { if (sound) this.signature(); },
+      ...[
+        ['MIT Hockey', 'Revels', 'Runners-up'],
+        ['MIT Manipal', 'Inter-MAHE · medal + Certificate of Merit', 'Winners'],
+        ['MIT Manipal', 'Inter-MAHE', 'Winners'],
+        ['MIT Hockey', "Revels '23", 'Runners-up']
+      ].reduce((acc, [title, note, result], i) => {
+        const back = this.state.kitBack[i];
+        const on = this.state.kitOn[i];
+        acc['k' + i] = {
+          title,
+          note,
+          result,
+          resultBg: result === 'Winners' ? '#f5d547' : '#c9d1d6',
+          cone: on ? 1 : 0,
+          bulb: on ? '#fff3c4' : '#3a3f3c',
+          filter: on ? 'brightness(1) saturate(1)' : 'brightness(.25) saturate(.6)',
+          flash: on ? 'va-spotflash .7s ease-out 1' : 'none',
+          rot: back ? 'rotateY(0deg)' : 'rotateY(180deg)',
+          side: back ? 'back · tap to turn' : 'front · tap to turn',
+          label: title + ' shirt, showing the ' + (back ? 'back with VISHAL and number 4' : 'front') + '. Turn it round.',
+          flip: () => {
+            if (sound) this.whoosh();
+            this.setState({ kitBack: this.state.kitBack.map((v, j) => (j === i ? !v : v)) });
+          }
+        };
+        return acc;
+      }, {}),
+      kitLights: () => this.kitShow(),
+      gazePos: ({ open: '0% 0', left: '25% 0', right: '50% 0' })[this.state.kicking ? 'right' : (this.state.gaze || 'open')],
+      gazeAnim: this.state.kicking || this.state.gaze ? 'none' : 'va-glance 13s step-end infinite',
+      onLook: (e) => {
+        const el = e.currentTarget.querySelector('[data-sprite]');
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const dx = e.clientX - (r.left + r.width / 2);
+        const gaze = dx < -90 ? 'left' : (dx > 90 ? 'right' : 'open');
+        if (gaze !== this.state.gaze) this.setState({ gaze });
+      },
+      onLookEnd: () => { if (this.state.gaze) this.setState({ gaze: null }); },
+      ballAnim: this.state.kicking ? 'va-kick .8s ease-out' : 'va-dribble 1.2s steps(4) infinite',
+      kickBall: () => {
+        if (this.state.kicking) return;
+        if (sound) this.propSound();
+        this.setState({ kicking: true });
+        this.later(() => this.setState({ kicking: false }), 800);
+      },
+      varOn: this.state.varOn,
+      varPressed: this.state.varOn ? 'true' : 'false',
+      varText: w0.varWord + (this.state.varOn ? ': on' : ': off'),
+      toggleVar: () => { if (sound) this.blip(); this.setState({ varOn: !this.state.varOn }); },
+      lines: lineList,
+      gridSlots: squad.map((pl, i) => ({ pos: 'P' + (i + 1), car: 'Car ' + pl.n + (i === 0 ? ' · pole' : ''), name: pl.name, dy: i % 2 ? '34px' : '0px' })),
+      chars: squad.map((pl, i) => ({ name: pl.name, ini: pl.name.replace(/[^A-Za-z0-9]/g, '').slice(0, 2).toUpperCase(), role: pl.role, sel: i === 0, face: i === 0 ? accent : '#2a2e44', faceInk: i === 0 ? onAccent : '#e8ecff', bg: '#16171f', border: i === 0 ? accent : '#3b3f52', shadow: i === 0 ? '4px 4px 0 ' + accent : 'none' }))
+        .concat([{ name: 'Locked', ini: '?', role: 'next unlock', sel: false, face: '#16171f', faceInk: '#6b7088', bg: '#101118', border: '#2a2e44', shadow: 'none' }]),
+      waves: [['Elite wave', 3], ['Wave A', 2], ['Wave B', 1], ['Pacer', 0]].map(([label, li]) => ({ label, bibs: lineList[li].players })),
+      layerCaps: layerXs.map((x, i) => ({ x: x + '%', name: ['input', 'hidden 1', 'hidden 2', 'output'][i] })),
+      nodes,
+      edges,
+      bench: ['TensorFlow', 'scikit-learn', 'Optuna', 'Terraform', 'AWS', 'Slurm', 'Streamlit', 'Supabase', 'ONNX Runtime'],
+      events: [
+        { min: "0'", tag: 'Kick-off', tagBg: tag.ko, title: 'B.Tech CSE (AI & ML), Manipal Institute of Technology', when: '2021' },
+        { min: "40'", tag: 'Sub on', tagBg: tag.sub, title: 'ML Intern, Afame Technologies', when: 'Mar–Apr 2024' },
+        { min: "42'", tag: 'Sub on', tagBg: tag.sub, title: 'Cloud Engineer Intern, Netweb: AWS Landing Zone in Terraform, Azure HPC cluster', when: 'May–Jul 2024' },
+        { min: "72'", tag: 'Sub on', tagBg: tag.sub, title: 'ML Intern, Samsung Electro-Mechanics', when: 'Jan–Jul 2025' },
+        { min: "79'", tag: 'Goal', tagBg: tag.goal, title: 'Capstone: federated YOLOv8 fire & smoke detector', when: '2025' },
+        { min: "83'", tag: 'Promoted', tagBg: tag.up, title: 'AI Engineer, Samsung Electro-Mechanics', when: 'Aug 2025 – now' },
+        { min: "90+4'", tag: 'Goal', tagBg: tag.goal, title: 'PrintSafe.in goes live', when: 'Mar 2026' },
+        { min: "ET 102'", tag: 'Goal', tagBg: tag.goal, title: 'Sports Detection ships', when: 'Sep 2026' }
+      ].map((e) => ({ ...e, tag: w0.tags[e.tag] || e.tag, min: this.unit(wid, this.parseMin(e.min), e.min), minSize: isFootball ? '64px' : '52px' })),
+      projects: projectList.filter((p) => p.kind !== 'ps' && p.kind !== featKind).map((p) => {
+        const flags = {};
+        kinds.forEach((k) => { flags['k' + k.charAt(0).toUpperCase() + k.slice(1)] = p.kind === k; });
+        return { ...p, ...flags, min: this.unit(wid, this.parseMin(p.min), p.min) };
+      }),
+      squad: ['Metal Surface Defects (GLCM + SVM, 91%)', 'Federated Learning Sim (FedProx)', 'Terminal', 'India Trading Bot', 'AI D-Day', 'PaceCoach'].filter((x) => !(wid === 'run' && x === 'PaceCoach')),
+      splits: ['7:09','6:10','6:50','6:29','6:45','6:00','6:29','6:12','6:23','6:26','6:45','6:25','6:50','6:02','5:55','5:57','6:16','6:02','6:25','6:52','5:45','5:10'].map((p, i) => {
+        const sec = Number(p.split(':')[0]) * 60 + Number(p.split(':')[1]);
+        return {
+          label: (i < 21 ? 'km ' + (i + 1) : 'last 0.4 km') + ': ' + p + ' /km',
+          h: Math.round(24 + (440 - sec)) + 'px',
+          bg: i >= 20 ? accent : c.blue,
+          delay: (i * 0.06).toFixed(2) + 's'
+        };
+      }),
+      questions: qa.map((x, i) => ({
+        q: x.q,
+        pressed: i === this.state.q ? 'true' : 'false',
+        bg: i === this.state.q ? accent : c.surface,
+        fg: i === this.state.q ? onAccent : c.ink,
+        pick: () => { if (sound) this.blip(); this.setState({ q: i }); }
+      })),
+      active: qa[this.state.q]
+    };
+  }
+}
+</script>
+</body>
+</html>

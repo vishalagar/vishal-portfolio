@@ -1,0 +1,171 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.marathon {
+  flex: 999 1 520px;
+  min-width: 0;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  box-shadow: 8px 8px 0 var(--shadow);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.race {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: var(--on-accent);
+  background: var(--accent);
+  align-self: flex-start;
+  padding: 3px 8px;
+}
+
+.distance {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: calc(72px * var(--display-scale));
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 2px solid var(--line);
+  margin: 0;
+}
+
+.stat {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+}
+
+.stat + .stat {
+  border-left: 2px solid var(--line);
+}
+
+.statValue {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 1;
+  margin: 0;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 160px;
+  border-bottom: 2px solid var(--line);
+  padding-top: 8px;
+}
+
+.bar {
+  flex: 1;
+  transform-origin: bottom;
+}
+
+:root[data-js] .bars[data-inview="false"] .bar {
+  transform: scaleY(0);
+}
+
+.bars[data-inview="true"] .bar {
+  animation: va-grow 0.5s ease-out both;
+}
+
+.axis {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: -10px;
+}
+
+.closing {
+  margin: 0;
+  color: var(--muted);
+}
+
+.medal {
+  position: relative;
+  flex: 1 1 280px;
+  min-width: 0;
+  height: 440px;
+  border: 2px solid var(--line);
+  box-shadow: 8px 8px 0 var(--shadow);
+  overflow: hidden;
+}
+
+.medal img {
+  object-fit: cover;
+  object-position: center 60%;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 28px;
+  margin-top: 28px;
+}
+
+.card {
+  border: 2px solid var(--line);
+  background: var(--surface);
+  padding: 20px 22px;
+}
+
+.cardKicker {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.cardTitle {
+  font-size: 26px;
+  margin-top: 4px;
+}
+
+.cardBody {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+@keyframes va-grow {
+  0% { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
+}
+
+@media (max-width: 560px) {
+  .marathon {
+    padding: 18px;
+  }
+  .distance {
+    font-size: calc(56px * var(--display-scale));
+  }
+  .statValue {
+    font-size: 24px;
+  }
+  .stat {
+    padding: 8px 10px;
+  }
+  .bars {
+    gap: 2px;
+  }
+  .medal {
+    height: 360px;
+  }
+}

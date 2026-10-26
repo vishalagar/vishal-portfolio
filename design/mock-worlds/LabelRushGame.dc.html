@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Label Rush mini-game</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&amp;family=Chakra+Petch:wght@700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 100%; height: {{height}}; overflow: hidden; background: #0a0614; font-family: 'Share Tech Mono', monospace; color: #efeaff; user-select: none">
+<div aria-hidden="true" style="position: absolute; left: -10%; right: -10%; bottom: 0; height: 55%; background-image: linear-gradient(#7a4dff55 1px, transparent 1px), linear-gradient(90deg, #7a4dff55 1px, transparent 1px); background-size: 36px 22px; background-position: {{gridShift}} 0; transform: perspective(240px) rotateX(48deg); transform-origin: bottom"></div>
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 45%; background: linear-gradient(180deg, #1a0f33 0%, #0a0614 100%)"></div>
+
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 54%; height: 22%; background: repeating-linear-gradient(90deg, #1d1236 0px, #1d1236 16px, #251845 16px, #251845 32px); background-position: {{beltShift}} 0; border-top: 2px solid #2de2e6; border-bottom: 2px solid #ff2a6d"></div>
+
+<div aria-hidden="true" style="position: absolute; left: {{gateLeft}}; width: {{gateWidth}}; top: 34%; height: 46%; border: 2px solid #2de2e6; background: #2de2e612; box-shadow: 0 0 12px #2de2e6">
+<span style="position: absolute; left: 0; right: 0; top: {{laserTop}}; height: 2px; background: #2de2e6; box-shadow: 0 0 8px #2de2e6"></span>
+<span style="position: absolute; left: -2px; top: -20px; background: #2de2e6; color: #0a0614; font-size: 10px; padding: 1px 5px; white-space: nowrap">scan zone</span>
+</div>
+
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="5">
+<div style="position: absolute; left: {{c.left}}; top: 65%; width: 0; height: 0">
+<div style="position: absolute; left: -20px; top: -12px; width: 40px; height: 24px">
+<span style="position: absolute; left: 0; top: 0; width: 8px; height: 24px; background: #c4cad2; border: 1px solid #000000"></span>
+<span style="position: absolute; right: 0; top: 0; width: 8px; height: 24px; background: #c4cad2; border: 1px solid #000000"></span>
+<span style="position: absolute; left: 8px; top: 1px; width: 24px; height: 22px; background: #b8875a; border-top: 1px solid #000000; border-bottom: 1px solid #000000"></span>
+<sc-if value="{{c.crack}}" hint-placeholder-val="{{ false }}">
+<span style="position: absolute; left: 14px; top: 3px; width: 2px; height: 20px; background: #2b1a10; transform: rotate(32deg)"></span>
+</sc-if>
+</div>
+<div style="position: absolute; left: -25px; top: -17px; width: 50px; height: 34px; border: 2px solid {{c.box}}; box-shadow: 0 0 8px {{c.box}}"></div>
+<span style="position: absolute; left: -25px; top: -32px; font-size: 10px; line-height: 13px; padding: 0 3px; background: {{c.box}}; color: #0a0614; white-space: nowrap">{{c.label}}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="position: absolute; left: 10px; top: 10px; display: flex; flex-direction: column; gap: 4px; pointer-events: none">
+<div style="display: flex; border: 2px solid #ff2a6d; font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: 16px; line-height: 1">
+<span style="background: #2de2e6; color: #0a0614; padding: 4px 7px">defect-yolo v{{version}}</span>
+<span style="background: #140c26; color: #efeaff; padding: 4px 7px">acc {{acc}}</span>
+</div>
+<span style="align-self: flex-start; background: #140c26; border: 1px solid #4b2d8a; padding: 2px 7px; font-size: 11px">labels {{labels}} · score {{score}} · lives {{lives}}</span>
+<div style="display: flex; align-items: center; gap: 6px; background: #140c26; border: 1px solid #4b2d8a; padding: 3px 7px; font-size: 10px">
+<span>next retrain</span><span style="width: 60px; height: 6px; background: #2a1d4d; position: relative"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: {{retrain}}; background: #ff2a6d"></span></span>
+</div>
+</div>
+
+<div style="position: absolute; right: 10px; bottom: 10px; display: flex; gap: 6px; pointer-events: none; font-size: 11px">
+<span style="background: #ff2a6d; color: #0a0614; padding: 2px 7px">A · defect</span>
+<span style="background: #2de2e6; color: #0a0614; padding: 2px 7px">B · clean</span>
+</div>
+
+<sc-if value="{{attract}}" hint-placeholder-val="{{ true }}">
+<span style="position: absolute; right: 10px; top: 10px; font-size: 11px; background: #140c26; border: 1px solid #4b2d8a; padding: 2px 7px; pointer-events: none">Auto-labelling · human in the loop off</span>
+</sc-if>
+
+<sc-if value="{{flashOn}}" hint-placeholder-val="{{ false }}">
+<div aria-live="polite" style="position: absolute; left: 50%; top: 24%; transform: translate(-50%, -50%); font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: 30px; line-height: 1; text-transform: uppercase; color: {{flashColor}}; text-shadow: 0 0 12px {{flashColor}}; white-space: nowrap; pointer-events: none">{{flashText}}</div>
+</sc-if>
+
+<sc-if value="{{over}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: #0a0614e8; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center">
+<div style="font-size: 12px; color: #b2a8dc">{{overKicker}}</div>
+<div style="font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: 44px; line-height: 1; text-transform: uppercase; color: #2de2e6">v{{version}} · acc {{acc}}</div>
+<div style="font-size: 12px; color: #ff2a6d">{{score}} pts · {{labels}} labels</div>
+<div style="font-size: 11px; color: #b2a8dc">A: new batch · Exit: back to the page</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["attract","play"],"default":"attract"},"pad":{"editor":null},"playKey":{"editor":null},"height":{"editor":"text","default":"360px"},"sound":{"editor":"boolean","default":false},"$preview":{"width":720,"height":360}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.GATE = [58, 72];
+    this.prevPad = {};
+    this.state = { g: this.fresh() };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.tick(), 33);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  componentDidUpdate(prev) {
+    if (prev.playKey !== this.props.playKey || prev.mode !== this.props.mode) {
+      this.prevPad = {};
+      this.setState({ g: this.fresh() });
+    }
+  }
+  fresh() {
+    return { t: 0, phase: 'run', chips: [], nextId: 1, spawn: 20, speed: 0.32, version: 14, acc: 0.7, labels: 0, sinceRetrain: 0, score: 0, streak: 0, lives: 3, flash: { text: 'Batch incoming', t: 40, color: '#2de2e6' } };
+  }
+  audio() {
+    if (!this.ac) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      this.ac = new AC();
+    }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  }
+  tone(type, f0, f1, dur, vol, delay) {
+    if (!this.props.sound) return;
+    const ac = this.audio();
+    if (!ac) return;
+    const t = ac.currentTime + (delay || 0);
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(ac.destination);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  }
+  playing() {
+    return this.props.mode === 'play';
+  }
+  inGate(c) {
+    return c.x >= this.GATE[0] && c.x <= this.GATE[1];
+  }
+  input(g) {
+    if (!this.playing()) {
+      const c = g.chips.find((k) => this.inGate(k) && !k.done && k.x > (this.GATE[0] + this.GATE[1]) / 2);
+      if (!c) return { label: null, again: false };
+      const right = Math.random() < 0.92;
+      return { label: (c.crack === right) ? 'defect' : 'clean', again: false };
+    }
+    const p = this.props.pad || {};
+    const prev = this.prevPad;
+    this.prevPad = { ...p };
+    const defect = (p.a && !prev.a) || (p.left && !prev.left);
+    const clean = (p.b && !prev.b) || (p.right && !prev.right);
+    return { label: defect ? 'defect' : (clean ? 'clean' : null), again: !!p.a && !prev.a };
+  }
+  tick() {
+    const g = this.state.g;
+    const inp = this.input(g);
+    if (g.phase === 'over') {
+      if (this.playing() && inp.again) { this.prevPad = { a: true }; this.setState({ g: this.fresh() }); }
+      else if (!this.playing() && g.t > 150) this.setState({ g: this.fresh() });
+      else this.setState({ g: { ...g, t: g.t + 1 } });
+      return;
+    }
+    this.setState({ g: this.step(g, inp) });
+  }
+  predict(crack, acc) {
+    // the model is right with probability acc; its confidence tracks how sure it is
+    const right = Math.random() < acc;
+    const guess = right ? crack : !crack;
+    const conf = Math.min(0.99, acc + (Math.random() - 0.5) * 0.2);
+    return { guess, conf };
+  }
+  step(g, inp) {
+    let flash = g.flash && g.flash.t > 1 ? { ...g.flash, t: g.flash.t - 1 } : null;
+    let { score, streak, lives, labels, sinceRetrain, version, acc, speed, nextId } = g;
+    let spawn = g.spawn - 1;
+    let chips = g.chips.map((c) => ({ ...c, x: c.x + speed }));
+    if (spawn <= 0) {
+      const crack = Math.random() < 0.4;
+      const p = this.predict(crack, acc);
+      chips = chips.concat([{ id: nextId, x: -6, crack, guess: p.guess, conf: p.conf, done: false, result: null, auto: p.conf > 0.93 }]);
+      nextId += 1;
+      spawn = Math.round(70 / (speed / 0.32));
+    }
+    const good = (c) => {
+      score += 100 + streak * 10;
+      streak += 1;
+      labels += 1;
+      sinceRetrain += 1;
+      this.tone('triangle', 660, 990, 0.08, 0.04);
+    };
+    const bad = (text) => {
+      lives -= 1;
+      streak = 0;
+      flash = { text, t: 26, color: '#ff2a6d' };
+      this.tone('sawtooth', 240, 80, 0.3, 0.05);
+    };
+    if (inp.label) {
+      const c = chips.find((k) => this.inGate(k) && !k.done);
+      if (c) {
+        c.done = true;
+        const correct = (inp.label === 'defect') === c.crack;
+        c.result = correct ? 'ok' : 'wrong';
+        if (correct) good(c); else bad('Mislabelled');
+      }
+    }
+    // chips that leave the gate unlabelled: the model's guess goes through
+    chips.forEach((c) => {
+      if (!c.done && c.x > this.GATE[1]) {
+        c.done = true;
+        const correct = c.guess === c.crack;
+        c.result = correct ? 'auto' : 'wrong';
+        if (correct) { score += 40; } else if (c.crack) { bad('Defect shipped'); } else { score -= 20; }
+      }
+    });
+    chips = chips.filter((c) => c.x < 110);
+    if (sinceRetrain >= 8) {
+      sinceRetrain = 0;
+      version += 1;
+      acc = Math.min(0.97, acc + 0.07);
+      speed = Math.min(0.62, speed + 0.06);
+      flash = { text: 'Retrained · v' + version, t: 40, color: '#2de2e6' };
+      this.tone('triangle', 523, 523, 0.1, 0.04);
+      this.tone('triangle', 659, 659, 0.1, 0.04, 0.1);
+      this.tone('triangle', 784, 784, 0.2, 0.04, 0.2);
+    }
+    const phase = lives <= 0 || version >= 18 ? 'over' : 'run';
+    return { ...g, t: phase === 'over' ? 0 : g.t + 1, phase, chips, spawn, nextId, speed, version, acc, labels, sinceRetrain, score, streak, lives, flash };
+  }
+  renderVals() {
+    const g = this.state.g;
+    const human = this.playing();
+    const chips = g.chips.map((c) => {
+      let box = '#b2a8dc';
+      let label = (c.guess ? 'crack ' : 'clean ') + c.conf.toFixed(2) + '?';
+      if (c.result === 'ok') { box = '#2de2e6'; label = (c.crack ? 'crack' : 'clean') + ' · labelled'; }
+      else if (c.result === 'auto') { box = '#7a4dff'; label = (c.crack ? 'crack ' : 'clean ') + c.conf.toFixed(2); }
+      else if (c.result === 'wrong') { box = '#ff2a6d'; label = c.crack ? 'missed crack' : 'not a crack'; }
+      else if (this.inGate(c)) box = '#ffd400';
+      return { left: c.x.toFixed(2) + '%', crack: c.crack, box, label };
+    });
+    const flash = g.flash;
+    return {
+      height: this.props.height || '360px',
+      gridShift: ((g.t * 2) % 36) + 'px',
+      beltShift: ((g.t * g.speed * 12) % 32).toFixed(0) + 'px',
+      gateLeft: this.GATE[0] - 3 + '%',
+      gateWidth: this.GATE[1] - this.GATE[0] + 6 + '%',
+      laserTop: (50 + Math.sin(g.t / 6) * 45).toFixed(0) + '%',
+      chips,
+      version: g.version,
+      acc: Math.round(g.acc * 100) + '%',
+      labels: g.labels,
+      score: g.score,
+      lives: g.lives,
+      retrain: Math.round((g.sinceRetrain / 8) * 100) + '%',
+      attract: !human,
+      flashOn: !!flash && g.phase !== 'over',
+      flashText: flash ? flash.text : '',
+      flashColor: flash ? flash.color : '#2de2e6',
+      over: g.phase === 'over' && human,
+      overKicker: g.lives > 0 ? 'Model shipped to the line' : 'Too many bad labels',
+    };
+  }
+}
+</script>
+</body>
+</html>

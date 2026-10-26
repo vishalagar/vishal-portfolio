@@ -1,0 +1,362 @@
+.header {
+  border-bottom: 2px solid var(--line);
+  background: var(--bg);
+  transition: background-color 0.4s ease;
+}
+
+.bar {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 16px var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.scorebug {
+  display: flex;
+  align-items: stretch;
+  border: 2px solid var(--line);
+  box-shadow: 5px 5px 0 var(--shadow);
+  font-family: var(--display);
+  font-weight: 700;
+  /* wide world fonts (Orbitron) shrink, but never below 80% */
+  font-size: calc(20px * max(0.8, var(--display-scale)));
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.live {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--live-bg);
+  color: var(--live-ink);
+  font-family: var(--pixel);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.liveDot {
+  width: 8px;
+  height: 8px;
+  background: var(--live-ink);
+  display: inline-block;
+  animation: va-pulse 1.2s steps(1) infinite;
+}
+
+.teams {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  background: var(--surface);
+}
+
+.crest {
+  width: 14px;
+  height: 14px;
+  background: var(--blue);
+  display: inline-block;
+  border: 2px solid var(--ink);
+}
+
+.score {
+  padding: 0 10px;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: calc(18px * max(0.8, var(--display-scale)));
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.nav a {
+  text-decoration: none;
+  padding: 10px 0;
+}
+
+.worlds {
+  max-width: 100%;
+}
+
+.toggles {
+  display: flex;
+  gap: 10px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 2px solid var(--line);
+  box-shadow: 3px 3px 0 var(--shadow);
+  font-family: var(--pixel);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ticker {
+  border-top: 2px solid var(--line);
+  background: var(--accent);
+  color: var(--on-accent);
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: calc(17px * max(0.8, var(--display-scale)));
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tickerTrack {
+  display: inline-flex;
+  animation: va-marquee 38s linear infinite;
+  padding: 6px 0;
+}
+
+.ticker:hover .tickerTrack {
+  animation-play-state: paused;
+}
+
+.tickerItem {
+  padding: 0 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.tickerItem::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--on-accent);
+  display: inline-block;
+}
+
+/* Theme switch: stadium lights warming up (night) or powering down (day). */
+.lights {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blackout {
+  position: absolute;
+  inset: 0;
+  background: #000000;
+  opacity: 0;
+}
+
+.beam {
+  position: absolute;
+  top: -6%;
+  width: 46%;
+  height: 150%;
+  transform-origin: top center;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 246, 206, 0.6),
+    rgba(255, 246, 206, 0) 72%
+  );
+  clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%);
+  opacity: 0;
+}
+
+.beamLeft {
+  left: 0;
+  transform: rotate(-32deg);
+}
+
+.beamRight {
+  right: 0;
+  transform: rotate(32deg);
+}
+
+.on .blackout {
+  animation: va-lights-on 1.3s linear forwards;
+}
+
+.on .beam {
+  animation: va-beam-on 1.3s ease-out forwards;
+}
+
+.off .blackout {
+  animation: va-lights-off 1.3s linear forwards;
+}
+
+.off .beam {
+  opacity: 1;
+  animation: va-beam-off 1.3s linear forwards;
+}
+
+@keyframes va-lights-on {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.88;
+  }
+  14% {
+    opacity: 0.3;
+  }
+  22% {
+    opacity: 0.92;
+  }
+  42% {
+    opacity: 0.94;
+  }
+  48% {
+    opacity: 0.12;
+  }
+  54% {
+    opacity: 0.6;
+  }
+  62% {
+    opacity: 0.04;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes va-lights-off {
+  0% {
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.96;
+  }
+  28% {
+    opacity: 0.6;
+  }
+  34% {
+    opacity: 0.96;
+  }
+  70% {
+    opacity: 0.96;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes va-beam-on {
+  0%,
+  46% {
+    opacity: 0;
+  }
+  56% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes va-beam-off {
+  0% {
+    opacity: 1;
+  }
+  12% {
+    opacity: 0.2;
+  }
+  18% {
+    opacity: 0.8;
+  }
+  30% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Phone: scorebug + icon toggles on one row, world dots on the next, nav as one scrollable row. */
+@media (max-width: 720px) {
+  .bar {
+    gap: 10px 12px;
+    padding-top: 12px;
+    padding-bottom: 10px;
+  }
+  .worlds {
+    order: 2;
+  }
+  .nav {
+    order: 3;
+    width: 100%;
+    flex-wrap: nowrap;
+    gap: 0 18px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    font-family: var(--pixel);
+    font-weight: 400;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+  .nav a {
+    flex: none;
+    padding: 12px 0;
+  }
+  .toggle {
+    width: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+  /* label text stays in the accessible name, only hidden visually */
+  .toggleText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 420px) {
+  .scorebug {
+    font-size: calc(17px * max(0.8, var(--display-scale)));
+  }
+  .teams {
+    gap: 8px;
+    padding: 6px 10px;
+  }
+}
+
+/* Local copies: CSS Modules scope animation names, so global keyframes are not reachable from here. */
+@keyframes va-pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes va-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

@@ -1,0 +1,123 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lights {
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #0e0e12;
+  border: 2px solid #000;
+}
+
+.light {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e10600;
+}
+
+.order {
+  font-family: var(--pixel);
+  font-size: 12px;
+  color: #fff;
+  background: #0e0e12;
+  padding: 4px 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 28px;
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 0 34px;
+  list-style: none;
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 10px 12px;
+  border: 3px solid #fff;
+  border-right-color: transparent;
+  color: #fff;
+}
+
+.back {
+  margin-top: 34px;
+}
+
+.pos {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 26px;
+  line-height: 1;
+  min-width: 42px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.car {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: #d6d6dc;
+}
+
+.name {
+  background: var(--shirt-bg);
+  color: var(--shirt-ink);
+  padding: 2px 8px;
+  font-weight: 700;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+/* Lights come on one by one, then go out together. Reduced motion: all five stay lit. */
+@media (prefers-reduced-motion: no-preference) {
+  .light {
+    animation: lights 4s steps(1) infinite both;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    gap: 12px 14px;
+  }
+  .slot {
+    gap: 6px;
+    padding: 8px;
+  }
+  .pos {
+    font-size: 20px;
+    min-width: 34px;
+  }
+  .name {
+    font-size: 13px;
+    padding: 2px 6px;
+  }
+}
+
+@keyframes lights {
+  0% { background: #3a0a08; }
+  10%, 80% { background: #e10600; }
+  90%, 100% { background: #3a0a08; }
+}

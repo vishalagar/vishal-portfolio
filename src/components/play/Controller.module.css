@@ -1,0 +1,245 @@
+/* Handheld controller (phone play mode). Colours come from the world's --shell-* variables. */
+.controller {
+  --arm: clamp(44px, 8dvh, 54px);
+  --round: clamp(52px, 9dvh, 62px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  height: 100%;
+  padding: 12px 18px 18px;
+  background: var(--shell-body);
+  color: var(--shell-ink);
+  /* no scrolling, double-tap zoom, long-press menus or text selection anywhere on the pad */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.controller button {
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  cursor: pointer;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 44px;
+}
+
+.brand {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.shoulder {
+  min-width: 96px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 20px 20px 8px 8px;
+  background: var(--shell-btn);
+  color: var(--shell-btn-ink);
+  border: 2px solid #000000;
+  font-family: var(--pixel);
+  font-size: 11px;
+}
+
+.middle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ---------- d-pad: a 3 × 3 cross, one touch surface ---------- */
+.dpad {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, var(--arm));
+  grid-template-rows: repeat(3, var(--arm));
+  flex: none;
+  touch-action: none;
+}
+
+.arm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background: var(--shell-dpad);
+  color: #ffffff;
+}
+
+.up {
+  grid-area: 1 / 2;
+  border-radius: 6px 6px 0 0;
+}
+
+.left {
+  grid-area: 2 / 1;
+  border-radius: 6px 0 0 6px;
+}
+
+.right {
+  grid-area: 2 / 3;
+  border-radius: 0 6px 6px 0;
+}
+
+.down {
+  grid-area: 3 / 2;
+  border-radius: 0 0 6px 6px;
+}
+
+.hub {
+  grid-area: 2 / 2;
+  background: var(--shell-dpad);
+  pointer-events: none;
+}
+
+/* ---------- A / B, tilted like a handheld ---------- */
+.face {
+  position: relative;
+  flex: none;
+  width: calc(var(--round) * 2.4);
+  height: calc(var(--round) * 2.1);
+  transform: rotate(-22deg);
+}
+
+.faceBtn {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.aPos {
+  right: 0;
+  top: 0;
+}
+
+.bPos {
+  left: 0;
+  top: calc(var(--round) * 0.74);
+}
+
+.round {
+  width: var(--round);
+  height: var(--round);
+  border-radius: 50%;
+  background: var(--shell-btn);
+  color: var(--shell-btn-ink);
+  border: 2px solid #000000;
+  box-shadow: 0 4px 0 #000000;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.faceLabel {
+  font-family: var(--pixel);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* pressed state from the pad itself: iOS only applies :active with a touch listener */
+.arm[data-on],
+.shoulder[data-on],
+.round[data-on] {
+  filter: brightness(1.3);
+}
+
+.round[data-on] {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #000000;
+}
+
+/* ---------- Select / Start ---------- */
+.pills {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+}
+
+.pillWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* the button is a full 44 px target; the pill drawn inside it is slimmer */
+.pill {
+  min-width: 76px;
+  min-height: 44px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+}
+
+.pillFace {
+  display: block;
+  min-width: 76px;
+  padding: 6px 10px;
+  border-radius: 15px;
+  background: var(--shell-pill);
+  color: var(--shell-btn-ink);
+  border: 2px solid #000000;
+  font-family: var(--pixel);
+  font-size: 10px;
+}
+
+.pill:focus-visible {
+  outline: 3px solid var(--shell-btn);
+  outline-offset: 0;
+}
+
+.pillLabel {
+  font-family: var(--pixel);
+  font-size: 9px;
+}
+
+.grille {
+  position: absolute;
+  right: 22px;
+  bottom: 16px;
+  display: flex;
+  gap: 5px;
+  transform: rotate(-22deg);
+  pointer-events: none;
+}
+
+.grille span {
+  width: 5px;
+  height: 34px;
+  border-radius: 3px;
+  background: var(--shell-grille);
+}
+
+/* phone on its side: the controller is a column beside the screen */
+@media (orientation: landscape) and (max-height: 520px) {
+  .controller {
+    --arm: 44px;
+    --round: 52px;
+    padding: 8px 14px 10px;
+    gap: 6px;
+  }
+  .brand {
+    font-size: 15px;
+  }
+  .grille {
+    display: none;
+  }
+}

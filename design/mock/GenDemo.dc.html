@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Image generation demo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&amp;family=Barlow:wght@500;600&amp;family=Barlow+Condensed:wght@800&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 100%; height: 220px; overflow: hidden; box-sizing: border-box; padding: 12px; display: flex; gap: 14px; background: #14101c; color: #ece8f4; font-family: 'Barlow', system-ui, sans-serif">
+<div role="img" aria-label="{{imgLabel}}" style="flex: none; width: 196px; height: 196px; display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); grid-template-rows: repeat(16, minmax(0, 1fr)); border: 2px solid #ece8f4; box-shadow: 4px 4px 0 #000000">
+<sc-for list="{{cells}}" as="cell" hint-placeholder-count="256">
+<div style="background: {{cell.bg}}"></div>
+</sc-for>
+</div>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding-top: 30px">
+<div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: #b7aecb">{{stepText}}</div>
+<div style="height: 8px; border: 2px solid #ece8f4; position: relative"><div style="position: absolute; left: 0; top: 0; bottom: 0; width: {{progress}}; background: {{accent}}"></div></div>
+<div style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 22px; line-height: 1; text-transform: uppercase">{{title}}</div>
+<div style="font-size: 12px; line-height: 1.35; color: #b7aecb">Real defects are rare. The platform makes labelled synthetic ones to train on.</div>
+<button type="button" onClick="{{generate}}" style="align-self: flex-start; margin-top: auto; min-height: 44px; padding: 0 12px; background: {{accent}}; color: #0b1610; border: 2px solid #0b1610; box-shadow: 3px 3px 0 #000000; font-family: 'Silkscreen', monospace; font-size: 11px; cursor: pointer">Generate</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#f5d547"},"sound":{"editor":"boolean","default":false},"$preview":{"width":360,"height":220}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.T = 20;
+    this.pal = {
+      B: [29, 38, 48], D: [20, 26, 33], t: [227, 231, 236], T: [196, 202, 210], s: [142, 149, 159],
+      L: [210, 164, 115], C: [184, 135, 90], c: [148, 102, 64], K: [43, 26, 16]
+    };
+    const crack = [
+      'BBBBBBBBBBBBBBBB', 'BBBBBBBBBBBBBBBB', 'BBBBBBBBBBBBBBBB', 'BBBBBBBBBBBBBBBB',
+      'BtttLLLLLLLLtttB', 'BTTTCCCCCCCKTTTB', 'BTTTCCCCCCKCTTTB', 'BTTTCCCCCKKCTTTB',
+      'BTTTCCCCKCCCTTTB', 'BTTTCCCKKCCCTTTB', 'BTTTccKcccccTTTB', 'BsssccccccccsssB',
+      'BDDDDDDDDDDDDDDB', 'BBBBBBBBBBBBBBBB', 'BBBBBBBBBBBBBBBB', 'BBBBBBBBBBBBBBBB'
+    ];
+    const clean = crack.map((row, y) => row.replace(/K/g, y >= 10 ? 'c' : 'C'));
+    this.targets = [
+      { rows: crack, title: 'MLCC chip · crack', label: 'a ceramic chip capacitor with a diagonal crack' },
+      { rows: clean, title: 'MLCC chip · clean', label: 'a clean ceramic chip capacitor' }
+    ];
+    this.state = { t: this.T, seed: 1, cls: 0, hold: 0 };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.step(), 90);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  audio() {
+    if (!this.ac) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      this.ac = new AC();
+    }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  }
+  tone(f, dur, vol, delay) {
+    if (!this.props.sound) return;
+    const ac = this.audio();
+    if (!ac) return;
+    const t = ac.currentTime + (delay || 0);
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.type = 'triangle';
+    o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(ac.destination);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  }
+  next() {
+    this.setState({ t: this.T, seed: this.state.seed + 1, cls: (this.state.cls + 1) % this.targets.length, hold: 0 });
+  }
+  step() {
+    const st = this.state;
+    if (st.t > 0) {
+      if (st.t === 1) { this.tone(784, 0.15, 0.04, 0); this.tone(1046, 0.2, 0.04, 0.08); }
+      this.setState({ t: st.t - 1 });
+    } else if (st.hold >= 22) {
+      this.next();
+    } else {
+      this.setState({ hold: st.hold + 1 });
+    }
+  }
+  rand(n) {
+    n = Math.imul(n ^ (n >>> 16), 2246822507);
+    n = Math.imul(n ^ (n >>> 13), 3266489909);
+    return ((n ^ (n >>> 16)) >>> 0) / 4294967296;
+  }
+  renderVals() {
+    const st = this.state;
+    const accent = this.props.accent ?? '#f5d547';
+    const target = this.targets[st.cls];
+    const w = Math.pow(st.t / this.T, 1.3);
+    const cells = [];
+    for (let y = 0; y < 16; y++) {
+      for (let x = 0; x < 16; x++) {
+        const base = this.pal[target.rows[y][x]];
+        const i = y * 16 + x;
+        const k = st.seed * 100003 + st.t * 7919 + i * 131;
+        const n = [this.rand(k) * 255, this.rand(k + 1) * 255, this.rand(k + 2) * 255];
+        const rgb = base.map((v, j) => Math.round(v * (1 - w) + n[j] * w));
+        cells.push({ bg: 'rgb(' + rgb.join(',') + ')' });
+      }
+    }
+    const done = st.t === 0;
+    return {
+      accent,
+      cells,
+      stepText: done ? 'Sample #' + st.seed + ' · done' : 'Denoising step ' + (this.T - st.t) + '/' + this.T,
+      progress: Math.round((1 - st.t / this.T) * 100) + '%',
+      title: done ? target.title : 'From pure noise…',
+      imgLabel: done ? 'Generated pixel image of ' + target.label : 'Noise gradually resolving into an image',
+      generate: () => {
+        this.tone(523, 0.08, 0.04, 0);
+        this.next();
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

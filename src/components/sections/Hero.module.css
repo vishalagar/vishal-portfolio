@@ -1,0 +1,412 @@
+.hero {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 64px var(--gutter) 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  align-items: center;
+  /* the pitch zooms as you scroll past; keep it from widening the page */
+  overflow-x: clip;
+}
+
+.text {
+  flex: 1 1 400px;
+  min-width: 0;
+}
+
+.textInner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: va-in 0.6s ease-out both;
+}
+
+.kicker {
+  font-family: var(--pixel);
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+.title {
+  font-size: calc(clamp(52px, 7vw, 100px) * var(--display-scale));
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+}
+
+.titleAccent {
+  display: block;
+  color: var(--accent-text);
+}
+
+.intro {
+  margin: 0;
+  max-width: 480px;
+  color: var(--muted);
+  font-size: 19px;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.pitchCol {
+  flex: 1 1 480px;
+  min-width: 0;
+  transform-origin: center top;
+}
+
+.pitch {
+  --sprite-w: 288px;
+  --sprite-h: 336px;
+  --ball-x: 168px;
+  position: relative;
+  height: 460px;
+  overflow: hidden;
+  border: 2px solid var(--line);
+  box-shadow: 8px 8px 0 var(--shadow);
+  background: var(--stage-bg);
+}
+
+.halfway {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--chalk);
+}
+
+.circle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 180px;
+  height: 180px;
+  margin: -92px 0 0 -92px;
+  border: 2px solid var(--chalk);
+  border-radius: 50%;
+}
+
+.cam {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  font-family: var(--pixel);
+  font-size: 12px;
+  color: var(--fixed-light);
+  background: var(--fixed-dark);
+  padding: 4px 8px;
+}
+
+.player {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+.bob {
+  animation: va-bob 0.9s steps(1) infinite;
+}
+
+.ball {
+  position: absolute;
+  left: calc(50% + var(--ball-x));
+  bottom: 22px;
+  width: 48px;
+  height: 48px;
+  padding: 4px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  animation: va-dribble 1.2s steps(4) infinite;
+}
+
+.kicking {
+  animation: va-kick 0.8s ease-out;
+}
+
+.detect {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: calc(var(--sprite-w) + 8px);
+  height: calc(var(--sprite-h) + 16px);
+  transform: translateX(calc(-50% - 2px));
+  border: 2px solid var(--accent);
+  pointer-events: none;
+}
+
+.detectLabel {
+  position: absolute;
+  left: -2px;
+  top: -26px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--pixel);
+  font-size: 12px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+.scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent);
+  opacity: 0.55;
+  animation: va-scan 2.4s linear infinite alternate;
+}
+
+.varToggle {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  min-height: 44px;
+  padding: 0 14px;
+  background: var(--fixed-dark);
+  color: var(--fixed-light);
+  border: 2px solid var(--fixed-light);
+  font-family: var(--pixel);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.hint {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+/* per-world stage dressing */
+.kerb {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22px;
+  background: repeating-linear-gradient(90deg, #ffffff 0px, #ffffff 28px, #c8102e 28px, #c8102e 56px);
+  border-top: 2px solid #160003;
+}
+
+.laneDash {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 40%;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, #ffffff 0px, #ffffff 40px, transparent 40px, transparent 80px);
+  opacity: 0.5;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 3px);
+}
+
+.track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46%;
+  background: repeating-linear-gradient(0deg, #1747a6 0px, #1747a6 34px, #ffffff 34px, #ffffff 37px);
+}
+
+.finishPost {
+  position: absolute;
+  left: 12%;
+  bottom: 0;
+  width: 8px;
+  height: 46%;
+  background: #d8ff3a;
+}
+
+/* "Scroll · helmet off" tag */
+.offHint {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  max-width: calc(100% - 28px);
+  font-family: var(--pixel);
+  font-size: 12px;
+  color: var(--on-accent);
+  background: var(--accent);
+  padding: 4px 8px;
+}
+
+/* review extras */
+.gpBanner {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 48px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  font-family: var(--pixel);
+  font-size: 11px;
+  animation: va-flag 1s steps(1) infinite;
+}
+.gpFlag {
+  background: #ffd400;
+  color: #160003;
+  padding: 4px 8px;
+  border: 2px solid #160003;
+}
+.gpNote {
+  background: #160003;
+  color: #ffffff;
+  padding: 4px 8px;
+  border: 2px solid #160003;
+}
+
+.runStrip {
+  position: absolute;
+  right: 14px;
+  top: 44px;
+  max-width: calc(100% - 28px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  border: 2px solid #0b2a6b;
+  font-family: var(--pixel);
+  font-size: 11px;
+}
+.runKm {
+  background: #d8ff3a;
+  color: #0b2a6b;
+  padding: 4px 8px;
+}
+.runPace {
+  background: #0b2a6b;
+  color: #ffffff;
+  padding: 4px 8px;
+}
+
+.aiStrip {
+  position: absolute;
+  right: 14px;
+  top: 44px;
+  max-width: calc(100% - 28px);
+  font-family: var(--pixel);
+  font-size: 12px;
+  background: #0a0614;
+  color: #2de2e6;
+  border: 2px solid #ff2a6d;
+  padding: 4px 8px;
+}
+
+/* gaming aim-assist reticle inside the detection box */
+.reticle {
+  position: absolute;
+  left: 50%;
+  top: 32%;
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
+  border: 3px solid var(--accent);
+  border-radius: 50%;
+  animation: va-reticle 1.2s ease-in-out infinite;
+}
+.reticleH {
+  position: absolute;
+  left: 50%;
+  top: 32%;
+  width: 120px;
+  height: 3px;
+  margin: -1px 0 0 -60px;
+  background: var(--accent);
+}
+.reticleV {
+  position: absolute;
+  left: 50%;
+  top: 32%;
+  width: 3px;
+  height: 120px;
+  margin: -60px 0 0 -1px;
+  background: var(--accent);
+}
+
+@keyframes va-dribble {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-10px, -8px); }
+  50% { transform: translate(-20px, 0); }
+  75% { transform: translate(-10px, -8px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes va-kick {
+  0% { transform: translate(0, 0); }
+  40% { transform: translate(160px, -150px); }
+  70% { transform: translate(260px, -40px); }
+  100% { transform: translate(0, 0); }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding-top: 40px;
+    gap: 36px;
+  }
+  .pitchCol {
+    flex-basis: 100%;
+  }
+  .pitch {
+    --sprite-w: 192px;
+    --sprite-h: 224px;
+    --ball-x: 104px;
+    height: 360px;
+  }
+  .ball {
+    left: calc(50% + var(--ball-x) - 24px);
+  }
+  .offHint,
+  .aiStrip,
+  .runStrip,
+  .gpBanner {
+    font-size: 10px;
+  }
+  .reticle {
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+  }
+  .reticleH {
+    width: 84px;
+    margin-left: -42px;
+  }
+  .reticleV {
+    height: 84px;
+    margin-top: -42px;
+  }
+}
+
+/* Local copies: CSS Modules scope animation names, so global keyframes are not reachable from here. */
+@keyframes va-in {
+  0% { opacity: 0; transform: translateY(14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes va-bob {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes va-scan {
+  0% { top: 0; }
+  100% { top: calc(100% - 3px); }
+}
+@keyframes va-flag {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+@keyframes va-reticle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}

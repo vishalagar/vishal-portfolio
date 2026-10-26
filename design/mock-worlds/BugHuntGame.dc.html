@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bug Hunt mini-game</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&amp;family=Orbitron:wght@700;900&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 100%; height: {{height}}; overflow: hidden; background: #0d0e14; font-family: 'Silkscreen', monospace; color: #e8ecff; user-select: none; display: flex; justify-content: center">
+
+<div style="position: relative; height: 100%; aspect-ratio: 3 / 4; max-width: 100%; overflow: hidden; background: radial-gradient(ellipse at center, #1a2140 0%, #0b0d18 75%); border-left: 2px solid #2a2f45; border-right: 2px solid #2a2f45">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0px, rgba(255,255,255,.04) 1px, transparent 1px, transparent 3px); pointer-events: none; z-index: 3"></div>
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<sc-for list="{{stars}}" as="st" hint-placeholder-count="24">
+<span style="position: absolute; left: {{st.left}}; top: {{st.top}}; width: 2px; height: 2px; background: {{st.bg}}"></span>
+</sc-for>
+
+<sc-for list="{{bugs}}" as="b" hint-placeholder-count="12">
+<div style="position: absolute; left: {{b.left}}; top: {{b.top}}; width: 0; height: 0">
+<div style="position: absolute; left: -9px; top: -8px; width: 18px; height: 16px">
+<span style="position: absolute; left: 4px; top: 0; width: 10px; height: 4px; background: {{b.head}}"></span>
+<span style="position: absolute; left: 2px; top: 4px; width: 14px; height: 9px; background: {{b.body}}; border: 1px solid #000000"></span>
+<span style="position: absolute; left: 8px; top: 4px; width: 2px; height: 9px; background: #000000"></span>
+<span style="position: absolute; left: 0; top: {{b.legY}}; width: 18px; height: 2px; background: {{b.body}}"></span>
+<span style="position: absolute; left: 5px; top: 2px; width: 2px; height: 2px; background: #ffffff"></span>
+<span style="position: absolute; left: 11px; top: 2px; width: 2px; height: 2px; background: #ffffff"></span>
+</div>
+<div style="position: absolute; left: -13px; top: -12px; width: 26px; height: 24px; border: 2px solid {{b.box}}"></div>
+<span style="position: absolute; left: -13px; top: -25px; font-size: 8px; line-height: 11px; padding: 0 2px; background: {{b.box}}; color: #0b0d18; white-space: nowrap">{{b.label}}</span>
+</div>
+</sc-for>
+
+<sc-for list="{{shots}}" as="s" hint-placeholder-count="4">
+<span style="position: absolute; left: {{s.left}}; top: {{s.top}}; width: 3px; height: 10px; margin-left: -1px; background: #7ef9ff; box-shadow: 0 0 6px #7ef9ff"></span>
+</sc-for>
+<sc-for list="{{spit}}" as="s" hint-placeholder-count="3">
+<span style="position: absolute; left: {{s.left}}; top: {{s.top}}; width: 4px; height: 4px; margin-left: -2px; background: #ff4fd8"></span>
+</sc-for>
+
+<div style="position: absolute; left: {{shipLeft}}; top: 90%; width: 0; height: 0; opacity: {{shipOpacity}}">
+<div style="position: absolute; left: -12px; top: -10px; width: 24px; height: 20px">
+<span style="position: absolute; left: 10px; top: 0; width: 4px; height: 6px; background: #e8ecff"></span>
+<span style="position: absolute; left: 4px; top: 6px; width: 16px; height: 8px; background: #3d6bff; border: 1px solid #000000"></span>
+<span style="position: absolute; left: 0; top: 10px; width: 24px; height: 6px; background: #9aa3c7; border: 1px solid #000000"></span>
+<span style="position: absolute; left: 9px; top: 16px; width: 6px; height: 4px; background: #ff9f1c"></span>
+</div>
+<div style="position: absolute; left: -16px; top: -14px; width: 32px; height: 28px; border: 3px solid #ffd400"></div>
+<span style="position: absolute; left: -16px; top: -28px; font-size: 8px; line-height: 11px; padding: 0 2px; background: #ffd400; color: #0b0d18; white-space: nowrap">{{shipLabel}}</span>
+</div>
+
+<sc-if value="{{bombFlash}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: #7ef9ff55"></div>
+</sc-if>
+</div>
+</div>
+
+<div style="position: absolute; left: 10px; top: 10px; display: flex; flex-direction: column; gap: 4px; pointer-events: none">
+<div style="display: flex; border: 2px solid #000000; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 15px; line-height: 1">
+<span style="background: #3d6bff; color: #ffffff; padding: 4px 7px">1P</span>
+<span style="background: #e8ecff; color: #0b0d18; padding: 4px 7px">{{score}}</span>
+</div>
+<span style="align-self: flex-start; background: #000000; padding: 2px 6px; font-size: 10px">Wave {{wave}}/3 · bugs left {{left}}</span>
+<span style="align-self: flex-start; background: #000000; padding: 2px 6px; font-size: 10px">Lives {{lives}} · Debugger {{bombs}}</span>
+</div>
+
+<sc-if value="{{attract}}" hint-placeholder-val="{{ true }}">
+<span style="position: absolute; right: 10px; top: 10px; font-size: 10px; background: #000000; padding: 2px 7px; pointer-events: none">Demo · tracking every bug</span>
+</sc-if>
+
+<sc-if value="{{flashOn}}" hint-placeholder-val="{{ false }}">
+<div aria-live="polite" style="position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%); font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 32px; line-height: 1; text-transform: uppercase; color: #ffffff; text-shadow: 3px 3px 0 #3d6bff; white-space: nowrap; pointer-events: none">{{flashText}}</div>
+</sc-if>
+
+<sc-if value="{{over}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: #0b0d18e6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center">
+<div style="font-size: 12px; color: #9aa3c7">{{overKicker}}</div>
+<div style="font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 40px; line-height: 1; text-transform: uppercase">{{score}} pts</div>
+<div style="font-size: 12px; color: #7ef9ff">{{verdict}}</div>
+<div style="font-size: 10px; color: #c8cde6">A: continue? · Exit: back to the page</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["attract","play"],"default":"attract"},"pad":{"editor":null},"playKey":{"editor":null},"height":{"editor":"text","default":"360px"},"sound":{"editor":"boolean","default":false},"$preview":{"width":720,"height":360}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.prevPad = {};
+    this.stars = Array.from({ length: 24 }, (_, i) => ({ x: (i * 37) % 100, y: (i * 53) % 100, b: i % 3 }));
+    this.state = { g: this.fresh() };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.tick(), 33);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  componentDidUpdate(prev) {
+    if (prev.playKey !== this.props.playKey || prev.mode !== this.props.mode) {
+      this.prevPad = {};
+      this.setState({ g: this.fresh() });
+    }
+  }
+  wave(n) {
+    const rows = 2 + n;
+    const bugs = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < 5; c++) {
+        bugs.push({ id: n * 100 + r * 10 + c, hx: 18 + c * 16, hy: 12 + r * 9, x: 18 + c * 16, y: -10 - r * 9, dive: 0, kind: (r + c) % 3 });
+      }
+    }
+    return bugs;
+  }
+  fresh() {
+    return { phase: 'play', t: 0, x: 50, shots: [], spit: [], bugs: this.wave(1), wave: 1, score: 0, lives: 3, bombs: 1, cool: 0, hurt: 0, flash: { text: 'Wave 1', t: 40 }, bomb: 0 };
+  }
+  audio() {
+    if (!this.ac) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      this.ac = new AC();
+    }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  }
+  tone(type, f0, f1, dur, vol, delay) {
+    if (!this.props.sound) return;
+    const ac = this.audio();
+    if (!ac) return;
+    const t = ac.currentTime + (delay || 0);
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(ac.destination);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  }
+  playing() {
+    return this.props.mode === 'play';
+  }
+  input(g) {
+    if (!this.playing()) {
+      const visible = g.bugs.filter((b) => b.y > 2);
+      const target = visible.length ? visible.reduce((a, b) => (b.y > a.y ? b : a)) : null;
+      const danger = g.spit.find((s) => s.y > 70 && Math.abs(s.x - g.x) < 6);
+      let mx = target ? Math.sign(target.x - g.x) * (Math.abs(target.x - g.x) > 2 ? 1 : 0) : 0;
+      if (danger) mx = danger.x > g.x ? -1 : 1;
+      return { mx, fire: true, bomb: g.bugs.filter((b) => b.y > 70).length > 2, again: false };
+    }
+    const p = this.props.pad || {};
+    const prev = this.prevPad;
+    this.prevPad = { ...p };
+    return { mx: (p.right ? 1 : 0) - (p.left ? 1 : 0), fire: !!p.a, bomb: !!p.b && !prev.b, again: !!p.a && !prev.a };
+  }
+  tick() {
+    const g = this.state.g;
+    const inp = this.input(g);
+    if (g.phase === 'over') {
+      if (this.playing() && inp.again) { this.prevPad = { a: true }; this.setState({ g: this.fresh() }); }
+      else if (!this.playing() && g.t > 120) this.setState({ g: this.fresh() });
+      else this.setState({ g: { ...g, t: g.t + 1 } });
+      return;
+    }
+    this.setState({ g: this.step(g, inp) });
+  }
+  step(g, inp) {
+    const t = g.t + 1;
+    let flash = g.flash && g.flash.t > 1 ? { ...g.flash, t: g.flash.t - 1 } : null;
+    const x = Math.max(6, Math.min(94, g.x + inp.mx * 1.6));
+    let shots = g.shots.map((s) => ({ ...s, y: s.y - 3.2 })).filter((s) => s.y > -4);
+    let cool = Math.max(0, g.cool - 1);
+    if (inp.fire && cool === 0 && shots.length < 4) {
+      shots = shots.concat([{ x, y: 86 }]);
+      cool = 7;
+      this.tone('square', 900, 500, 0.05, 0.025);
+    }
+    let bombs = g.bombs;
+    let bomb = Math.max(0, g.bomb - 1);
+    let score = g.score;
+    // formation sways, then individual bugs dive
+    const sway = Math.sin(t / 40) * 8;
+    let bugs = g.bugs.map((b) => {
+      const n = { ...b };
+      if (n.dive > 0) {
+        n.dive += 1;
+        n.y += 0.7 + g.wave * 0.15;
+        n.x += Math.sin(n.dive / 9) * 1.1;
+      } else {
+        n.x += (n.hx + sway - n.x) * 0.1;
+        n.y += (n.hy - n.y) * 0.06;
+        if (Math.random() < 0.0016 * g.wave) n.dive = 1;
+      }
+      return n;
+    });
+    if (inp.bomb && bombs > 0) {
+      const low = bugs.filter((b) => b.y > 45);
+      if (low.length) {
+        bombs -= 1;
+        bomb = 6;
+        score += low.length * 50;
+        bugs = bugs.filter((b) => b.y <= 45);
+        flash = { text: 'Debugged', t: 30 };
+        this.tone('sawtooth', 120, 1200, 0.5, 0.05);
+      }
+    }
+    // hits
+    const dead = new Set();
+    shots = shots.filter((s) => {
+      const hit = bugs.find((b) => !dead.has(b.id) && Math.abs(b.x - s.x) < 5 && Math.abs(b.y - s.y) < 4);
+      if (hit) { dead.add(hit.id); score += hit.dive ? 150 : 100; this.tone('square', 300, 80, 0.08, 0.04); }
+      return !hit;
+    });
+    bugs = bugs.filter((b) => !dead.has(b.id));
+    let spit = g.spit.map((s) => ({ ...s, y: s.y + 1.4 })).filter((s) => s.y < 104);
+    bugs.forEach((b) => { if (Math.random() < 0.002 * g.wave) spit = spit.concat([{ x: b.x, y: b.y + 3 }]); });
+    let lives = g.lives;
+    let hurt = Math.max(0, g.hurt - 1);
+    const hitMe = hurt === 0 && (spit.some((s) => Math.abs(s.x - x) < 4 && Math.abs(s.y - 90) < 4) || bugs.some((b) => Math.abs(b.x - x) < 6 && Math.abs(b.y - 90) < 5));
+    if (hitMe) {
+      lives -= 1;
+      hurt = 60;
+      spit = spit.filter((s) => s.y < 80);
+      flash = { text: lives > 0 ? 'Bug in prod' : 'Crash', t: 30 };
+      this.tone('sawtooth', 220, 60, 0.4, 0.05);
+    }
+    bugs = bugs.map((b) => (b.y > 104 ? { ...b, y: -8, dive: 0 } : b));
+    let wave = g.wave;
+    let phase = g.phase;
+    if (lives <= 0) {
+      phase = 'over';
+    } else if (bugs.length === 0) {
+      if (wave >= 3) {
+        phase = 'over';
+        score += lives * 500;
+      } else {
+        wave += 1;
+        bugs = this.wave(wave);
+        flash = { text: 'Wave ' + wave, t: 40 };
+        this.tone('triangle', 523, 784, 0.25, 0.04);
+      }
+    }
+    return { ...g, t: phase === 'over' ? 0 : t, phase, x, shots, spit, bugs, wave, score, lives, bombs, cool, hurt, flash, bomb };
+  }
+  renderVals() {
+    const g = this.state.g;
+    const human = this.playing();
+    const palette = [['#7cff6b', '#2f9e44'], ['#ffd43b', '#e8590c'], ['#ff6bd6', '#9c36b5']];
+    return {
+      height: this.props.height || '360px',
+      stars: this.stars.map((s) => ({ left: s.x + '%', top: ((s.y + g.t * (0.2 + s.b * 0.15)) % 100).toFixed(1) + '%', bg: s.b ? '#5a6390' : '#9aa3c7' })),
+      bugs: g.bugs.map((b) => ({
+        left: b.x.toFixed(2) + '%', top: b.y.toFixed(2) + '%',
+        head: palette[b.kind][0], body: palette[b.kind][1],
+        legY: (g.t >> 3) % 2 ? '8px' : '10px',
+        box: b.dive ? '#ff4fd8' : '#7ef9ff',
+        label: (b.dive ? 'diving ' : 'bug ') + '0.9' + (b.id % 10)
+      })),
+      shots: g.shots.map((s) => ({ left: s.x.toFixed(2) + '%', top: s.y.toFixed(2) + '%' })),
+      spit: g.spit.map((s) => ({ left: s.x.toFixed(2) + '%', top: s.y.toFixed(2) + '%' })),
+      shipLeft: g.x.toFixed(2) + '%',
+      shipOpacity: g.hurt && (g.hurt >> 2) % 2 ? 0.3 : 1,
+      shipLabel: human ? 'you · 1P' : 'VA · 1P',
+      bombFlash: g.bomb > 0,
+      score: g.score,
+      wave: g.wave,
+      left: g.bugs.length,
+      lives: g.lives,
+      bombs: g.bombs,
+      attract: !human,
+      flashOn: !!g.flash && g.phase !== 'over',
+      flashText: g.flash ? g.flash.text : '',
+      over: g.phase === 'over' && human,
+      overKicker: g.lives > 0 ? 'All waves cleared' : 'Game over',
+      verdict: g.lives > 0 ? 'Zero bugs. Ship it.' : 'The bugs won this one. Insert coin.'
+    };
+  }
+}
+</script>
+</body>
+</html>

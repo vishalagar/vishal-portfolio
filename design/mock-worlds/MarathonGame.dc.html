@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PaceCoach pace run</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&amp;family=Anton&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 100%; height: {{height}}; overflow: hidden; background: linear-gradient(180deg, #7fb4ff 0%, #bcd8ff 45%, #bcd8ff 46%); font-family: 'Silkscreen', monospace; color: #ffffff; user-select: none">
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 12%; height: 34%; pointer-events: none">
+<sc-for list="{{skyline}}" as="b" hint-placeholder-count="12">
+<span style="position: absolute; left: {{b.left}}; bottom: 0; width: {{b.width}}; height: {{b.height}}; background: #3a6fd8; border: 2px solid #1d4fbf; border-bottom: 0"></span>
+</sc-for>
+</div>
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 46%; height: 8%; background: repeating-linear-gradient(90deg, #f2f2f2 0px, #f2f2f2 14px, #1d4fbf 14px, #1d4fbf 28px); background-position: {{barrierShift}} 0; border-top: 2px solid #0b2a6b; border-bottom: 2px solid #0b2a6b"></div>
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 54%; bottom: 0; background: #4b4f5c">
+<div style="position: absolute; left: 0; right: 0; top: 33%; height: 2px; background: repeating-linear-gradient(90deg, #ffffff 0px, #ffffff 18px, transparent 18px, transparent 36px); background-position: {{laneShift}} 0"></div>
+<div style="position: absolute; left: 0; right: 0; top: 66%; height: 2px; background: repeating-linear-gradient(90deg, #ffffff 0px, #ffffff 18px, transparent 18px, transparent 36px); background-position: {{laneShift}} 0"></div>
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 3px; background: #d8ff3a"></div>
+</div>
+
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<sc-for list="{{markers}}" as="m" hint-placeholder-count="2">
+<div style="position: absolute; left: {{m.left}}; top: 36%; width: 0; height: 0">
+<span style="position: absolute; left: -1px; top: 0; width: 3px; height: 60px; background: #0b2a6b"></span>
+<span style="position: absolute; left: -24px; top: -6px; width: 48px; padding: 2px 0; text-align: center; background: {{m.bg}}; color: #0b2a6b; border: 2px solid #0b2a6b; font-size: 10px">{{m.text}}</span>
+</div>
+</sc-for>
+<sc-for list="{{waters}}" as="w" hint-placeholder-count="1">
+<div style="position: absolute; left: {{w.left}}; top: {{w.top}}; width: 10px; height: 14px; margin: -14px 0 0 -5px; background: #7fd3ff; border: 2px solid #0b2a6b"></div>
+</sc-for>
+<sc-for list="{{runners}}" as="r" hint-placeholder-count="8">
+<div style="position: absolute; left: {{r.left}}; top: {{r.top}}; width: 0; height: 0; z-index: {{r.z}}">
+<div style="position: absolute; left: -6px; top: -30px; width: 12px; height: 30px">
+<span style="position: absolute; left: 3px; top: 0; width: 6px; height: 6px; background: #c98a5c; border: 1px solid #120e14"></span>
+<span style="position: absolute; left: 3px; top: 1px; width: 6px; height: 2px; background: {{r.band}}"></span>
+<span style="position: absolute; left: 2px; top: 7px; width: 8px; height: 10px; background: {{r.shirt}}; border: 1px solid #120e14"></span>
+<span style="position: absolute; left: 4px; top: 9px; width: 4px; height: 4px; background: #ffffff"></span>
+<span style="position: absolute; left: {{r.legA}}; top: 18px; width: 3px; height: 11px; background: #c98a5c; transform: rotate({{r.rotA}}); transform-origin: top"></span>
+<span style="position: absolute; left: {{r.legB}}; top: 18px; width: 3px; height: 11px; background: #a3653f; transform: rotate({{r.rotB}}); transform-origin: top"></span>
+</div>
+<div style="position: absolute; left: -10px; top: -35px; width: 20px; height: 38px; border: {{r.box}}"></div>
+<span style="position: absolute; left: -10px; top: -48px; font-size: 8px; line-height: 11px; padding: 0 2px; background: {{r.tagBg}}; color: #0b2a6b; white-space: nowrap">{{r.label}}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="position: absolute; left: 10px; top: 10px; display: flex; flex-direction: column; gap: 4px; pointer-events: none">
+<div style="display: flex; border: 2px solid #0b2a6b; font-family: 'Anton', sans-serif; font-size: 18px; line-height: 1">
+<span style="background: #d8ff3a; color: #0b2a6b; padding: 3px 7px">Target {{target}}</span>
+<span style="background: #0b2a6b; color: #ffffff; padding: 3px 7px">{{km}} km</span>
+</div>
+<div style="display: flex; align-items: center; gap: 6px; background: #0b2a6b; padding: 3px 7px; font-size: 9px">
+<span>stamina</span><span style="width: 60px; height: 6px; background: #22417e; position: relative"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: {{stamina}}; background: {{staminaColor}}"></span></span>
+</div>
+<span style="align-self: flex-start; background: {{paceBg}}; color: {{paceInk}}; padding: 2px 7px; font-size: 9px">pace {{pace}} /km · {{paceNote}} {{draftText}}</span>
+<span style="align-self: flex-start; background: #0b2a6b; padding: 2px 7px; font-size: 9px">on pace {{onTarget}} of {{judged}} km</span>
+</div>
+
+<sc-if value="{{attract}}" hint-placeholder-val="{{ true }}">
+<span style="position: absolute; right: 10px; top: 10px; font-size: 10px; background: #0b2a6b; padding: 2px 7px; pointer-events: none">PaceCoach pacer · holding {{target}} /km</span>
+</sc-if>
+
+<sc-if value="{{flashOn}}" hint-placeholder-val="{{ false }}">
+<div aria-live="polite" style="position: absolute; left: 50%; top: 30%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 4px; pointer-events: none">
+<span style="font-family: 'Anton', sans-serif; font-size: 40px; line-height: 1; text-transform: uppercase; color: {{flashInk}}; text-shadow: 3px 3px 0 #0b2a6b; white-space: nowrap">{{flashText}}</span>
+<sc-if value="{{flashSubOn}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; background: #0b2a6b; padding: 2px 7px; white-space: nowrap">{{flashSub}}</span></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{over}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: #0b2a6be6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center">
+<div style="font-size: 12px; color: #bcd8ff">Finish line · 21.097 km</div>
+<div style="font-family: 'Anton', sans-serif; font-size: 52px; line-height: 1; text-transform: uppercase">{{onTarget}} / 21 km on pace</div>
+<div style="font-family: 'Anton', sans-serif; font-size: 24px; line-height: 1">{{finishTime}} · target {{target}} /km</div>
+<div style="font-size: 12px; color: #d8ff3a">{{verdict}}</div>
+<div style="font-size: 10px; color: #dbe6ff">A: run it again · Exit: back to the page</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["attract","play"],"default":"attract"},"pad":{"editor":null},"playKey":{"editor":null},"height":{"editor":"text","default":"360px"},"sound":{"editor":"boolean","default":false},"$preview":{"width":720,"height":360}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.RACE = 2110; // 1 unit = 10 m
+    // PaceCoach's target for this run: 6:20 /km, scored within +/- 15 s each km
+    this.TARGET = 6 + 20 / 60;
+    this.BAND = 0.25;
+    this.BOOST = 0.26; // speed per step: holding 6:20 takes about five or six steps a second
+    this.SEC_PER_TICK = 5.4; // ~50 s of play maps onto a two-hour half marathon
+    this.prevPad = {};
+    this.skyline = Array.from({ length: 12 }, (_, i) => ({ x: i * 9 + ((i * 13) % 5), w: 5 + ((i * 7) % 4), h: 35 + ((i * 29) % 60) }));
+    this.state = { g: this.fresh() };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.tick(), 33);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  componentDidUpdate(prev) {
+    if (prev.playKey !== this.props.playKey || prev.mode !== this.props.mode) {
+      this.prevPad = {};
+      this.setState({ g: this.fresh() });
+    }
+  }
+  fresh() {
+    const shirts = ['#e8590c', '#2f9e44', '#ae3ec9', '#f2f2f2', '#fab005', '#e03131', '#1098ad'];
+    const rivals = shirts.map((shirt, i) => ({ id: 101 + i * 13, shirt, lane: i % 3, d: 6 + i * 7, pace: 1.05 + ((i * 17) % 9) / 22, phase: i }));
+    return { t: 0, phase: 'run', me: { lane: 1, d: 0, speed: 0, stamina: 1, last: null, step: 0, laneCool: 0, sinceStep: 0 }, rivals, waters: [{ d: 700, lane: 0, taken: false }, { d: 1400, lane: 2, taken: false }], flash: { text: 'Go', sub: 'hold ' + this.fmt(this.TARGET) + ' /km', ink: '#d8ff3a', t: 40 }, position: 8, finishPos: 0, ticks: 0, kmTick: 0, onTarget: 0, judged: 0, fastKms: 0 };
+  }
+  audio() {
+    if (!this.ac) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      this.ac = new AC();
+    }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  }
+  tone(type, f0, f1, dur, vol, delay) {
+    if (!this.props.sound) return;
+    const ac = this.audio();
+    if (!ac) return;
+    const t = ac.currentTime + (delay || 0);
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(ac.destination);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  }
+  playing() {
+    return this.props.mode === 'play';
+  }
+  input(g) {
+    if (!this.playing()) {
+      // PaceCoach pacer: steps whenever it drops under the target pace, and steps out to pass whoever blocks it
+      const want = 9 / this.TARGET;
+      const step = g.me.sinceStep >= 3 && g.me.speed < want - this.BOOST / 2 ? (g.me.last === 'L' ? 'R' : 'L') : null;
+      const block = this.blocker(g, g.me.lane);
+      let lane = 0;
+      if (block) {
+        const free = [0, 1, 2].filter((l) => Math.abs(l - g.me.lane) === 1 && !this.blocker(g, l));
+        if (free.length) lane = free[0] - g.me.lane;
+      }
+      return { step, lane, again: false };
+    }
+    const p = this.props.pad || {};
+    const prev = this.prevPad;
+    this.prevPad = { ...p };
+    const left = (p.left && !prev.left) || (p.a && !prev.a);
+    const right = (p.right && !prev.right) || (p.b && !prev.b);
+    return {
+      step: left ? 'L' : (right ? 'R' : null),
+      lane: (p.down && !prev.down ? 1 : 0) - (p.up && !prev.up ? 1 : 0),
+      again: !!p.a && !prev.a
+    };
+  }
+  blocker(g, lane) {
+    return g.rivals.find((r) => r.lane === lane && r.d > g.me.d && r.d - g.me.d < 4);
+  }
+  tick() {
+    const g = this.state.g;
+    const inp = this.input(g);
+    if (g.phase === 'over') {
+      if (this.playing() && inp.again) { this.prevPad = { a: true }; this.setState({ g: this.fresh() }); }
+      else if (!this.playing() && g.t > 150) this.setState({ g: this.fresh() });
+      else this.setState({ g: { ...g, t: g.t + 1 } });
+      return;
+    }
+    this.setState({ g: this.step(g, inp) });
+  }
+  step(g, inp) {
+    const me = { ...g.me };
+    let flash = g.flash && g.flash.t > 1 ? { ...g.flash, t: g.flash.t - 1 } : null;
+    if (inp.step) {
+      if (inp.step === me.last) {
+        me.speed *= 0.85; // same foot twice: stumble
+        flash = { text: 'Stumble', t: 14 };
+      } else {
+        me.speed += this.BOOST * (me.stamina > 0.15 ? 1 : 0.4);
+        me.step += 1;
+        me.sinceStep = 0;
+        if (me.step % 2 === 0) this.tone('sine', 120, 80, 0.04, 0.05);
+      }
+      me.last = inp.step;
+    }
+    me.sinceStep += 1;
+    me.laneCool = Math.max(0, me.laneCool - 1);
+    if (inp.lane && me.laneCool === 0) {
+      me.lane = Math.max(0, Math.min(2, me.lane + inp.lane));
+      me.laneCool = 6;
+    }
+    me.speed *= 0.97;
+    const cap = me.stamina > 0.15 ? 1.9 : 1.15;
+    me.speed = Math.min(cap, me.speed);
+    const block = this.blocker(g, me.lane);
+    const drafting = !!block;
+    if (block) me.speed = Math.min(me.speed, block.pace * 1.02);
+    me.stamina = Math.max(0, Math.min(1, me.stamina + (me.speed > 1.5 && !drafting ? -0.0045 : 0.0025)));
+    me.d += me.speed;
+    const waters = g.waters.map((w) => {
+      if (!w.taken && w.lane === me.lane && Math.abs(w.d - me.d) < 2) {
+        me.stamina = 1;
+        flash = { text: 'Water', t: 20 };
+        this.tone('triangle', 660, 990, 0.15, 0.04);
+        return { ...w, taken: true };
+      }
+      return w;
+    });
+    const rivals = g.rivals.map((r) => {
+      const n = { ...r };
+      const surge = 1 + 0.08 * Math.sin((g.t + r.id) / 90);
+      n.d += r.pace * surge * (this.playing() ? 0.96 : 1);
+      n.phase += 0.35 * r.pace;
+      return n;
+    });
+    const ticks = g.ticks + 1;
+    // every km is scored against the coach's target
+    let { kmTick, onTarget, judged, fastKms } = g;
+    const kmBefore = Math.floor(g.me.d / 100);
+    const kmNow = Math.floor(me.d / 100);
+    if (kmNow > kmBefore && kmNow <= 21) {
+      const kmPace = ((ticks - kmTick) * this.SEC_PER_TICK) / 60;
+      const off = kmPace - this.TARGET;
+      judged += 1;
+      kmTick = ticks;
+      const sub = 'km ' + kmNow + ' · ' + this.fmt(kmPace) + ' /km';
+      if (Math.abs(off) <= this.BAND) {
+        onTarget += 1;
+        flash = { text: 'On pace', sub, ink: '#d8ff3a', t: 26 };
+        this.tone('triangle', 660, 990, 0.12, 0.04);
+      } else {
+        if (off < 0) fastKms += 1;
+        flash = { text: off < 0 ? 'Too fast' : 'Too slow', sub, ink: '#ff9f6b', t: 26 };
+        this.tone('square', 330, 250, 0.12, 0.025);
+      }
+    }
+    const position = 1 + rivals.filter((r) => r.d > me.d).length;
+    if (me.d >= this.RACE) {
+      this.tone('sine', 523, 523, 0.15, 0.05);
+      this.tone('sine', 784, 784, 0.35, 0.05, 0.15);
+      return { ...g, me, rivals, waters, phase: 'over', t: 0, finishPos: position, position, ticks, flash: null, kmTick, onTarget, judged, fastKms };
+    }
+    return { ...g, me, rivals, waters, flash, position, ticks, t: g.t + 1, drafting, kmTick, onTarget, judged, fastKms };
+  }
+  fmt(min) {
+    const m = Math.floor(min);
+    const sec = Math.round((min - m) * 60);
+    return sec === 60 ? (m + 1) + ':00' : m + ':' + String(sec).padStart(2, '0');
+  }
+  clock(ticks) {
+    const s = Math.round(ticks * this.SEC_PER_TICK);
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    return h + ':' + String(m).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+  renderVals() {
+    const g = this.state.g;
+    const me = g.me;
+    const human = this.playing();
+    const SCALE = 1.6; // % of width per unit
+    const xOf = (d) => 30 + (d - me.d) * SCALE;
+    const laneY = [64, 77, 90];
+    const runner = (d, lane, phase, shirt, band, label, mine) => {
+      const swing = Math.sin(phase) * 28;
+      return {
+        left: xOf(d).toFixed(2) + '%', top: laneY[lane] + '%', z: lane + 2,
+        shirt, band,
+        legA: '3px', legB: '6px', rotA: swing.toFixed(0) + 'deg', rotB: (-swing).toFixed(0) + 'deg',
+        box: mine ? '3px solid #d8ff3a' : '2px solid #ffffffaa',
+        tagBg: mine ? '#d8ff3a' : '#ffffff',
+        label
+      };
+    };
+    const runners = g.rivals
+      .filter((r) => xOf(r.d) > -8 && xOf(r.d) < 108)
+      .map((r) => runner(r.d, r.lane, r.phase, r.shirt, r.shirt, 'runner #' + r.id + ' 0.9' + (r.id % 10), false));
+    runners.push(runner(me.d, me.lane, me.step * 1.6, '#1d4fbf', '#d8ff3a', human ? 'you · #4' : 'VA · #4', true));
+    const markers = [];
+    for (let k = Math.floor((me.d - 30) / 100); k <= Math.floor((me.d + 60) / 100) + 1; k++) {
+      if (k < 1 || k > 21) continue;
+      markers.push({ left: xOf(k * 100).toFixed(2) + '%', text: k === 21 ? 'Finish' : 'km ' + k, bg: k === 21 ? '#d8ff3a' : '#ffffff' });
+    }
+    // a unit is 10 m and a tick is SEC_PER_TICK seconds, so min/km = 100 / speed * SEC_PER_TICK / 60 = 9 / speed
+    const pace = me.speed > 0.2 ? 9 / me.speed : 0;
+    const off = pace ? pace - this.TARGET : 0;
+    const inBand = pace && Math.abs(off) <= this.BAND;
+    const flash = g.flash;
+    let verdict = 'PaceCoach: slow and steady. The plan eases the target a little.';
+    if (g.onTarget >= 17) verdict = 'PaceCoach: textbook. The plan stays as it is.';
+    else if (g.onTarget >= 10) verdict = 'PaceCoach: close. Next week adds a steady tempo run.';
+    else if (g.fastKms >= 6) verdict = 'PaceCoach: went out too fast. Easy week, then try again.';
+    return {
+      height: this.props.height || '360px',
+      skyline: this.skyline.map((b) => ({ left: (((b.x - me.d * 0.08) % 110 + 110) % 110 - 5).toFixed(1) + '%', width: b.w + '%', height: b.h + '%' })),
+      barrierShift: (-(me.d * 6) % 28).toFixed(0) + 'px',
+      laneShift: (-(me.d * 9) % 36).toFixed(0) + 'px',
+      markers,
+      waters: g.waters.filter((w) => !w.taken && xOf(w.d) > -5 && xOf(w.d) < 105).map((w) => ({ left: xOf(w.d).toFixed(2) + '%', top: laneY[w.lane] + '%' })),
+      runners,
+      position: g.position,
+      km: Math.min(21.1, me.d / 100).toFixed(1),
+      stamina: Math.round(me.stamina * 100) + '%',
+      staminaColor: me.stamina > 0.3 ? '#d8ff3a' : '#ff6b6b',
+      pace: pace ? this.fmt(pace) : '--:--',
+      paceNote: !pace ? 'start' : (inBand ? 'on target' : (off < 0 ? 'too fast' : 'too slow')),
+      paceBg: !pace || inBand ? '#d8ff3a' : '#ff9f6b',
+      paceInk: '#0b2a6b',
+      target: this.fmt(this.TARGET),
+      onTarget: g.onTarget,
+      judged: g.judged,
+      draftText: g.drafting ? '· drafting' : '',
+      attract: !human,
+      flashOn: !!flash && g.phase !== 'over',
+      flashText: flash ? flash.text : '',
+      flashInk: flash && flash.ink ? flash.ink : '#d8ff3a',
+      flashSub: flash && flash.sub ? flash.sub : '',
+      flashSubOn: !!(flash && flash.sub),
+      over: g.phase === 'over' && human,
+      finishPos: g.finishPos,
+      finishTime: this.clock(g.ticks),
+      verdict
+    };
+  }
+}
+</script>
+</body>
+</html>

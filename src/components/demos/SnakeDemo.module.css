@@ -1,0 +1,34 @@
+.demo {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background: #0b1a12;
+  color: #eef3ea;
+  font-family: var(--pixel);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  grid-template-rows: repeat(10, minmax(0, 1fr));
+}
+
+.hud {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: flex;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.hint {
+  font-size: 10px;
+  color: #cfe0d4;
+  padding: 0 12px;
+}

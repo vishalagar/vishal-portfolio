@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PrintSafe demo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 100%; height: {{height}}; overflow: hidden; box-sizing: border-box; padding: {{pad}}; display: flex; gap: {{gap}}; align-items: center; background-color: #8ec6e8; background-image: linear-gradient(#ffffff59 1px, transparent 1px), linear-gradient(90deg, #ffffff59 1px, transparent 1px); background-size: 22px 22px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #0d0d0d">
+
+<div style="position: relative; flex: none; width: {{docW}}; height: {{docH}}">
+<sc-if value="{{showDoc}}" hint-placeholder-val="{{ true }}">
+<div style="position: absolute; inset: 0; background: #ffffff; border: 2px solid #0d0d0d; box-shadow: 3px 3px 0 #0d0d0d; display: flex; flex-direction: column; overflow: hidden">
+<div style="background: #1a6fa8; color: #ffffff; font-size: 9px; font-weight: 700; padding: 3px 5px; white-space: nowrap; overflow: hidden">visa_docs.pdf</div>
+<div style="padding: 7px 6px; display: flex; flex-direction: column; gap: {{lineGap}}">
+<sc-for list="{{lines}}" as="l" hint-placeholder-count="7">
+<div style="height: 9px; width: {{l.w}}; background: {{l.bg}}; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 8px; line-height: 9px; color: #1a6fa8; overflow: hidden; white-space: nowrap">{{l.txt}}</div>
+</sc-for>
+</div>
+<sc-if value="{{locked}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; right: 6px; bottom: 6px; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; background: #f5c518; border: 2px solid #0d0d0d">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0d0d0d" stroke-width="2.5" aria-hidden="true"><rect x="5" y="11" width="14" height="10"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+</div>
+</sc-if>
+<sc-if value="{{printed}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: 8px; top: 58px; transform: rotate(-14deg); border: 3px solid #d6384a; color: #d6384a; font-family: 'Silkscreen', monospace; font-size: 13px; padding: 2px 6px; background: #ffffffcc">Printed</div>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{shredding}}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: absolute; inset: 0; display: flex">
+<sc-for list="{{strips}}" as="s" hint-placeholder-count="7">
+<div style="flex: 1; height: 100%; background: #ffffff; border: 1px solid #0d0d0d; animation-name: {{s.anim}}; animation-duration: 1.1s; animation-timing-function: ease-in; animation-fill-mode: forwards; animation-delay: {{s.delay}}"></div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{gone}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; border: 2px dashed #0d0d0d; display: flex; align-items: center; justify-content: center; font-family: 'Silkscreen', monospace; font-size: 11px; background: #ffffff66">0 bytes</div>
+</sc-if>
+</div>
+
+<div style="flex: 1; min-width: 0; max-width: 420px; display: flex; flex-direction: column; gap: {{textGap}}">
+<div style="align-self: flex-start; font-weight: 800; font-size: 12px; background: #ffffff; border: 2px solid #0d0d0d; padding: 1px 6px">PrintSafe</div>
+<div style="font-weight: 800; font-size: {{headSize}}; line-height: 1.2">{{head}}</div>
+<div style="font-size: {{subSize}}; line-height: 1.35; color: #1c1c1c">{{sub}}</div>
+<sc-if value="{{showLink}}" hint-placeholder-val="{{ false }}">
+<div style="font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11px; background: #ffffff; border: 2px solid #0d0d0d; padding: 3px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">printsafe.in/v/3f9c2a1e<span style="background: #f5c518">#k=Zx7q…</span></div>
+</sc-if>
+<sc-if value="{{showButton}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{run}}" style="align-self: flex-start; min-height: 44px; padding: 0 12px; background: #f5c518; color: #0d0d0d; border: 2px solid #0d0d0d; box-shadow: 3px 3px 0 #0d0d0d; font-weight: 800; font-size: 13px; cursor: pointer">{{buttonText}}</button>
+</sc-if>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#f5d547"},"sound":{"editor":"boolean","default":false},"height":{"editor":"text","default":"220px"},"$preview":{"width":360,"height":220}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { stage: 0, tick: 0 };
+    this.timers = [];
+  }
+  componentWillUnmount() {
+    this.clear();
+  }
+  clear() {
+    this.timers.forEach((t) => { clearTimeout(t); clearInterval(t); });
+    this.timers = [];
+  }
+  audio() {
+    if (!this.ac) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      this.ac = new AC();
+    }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  }
+  tone(type, f0, f1, dur, vol) {
+    const ac = this.audio();
+    if (!ac) return;
+    const t = ac.currentTime;
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(ac.destination);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  }
+  shredSound() {
+    const ac = this.audio();
+    if (!ac) return;
+    const len = Math.floor(ac.sampleRate * 0.9);
+    const buf = ac.createBuffer(1, len, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (0.5 + 0.5 * Math.sin(i / 260));
+    const src = ac.createBufferSource();
+    src.buffer = buf;
+    const hp = ac.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 1800;
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0.08, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + 0.9);
+    src.connect(hp).connect(g).connect(ac.destination);
+    src.start();
+  }
+  run() {
+    this.clear();
+    if (this.props.sound) this.tone('square', 520, 780, 0.08, 0.04);
+    this.setState({ stage: 1, tick: 0 });
+    const iv = setInterval(() => this.setState({ tick: this.state.tick + 1 }), 90);
+    this.timers.push(iv);
+    this.timers.push(setTimeout(() => {
+      clearInterval(iv);
+      if (this.props.sound) this.tone('sine', 880, 1320, 0.12, 0.05);
+      this.setState({ stage: 2 });
+    }, 1400));
+    this.timers.push(setTimeout(() => {
+      if (this.props.sound) this.tone('square', 300, 280, 0.25, 0.03);
+      this.setState({ stage: 3 });
+    }, 3400));
+    this.timers.push(setTimeout(() => {
+      if (this.props.sound) this.shredSound();
+      this.setState({ stage: 4 });
+    }, 4700));
+    this.timers.push(setTimeout(() => this.setState({ stage: 5 }), 6000));
+  }
+  hex(i, seed) {
+    let n = (i + 1) * 2654435761 + seed * 40503;
+    let out = '';
+    for (let k = 0; k < 16; k++) {
+      n = Math.imul(n ^ (n >>> 13), 1274126177);
+      out += ((n >>> 0) % 16).toString(16);
+      if (k % 4 === 3) out += ' ';
+    }
+    return out;
+  }
+  renderVals() {
+    const stage = this.state.stage;
+    const widths = ['90%', '72%', '84%', '60%', '80%', '68%', '44%'];
+    const copy = [
+      ['Share privately. Delete automatically.', 'A visa file is about to go to a print shop.', 'Encrypt & create link'],
+      ['Encrypting in your browser', 'AES-256-GCM. The server only ever sees this.', ''],
+      ['One-time link ready', 'The key sits after the #, so it never reaches the server.', ''],
+      ['Shop opens it once', 'Decrypted on their screen, sent to the printer.', ''],
+      ['Viewed. Shredding.', 'Ciphertext deleted from storage.', ''],
+      ['Gone. Zero trace.', 'Nothing left on anyone’s phone.', 'Run it again']
+    ][stage];
+    const seed = stage === 1 ? this.state.tick : 7;
+    const height = this.props.height || '220px';
+    // the featured card is taller: give the document and the copy more room
+    const big = parseInt(height, 10) >= 300;
+    return {
+      height,
+      pad: big ? '24px 32px' : '14px 16px',
+      gap: big ? '32px' : '16px',
+      docW: big ? '150px' : '104px',
+      docH: big ? '216px' : '150px',
+      lineGap: big ? '11px' : '6px',
+      textGap: big ? '12px' : '7px',
+      headSize: big ? '24px' : '16px',
+      subSize: big ? '15px' : '12px',
+      head: copy[0],
+      sub: copy[1],
+      buttonText: copy[2],
+      showButton: stage === 0 || stage === 5,
+      showDoc: stage <= 3,
+      locked: stage >= 1 && stage <= 3,
+      printed: stage === 3,
+      shredding: stage === 4,
+      gone: stage === 5,
+      showLink: stage === 2 || stage === 3,
+      run: () => this.run(),
+      lines: widths.map((w, i) => ({
+        w,
+        bg: stage === 0 ? '#d8edff' : 'transparent',
+        txt: stage === 0 ? '' : this.hex(i, seed)
+      })),
+      strips: [0, 1, 2, 3, 4, 5, 6].map((i) => ({
+        anim: i % 2 ? 'va-shredR' : 'va-shredL',
+        delay: (i * 0.05).toFixed(2) + 's'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

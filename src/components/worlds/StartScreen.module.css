@@ -1,0 +1,278 @@
+/* Hidden unless scripts ran and the boot script flagged a first visit: no flash, nothing without JS. */
+.root {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  height: 100dvh;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #0b0b10;
+  color: #f3f1ea;
+  outline: none;
+}
+
+:global(:root[data-js][data-intro="on"]) .root {
+  display: flex;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1280px;
+  margin: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: max(32px, env(safe-area-inset-top))
+    max(24px, env(safe-area-inset-right)) max(32px, env(safe-area-inset-bottom))
+    max(24px, env(safe-area-inset-left));
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.kicker {
+  margin: 0;
+  font-family: var(--font-pixel), "Silkscreen", monospace;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: #b9b6ad;
+}
+
+.title {
+  margin: 6px 0 0;
+  font-family: var(--font-display), "Barlow Condensed", sans-serif;
+  font-weight: 800;
+  font-size: clamp(44px, 7vw, 96px);
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.lede {
+  margin: 10px 0 0;
+  max-width: 520px;
+  font-size: 17px;
+  color: #b9b6ad;
+}
+
+.sound,
+.surprise {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 2px solid #f3f1ea;
+  cursor: pointer;
+  background: #0b0b10;
+  color: #f3f1ea;
+  box-shadow: 3px 3px 0 #f5d547;
+  font-family: var(--font-pixel), "Silkscreen", monospace;
+  font-size: 12px;
+}
+
+.sound[aria-pressed="true"] {
+  background: #f5d547;
+  color: #0b0b10;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr));
+  gap: 16px;
+}
+
+/* Each tile reads its own world's colours and font, night or day. */
+.tile {
+  --t-bg: var(--t-n-bg);
+  --t-ink: var(--t-n-ink);
+  --t-muted: var(--t-n-muted);
+  --t-accent: var(--t-n-accent);
+  --t-stage: var(--t-n-stage);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  min-height: 44px;
+  background: var(--t-bg);
+  color: var(--t-ink);
+  border: 2px solid #f3f1ea;
+  box-shadow: 5px 5px 0 var(--t-accent);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+
+:global(:root[data-theme="day"]) .tile {
+  --t-bg: var(--t-d-bg);
+  --t-ink: var(--t-d-ink);
+  --t-muted: var(--t-d-muted);
+  --t-accent: var(--t-d-accent);
+  --t-stage: var(--t-d-stage);
+}
+
+.stage {
+  display: block;
+  position: relative;
+  height: 130px;
+  background: var(--t-stage);
+  border-bottom: 2px solid #f3f1ea;
+  overflow: hidden;
+}
+
+/* Sheet is 5 frames wide; frame 0 is the eyes-open pose. */
+.me {
+  position: absolute;
+  left: calc(50% - 48px);
+  bottom: 0;
+  width: 96px;
+  height: 112px;
+  background-size: 500% 100%;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px 16px;
+}
+
+.tag {
+  font-family: var(--font-pixel), "Silkscreen", monospace;
+  font-size: 11px;
+  color: var(--t-muted);
+}
+
+.name {
+  font-family: var(--t-font);
+  font-weight: 900;
+  font-size: calc(30px * var(--t-scale));
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.blurb {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--t-muted);
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+}
+
+.surprise {
+  min-height: 48px;
+  padding: 0 20px;
+  background: #f5d547;
+  color: #0b0b10;
+  box-shadow: 4px 4px 0 #3a3a44;
+  font-family: var(--font-display), "Barlow Condensed", sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.count {
+  flex: 1 1 240px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-pixel), "Silkscreen", monospace;
+  font-size: 12px;
+  color: #b9b6ad;
+}
+
+.track {
+  flex: 1;
+  height: 6px;
+  position: relative;
+  overflow: hidden;
+  background: #2a2a33;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  background: #f5d547;
+  transform-origin: left;
+}
+
+.tile:focus-visible,
+.sound:focus-visible,
+.surprise:focus-visible {
+  outline: 3px solid #f5d547;
+  outline-offset: 3px;
+}
+
+/* Phones: a scrollable column of compact horizontal tiles. */
+@media (max-width: 600px) {
+  .inner {
+    gap: 20px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .tiles {
+    grid-template-columns: 1fr;
+  }
+  .tile {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .stage {
+    flex: 0 0 112px;
+    height: auto;
+    min-height: 112px;
+    border-bottom: 0;
+    border-right: 2px solid #f3f1ea;
+  }
+  .me {
+    left: calc(50% - 40px);
+    width: 80px;
+    height: 94px;
+  }
+  .body {
+    justify-content: center;
+    padding: 12px 14px;
+  }
+  /* keep the choice and the countdown in reach while the tiles scroll */
+  .foot {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    flex-wrap: nowrap;
+    gap: 14px;
+    margin: 0 -16px calc(-1 * max(32px, env(safe-area-inset-bottom)));
+    padding: 12px 16px max(12px, env(safe-area-inset-bottom));
+    background: #0b0b10;
+    border-top: 2px solid #2a2a33;
+  }
+  .surprise {
+    flex: none;
+    font-size: 17px;
+    padding: 0 14px;
+  }
+  .count {
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    font-size: 11px;
+  }
+  .track {
+    flex: none;
+  }
+}
