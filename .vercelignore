@@ -1,0 +1,12 @@
+.env*
+!.env.example
+node_modules
+.next
+coverage
+test-results
+playwright-report
+design
+tasks
+e2e
+new.txt
+*.tsbuildinfo
