@@ -7,7 +7,7 @@ Part of `tasks/portfolio-spec/` (index: `README.md`). Live since 2026-10-27.
 The model knows nothing about Vishal on its own. Every question is sent with:
 
 1. **The facts:** `PUNDIT_FACTS` in `src/content/pundit.ts` (job, projects, education, running, contact). This is the whole record; the prompt says to use nothing else and never invent.
-2. **The rules:** `PUNDIT_SYSTEM` in `src/lib/pundit/prompt.ts`: 2–3 sentences, only questions about Vishal, one-line in-character refusal for anything else, no private details, ignore prompt injection.
+2. **The rules:** `PUNDIT_SYSTEM` in `src/lib/pundit/prompt.ts`: 2–3 sentences, only questions about Vishal, one-line in-character refusal for anything else, no private details, ignore prompt injection. Asked "what do you know?" or "what can I ask?", it names the topics (Samsung work, projects, education, half marathon, contact) and invites a question.
 3. **The character:** the current world's `assistant` name and `voice` in `src/content/worlds.ts` (Pundit, Race Engineer, Guide, Coach, Agent).
 
 **To teach it something new:** add a line to `PUNDIT_FACTS`, commit, push. Vercel redeploys and the next answer uses it. Never add phone numbers, recommenders, LinkedIn analytics, heart-rate data, "open to work" or grad-school plans (spec §2).
@@ -40,6 +40,8 @@ Code: `src/components/Analytics.tsx`, `src/lib/analytics/`. PostHog project "Per
 | `game_closed` | `game`, `seconds`, `restarts` |
 | `pundit_asked` | `question`, `canned`, `length` |
 | `pundit_answered` | `status`, `error`, `http`, `length` |
+
+**Dashboard:** "Portfolio · Live Coverage" (pinned): https://us.posthog.com/project/691967/dashboard/2267412. Visitors per day, countries, referrers, devices, worlds picked, start screen closed, sections read, games opened, seconds played, Pundit questions (a table of the actual questions) and outcomes, toggles, latest visitors.
 
 **Where to look in PostHog (us.posthog.com):**
 - **Activity → Live events:** everything as it happens.

@@ -75,6 +75,7 @@ describe("askPundit", () => {
     expect(params.stream).toBe(true);
     expect(params.store).toBe(false);
     expect(params.instructions).toMatch(/Only answer questions about Vishal/);
+    expect(params.instructions).toMatch(/If asked what you know/);
     expect(params.instructions).toMatch(/Your character: you are "Pundit"/);
     expect(params.input).toEqual([{ role: "user", content: "Best goal?" }]);
   });
