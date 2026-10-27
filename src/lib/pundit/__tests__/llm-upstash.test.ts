@@ -1,17 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const stream = vi.fn();
+const create = vi.fn();
 const limit = vi.fn();
 
-vi.mock("@anthropic-ai/sdk", async (orig) => {
-  const real = (await orig<typeof import("@anthropic-ai/sdk")>()).default;
-  class FakeAnthropic extends real {
+vi.mock("openai", async (orig) => {
+  const real = (await orig<typeof import("openai")>()).default;
+  class FakeOpenAI extends real {
     constructor() {
       super({ apiKey: "test-key" });
-      Object.defineProperty(this, "beta", { value: { messages: { stream } } });
+      Object.defineProperty(this, "responses", { value: { create } });
     }
   }
-  return { default: FakeAnthropic };
+  return { default: FakeOpenAI };
 });
 
 vi.mock("@upstash/redis", () => ({ Redis: class {} }));
@@ -34,16 +34,16 @@ vi.mock("@upstash/ratelimit", () => {
   return { Ratelimit };
 });
 
-const { askPundit, DEFAULT_PUNDIT_MODEL } = await import("@/lib/pundit/claude");
+const { askPundit, effortFor, DEFAULT_PUNDIT_MODEL } = await import("@/lib/pundit/llm");
 const { createLimiter } = await import("@/lib/pundit/rateLimit");
 
-function fakeStream(texts: string[], stopReason = "end_turn") {
+function fakeStream(texts: string[], fail = false) {
   return {
     async *[Symbol.asyncIterator]() {
-      yield { type: "message_start" };
-      for (const text of texts) yield { type: "content_block_delta", delta: { type: "text_delta", text } };
+      yield { type: "response.created" };
+      for (const delta of texts) yield { type: "response.output_text.delta", delta };
+      if (fail) yield { type: "response.failed" };
     },
-    finalMessage: async () => ({ stop_reason: stopReason }),
   };
 }
 
@@ -56,41 +56,62 @@ async function collect(gen: AsyncGenerator<string>) {
 describe("askPundit", () => {
   const saved = { ...process.env };
   beforeEach(() => {
-    stream.mockReset();
-    process.env.ANTHROPIC_API_KEY = "test-key";
+    create.mockReset();
+    process.env.OPENAI_API_KEY = "test-key";
     delete process.env.PUNDIT_MODEL;
   });
   afterEach(() => {
     process.env = { ...saved };
   });
 
-  it("streams text deltas with low effort, a cached system prompt and refusal fallbacks", async () => {
-    stream.mockReturnValue(fakeStream(["Top ", "corner."]));
-    expect(await collect(askPundit("Best goal?"))).toBe("Top corner.");
-    const [params] = stream.mock.calls[0];
+  it("streams text deltas from the cheapest model with capped output and the world's voice", async () => {
+    create.mockResolvedValue(fakeStream(["Top ", "corner."]));
+    expect(await collect(askPundit("Best goal?", "football"))).toBe("Top corner.");
+    const [params] = create.mock.calls[0];
     expect(params.model).toBe(DEFAULT_PUNDIT_MODEL);
-    expect(params.output_config).toEqual({ effort: "low" });
-    expect(params.fallbacks).toBe("default");
-    expect(params.betas).toContain("server-side-fallback-2026-07-01");
-    expect(params.system[0].cache_control).toEqual({ type: "ephemeral" });
-    expect(params.messages).toEqual([{ role: "user", content: "Best goal?" }]);
+    expect(DEFAULT_PUNDIT_MODEL).toBe("gpt-5.4-nano");
+    expect(params.reasoning).toEqual({ effort: "none" });
+    expect(params.max_output_tokens).toBeLessThanOrEqual(400);
+    expect(params.stream).toBe(true);
+    expect(params.store).toBe(false);
+    expect(params.instructions).toMatch(/Only answer questions about Vishal/);
+    expect(params.instructions).toMatch(/Your character: you are "Pundit"/);
+    expect(params.input).toEqual([{ role: "user", content: "Best goal?" }]);
+  });
+
+  it("talks in each world's voice", async () => {
+    create.mockResolvedValue(fakeStream(["Copy."]));
+    await collect(askPundit("Fastest lap?", "gp"));
+    expect(create.mock.calls[0][0].instructions).toMatch(/Race Engineer.*race engineer on team radio/);
+  });
+
+  it("picks the lowest reasoning effort each model accepts", () => {
+    expect(effortFor("gpt-5-nano", undefined)).toBe("minimal");
+    expect(effortFor("gpt-5.4-nano", undefined)).toBe("none");
+    expect(effortFor("gpt-5.4-nano", "low")).toBe("low");
+    expect(effortFor("gpt-5.4-nano", "bogus")).toBe("none");
   });
 
   it("uses PUNDIT_MODEL when set", async () => {
-    process.env.PUNDIT_MODEL = "claude-sonnet-5-5";
-    stream.mockReturnValue(fakeStream(["ok"]));
-    await collect(askPundit("Hi there"));
-    expect(stream.mock.calls[0][0].model).toBe("claude-sonnet-5-5");
+    process.env.PUNDIT_MODEL = "gpt-4.1-nano";
+    create.mockResolvedValue(fakeStream(["ok"]));
+    await collect(askPundit("Hi there", "ai"));
+    expect(create.mock.calls[0][0].model).toBe("gpt-4.1-nano");
   });
 
-  it("says something polite when the model declines", async () => {
-    stream.mockReturnValue(fakeStream([], "refusal"));
-    expect(await collect(askPundit("Something odd"))).toMatch(/not for the studio/);
+  it("says something polite when the model returns no text", async () => {
+    create.mockResolvedValue(fakeStream([]));
+    expect(await collect(askPundit("Something odd", "run"))).toMatch(/not in my notes/);
+  });
+
+  it("turns a failed stream into an error", async () => {
+    create.mockResolvedValue(fakeStream(["Half"], true));
+    await expect(collect(askPundit("Hello there", "football"))).rejects.toMatchObject({ code: "failed" });
   });
 
   it("reports a missing API key as not configured", async () => {
-    delete process.env.ANTHROPIC_API_KEY;
-    await expect(collect(askPundit("Hello there"))).rejects.toMatchObject({ code: "not_configured", status: 503 });
+    delete process.env.OPENAI_API_KEY;
+    await expect(collect(askPundit("Hello there", "football"))).rejects.toMatchObject({ code: "not_configured", status: 503 });
   });
 });
 

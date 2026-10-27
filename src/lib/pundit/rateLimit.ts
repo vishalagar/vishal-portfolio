@@ -25,9 +25,9 @@ export function limitConfigFromEnv(env: NodeJS.ProcessEnv = process.env): LimitC
     return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback;
   };
   return {
-    perMinute: num(env.PUNDIT_PER_MINUTE, 5),
-    perDay: num(env.PUNDIT_PER_DAY, 30),
-    globalPerDay: num(env.PUNDIT_DAILY_CAP, 300),
+    perMinute: num(env.PUNDIT_PER_MINUTE, 3),
+    perDay: num(env.PUNDIT_PER_DAY, 3),
+    globalPerDay: num(env.PUNDIT_DAILY_CAP, 200),
   };
 }
 

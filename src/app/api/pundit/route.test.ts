@@ -3,14 +3,14 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const ask = vi.fn<(q: string) => AsyncGenerator<string>>();
 const check = vi.fn();
 
-vi.mock("@/lib/pundit/claude", async (orig) => {
-  const real = await orig<typeof import("@/lib/pundit/claude")>();
+vi.mock("@/lib/pundit/llm", async (orig) => {
+  const real = await orig<typeof import("@/lib/pundit/llm")>();
   return { ...real, askPundit: (q: string) => ask(q) };
 });
 vi.mock("@/lib/pundit/rateLimit", () => ({ getLimiter: () => ({ check }) }));
 
 const { POST } = await import("./route");
-const { PunditError } = await import("@/lib/pundit/claude");
+const { PunditError } = await import("@/lib/pundit/llm");
 
 function req(body: unknown, headers: Record<string, string> = {}) {
   return new Request("https://va.dev/api/pundit", {

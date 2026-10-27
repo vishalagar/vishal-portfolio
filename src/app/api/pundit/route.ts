@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { PunditErrorCode } from "@/content/pundit";
-import { askPundit, toPunditError } from "@/lib/pundit/claude";
+import { askPundit, toPunditError } from "@/lib/pundit/llm";
 import { getLimiter } from "@/lib/pundit/rateLimit";
 import { clientKey, isSameOrigin } from "@/lib/pundit/request";
 import { parseQuestion } from "@/lib/pundit/schema";
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const chunks = askPundit(parsed.question, req.signal);
+  const chunks = askPundit(parsed.question, parsed.world, req.signal);
   let first: IteratorResult<string>;
   try {
     first = await chunks.next();

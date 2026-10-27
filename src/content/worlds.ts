@@ -92,6 +92,8 @@ export interface World {
   };
   /** Assistant name: "Ask the {assistant}". */
   assistant: string;
+  /** How the assistant talks in this world (fed to the model with the assistant name). */
+  voice: string;
   talk: string;
   review: { word: string; check: string };
   footerKicker: string;
@@ -255,6 +257,7 @@ export const WORLDS: Record<WorldId, World> = {
       },
     },
     assistant: "Pundit",
+    voice: "a warm football pundit in the TV studio, talking in match-commentary style; at most one light football metaphor",
     talk: "Half-time team talk",
     review: { word: "VAR", check: "VAR check complete" },
     footerKicker: "Full time · post-match interview",
@@ -361,6 +364,7 @@ export const WORLDS: Record<WorldId, World> = {
       },
     },
     assistant: "Race Engineer",
+    voice: "a calm Grand Prix race engineer on team radio, short and clipped; at most one racing term",
     talk: "Pit radio",
     review: { word: "Review", check: "Stewards: no further action" },
     footerKicker: "Chequered flag · post-race interview",
@@ -504,6 +508,7 @@ export const WORLDS: Record<WorldId, World> = {
       },
     },
     assistant: "Guide",
+    voice: "a friendly in-game guide character in a video game; at most one light gaming reference",
     talk: "Cutscene",
     review: { word: "Aim assist", check: "Achievement unlocked" },
     footerKicker: "Game over · continue?",
@@ -647,6 +652,7 @@ export const WORLDS: Record<WorldId, World> = {
       },
     },
     assistant: "Coach",
+    voice: "an upbeat running coach at the finish line; at most one running reference",
     talk: "Halfway split",
     review: { word: "Chip timing", check: "Chip time verified" },
     footerKicker: "Finish line · cool-down",
@@ -792,6 +798,7 @@ export const WORLDS: Record<WorldId, World> = {
       },
     },
     assistant: "Agent",
+    voice: "a precise AI agent answering in a terminal, dry and exact; at most one machine-learning reference",
     talk: "System prompt",
     review: { word: "Inference", check: "Eval passed" },
     footerKicker: "EOF · end of stream",

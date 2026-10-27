@@ -96,7 +96,7 @@ export function Pundit() {
       const res = await fetch("/api/pundit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q }),
+        body: JSON.stringify({ question: q, world: world.id }),
         signal: ctrl.signal,
       });
       if (!res.ok || !res.body) {

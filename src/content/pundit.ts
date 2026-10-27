@@ -20,12 +20,12 @@ export const PUNDIT_QA: ReadonlyArray<{ q: string; a: string }> = [
 
 export const PUNDIT_COPY = {
   intro: "Answers questions about my work in full commentary mode, grounded in my resume and projects.",
-  placeholder: "Ask about a project, a stack choice, anything…",
+  placeholder: "Ask about his work or a project (3 a day)…",
   label: "Your question",
   ask: "Ask",
   thinking: "Checking the replay…",
   errors: {
-    rate_limited: "The Pundit needs a breather. Try again in a minute, or pick one of the questions above.",
+    rate_limited: "That’s your three questions for today. Pick one of the questions above, or email Vishal directly.",
     busy: "The studio is full today. Pick one of the questions above, or email Vishal directly.",
     not_configured: "The studio mic is off right now. Pick one of the questions above, or email Vishal directly.",
     invalid: "Ask a question between 3 and 280 characters.",

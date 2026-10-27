@@ -1,18 +1,23 @@
 import { describe, expect, it, vi } from "vitest";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { createLimiter, getLimiter, limitConfigFromEnv, memoryLimiter } from "@/lib/pundit/rateLimit";
 import { clientKey, isSameOrigin } from "@/lib/pundit/request";
 import { parseQuestion } from "@/lib/pundit/schema";
-import { PunditError, toPunditError } from "@/lib/pundit/claude";
+import { PunditError, toPunditError } from "@/lib/pundit/llm";
 import { PUNDIT_SYSTEM } from "@/lib/pundit/prompt";
 
 describe("question validation", () => {
   it("accepts a normal question and tidies whitespace", () => {
-    expect(parseQuestion({ question: "  What   is PrintSafe?\n" })).toEqual({ ok: true, question: "What is PrintSafe?" });
+    expect(parseQuestion({ question: "  What   is PrintSafe?\n" })).toEqual({ ok: true, question: "What is PrintSafe?", world: "football" });
+  });
+
+  it("keeps a known world and rejects an unknown one", () => {
+    expect(parseQuestion({ question: "Fastest lap?", world: "gp" })).toEqual({ ok: true, question: "Fastest lap?", world: "gp" });
+    expect(parseQuestion({ question: "Fastest lap?", world: "mars" })).toEqual({ ok: false });
   });
 
   it("strips control characters", () => {
-    expect(parseQuestion({ question: "Hi\u0000 there\u0007" })).toEqual({ ok: true, question: "Hi there" });
+    expect(parseQuestion({ question: "Hi\u0000 there\u0007" })).toEqual({ ok: true, question: "Hi there", world: "football" });
   });
 
   it("rejects missing, too short, too long and non-string questions", () => {
@@ -67,8 +72,8 @@ describe("rate limiting", () => {
   it("reads limits from the environment with safe fallbacks", () => {
     expect(limitConfigFromEnv({ PUNDIT_PER_MINUTE: "9", PUNDIT_DAILY_CAP: "nope" } as unknown as NodeJS.ProcessEnv)).toEqual({
       perMinute: 9,
-      perDay: 30,
-      globalPerDay: 300,
+      perDay: 3,
+      globalPerDay: 200,
     });
   });
 
@@ -118,10 +123,10 @@ describe("request helpers", () => {
 describe("error mapping", () => {
   it("maps SDK errors to visitor-facing codes", () => {
     const headers = new Headers();
-    expect(toPunditError(new Anthropic.RateLimitError(429, {}, "slow", headers)).code).toBe("busy");
-    expect(toPunditError(new Anthropic.AuthenticationError(401, {}, "no", headers)).code).toBe("not_configured");
-    expect(toPunditError(new Anthropic.APIConnectionError({ message: "down" })).code).toBe("failed");
-    expect(toPunditError(new Anthropic.InternalServerError(500, {}, "boom", headers)).status).toBe(502);
+    expect(toPunditError(new OpenAI.RateLimitError(429, {}, "slow", headers)).code).toBe("busy");
+    expect(toPunditError(new OpenAI.AuthenticationError(401, {}, "no", headers)).code).toBe("not_configured");
+    expect(toPunditError(new OpenAI.APIConnectionError({ message: "down" })).code).toBe("failed");
+    expect(toPunditError(new OpenAI.InternalServerError(500, {}, "boom", headers)).status).toBe(502);
     expect(toPunditError(new Error("x")).status).toBe(500);
     const own = new PunditError("not_configured", 503, "no key");
     expect(toPunditError(own)).toBe(own);

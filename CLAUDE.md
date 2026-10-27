@@ -8,7 +8,7 @@ A football-broadcast portfolio where every project is playable. Built from the a
 
 ## Stack
 
-Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · CSS Modules + CSS variables (no Tailwind) · Vitest · Playwright · Claude API (`@anthropic-ai/sdk`) · Upstash rate limiting · Vercel.
+Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · CSS Modules + CSS variables (no Tailwind) · Vitest · Playwright · OpenAI API (`openai`, gpt-5.4-nano) · Upstash rate limiting · Vercel.
 
 ## Commands
 
@@ -32,7 +32,7 @@ Playwright needs its browser once: `npx playwright install chromium` (or set `PW
 - `src/lib/sound/` — every sound, synthesised with WebAudio (`core`, `bus`, `basics`, `worlds`, `ambient`, per-game `race`/`pace`/`label`; `index` is the public API). Off by default; `sfx.*` no-ops while muted.
 - `src/lib/stores/htmlAttr.ts` — theme (`data-theme` night/day), world (`data-world`), start screen (`data-intro`) and VAR easter egg (`data-var`) as attributes on `<html>`. `BOOT_SCRIPT` applies the saved theme and world before paint and sets `data-js`.
 - `src/lib/hooks/` — shared hooks (`useStores.ts`: `useWorld`, `useWorldId`, `usePalette`, `useIntro`; `useUnmask` + `unmaskMath.ts` for the costume-off sprite).
-- `src/lib/pundit/` + `src/app/api/pundit/route.ts` — "Ask the Pundit": zod validation, same-origin check, rate limits (per minute, per day, global daily cap), streamed Claude answer.
+- `src/lib/pundit/` + `src/app/api/pundit/route.ts` — "Ask the Pundit": zod validation, same-origin check, rate limits (3 questions per visitor per day, global daily cap), streamed OpenAI answer in the current world's voice (`voice` in `worlds.ts`).
 - `src/components/` — `header/` (incl. world switcher), `sections/` (`lineup/` holds the per-world line-ups), `demos/` (one client component per demo; `football/`, `race/`, `pace/`, `label/` are the game folders), `play/` (PlayOverlay, handheld controller, page lock), `worlds/` (start screen, world wipe), `sprite/`.
 
 ## Rules that are easy to break
