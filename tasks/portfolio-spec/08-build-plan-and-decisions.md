@@ -15,7 +15,7 @@ Part of `tasks/portfolio-spec/` (index: `README.md`).
 - A server route that calls Claude, with a system prompt grounded only in the §7 facts.
 - Rate limiting (Upstash, which Vishal already uses for PrintSafe), a max length on questions and answers, and no data stored beyond what limiting needs.
 - The API key comes from an environment variable on Vercel. Never commit `.env`.
-- Choose the model and budget at build time, checking the Claude API reference for current models and pricing.
+- Model: OpenAI `gpt-5.4-nano`, 3 questions per visitor per day (see §12 in `09-analytics-and-pundit-ai.md`).
 
 **Easter eggs:**
 - Typing `VAR` anywhere turns on detection boxes across the whole page (needs a global key listener).
@@ -30,7 +30,7 @@ Part of `tasks/portfolio-spec/` (index: `README.md`).
 **SEO and sharing:**
 - Title, description, an OG image (sprite plus scorebug), a pixel-ball favicon, JSON-LD Person schema.
 
-**Analytics:** PostHog plus Vercel Speed Insights.
+**Analytics:** PostHog (full tracking), Vercel Web Analytics and Speed Insights. Events and where to look: §13.
 
 **Tests** (TDD, aiming for 80%+):
 - Port the sim harnesses to unit tests:
@@ -58,7 +58,7 @@ Part of `tasks/portfolio-spec/` (index: `README.md`).
 4. **Snake model weights:** does the trained DQN file still exist?
 5. **Official half-marathon chip time**, to replace the ≈2:16 summed from watch splits.
 6. **Project screenshots:** optional, since every card now has a demo.
-7. **Pundit model and monthly budget cap.** Decided 2026-10-25: a cheaper OpenAI model (Vishal has credits), switched in at go-live.
+7. **Pundit model and monthly budget cap.** Decided 2026-10-25: a cheaper OpenAI model (Vishal has credits). Done 2026-10-27: `gpt-5.4-nano`; budget cap set on the OpenAI project.
 
 ## 11. Known gaps in the mock
 

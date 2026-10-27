@@ -22,3 +22,4 @@ Last updated: 2026-10-25. Status: **design mock complete and approved**; real bu
 - `06-demos-football-kit-sprite.md` — §6.5–6.7 Football match, kit room, sprite
 - `07-facts-and-assets.md` — §7 Facts (source of truth), §8 Assets
 - `08-build-plan-and-decisions.md` — §9 Build plan, §10 Open decisions, §11 Known gaps in the mock
+- `09-analytics-and-pundit-ai.md` — §12 Ask the Pundit (how the AI knows about Vishal, model, limits), §13 Analytics (events, where to look)
