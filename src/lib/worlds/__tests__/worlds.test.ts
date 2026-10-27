@@ -114,11 +114,14 @@ describe("world CSS", () => {
 
 describe("BOOT_SCRIPT", () => {
   type Attrs = Record<string, string>;
-  function boot(saved: Record<string, string>, search = ""): Attrs {
+  function boot(saved: Record<string, string>, search = "", session: Record<string, string> = {}): Attrs {
     const attrs: Attrs = {};
     const doc = { documentElement: { setAttribute: (k: string, v: string) => (attrs[k] = v) } };
     const storage = { getItem: (k: string) => saved[k] ?? null };
-    new Function("document", "localStorage", "location", BOOT_SCRIPT)(doc, storage, { search });
+    const sessionStorage = { getItem: (k: string) => session[k] ?? null };
+    new Function("document", "localStorage", "sessionStorage", "location", BOOT_SCRIPT)(doc, storage, sessionStorage, {
+      search,
+    });
     return attrs;
   }
 
@@ -126,12 +129,16 @@ describe("BOOT_SCRIPT", () => {
     expect(boot({})).toMatchObject({ "data-js": "", "data-intro": "on" });
   });
 
-  it("returning visitors go straight to their saved world and theme", () => {
+  it("returning visitors get the start screen again, over their saved world and theme", () => {
     expect(boot({ "va-world": "ai", "va-theme": "day" })).toMatchObject({
       "data-world": "ai",
       "data-theme": "day",
-      "data-intro": "off",
+      "data-intro": "on",
     });
+  });
+
+  it("a reload in the same tab skips it", () => {
+    expect(boot({ "va-world": "ai" }, "", { "va-seen": "1" })).toMatchObject({ "data-world": "ai", "data-intro": "off" });
   });
 
   it("?world= wins and skips the start screen; junk is ignored", () => {

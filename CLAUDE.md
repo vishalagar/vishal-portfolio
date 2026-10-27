@@ -48,7 +48,7 @@ Playwright needs its browser once: `npx playwright install chromium` (or set `PW
 - Accent text on theme backgrounds uses `--accent-text` (deep gold in day mode, for contrast); accent backgrounds keep `--accent`.
 - **Worlds:** all per-world values live in `src/content/worlds.ts` and reach CSS through the variables from `src/lib/worlds/css.ts`. Never hardcode world colours in components. Big display font sizes multiply by `var(--display-scale)`.
 - **Games** take `GameProps` and read the shared `Pad`. The overlay (`src/components/play/`) owns keyboard and touch input; games don't bind their own.
-- **e2e** must load `/?world=<id>` (or handle the start screen). A fresh browser gets the start screen.
+- **e2e** must load `/?world=<id>` (or handle the start screen). Every new tab gets the start screen; returning visitors see their last world marked.
 - **`next/font` calls** need literal options (no spread).
 
 ## Environment variables (set on Vercel, never commit `.env*`)

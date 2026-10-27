@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type KeyboardEvent } from "react";
 import { WORLD_IDS, WORLDS, type WorldId } from "@/content/worlds";
 import { mathRng, type Rng } from "@/lib/engines/rng";
 import { useIntro, useSoundOn } from "@/lib/hooks/useStores";
 import { setSoundOn } from "@/lib/sound";
-import { introStore } from "@/lib/stores/htmlAttr";
+import { introStore, markIntroSeen, savedWorld } from "@/lib/stores/htmlAttr";
 import { enterWorld, randomWorld } from "@/lib/worlds/switch";
 import { fontStack } from "./fonts";
 import { sheetUrl } from "./spriteSheet";
@@ -32,6 +32,14 @@ function tileVars(id: WorldId): CSSProperties {
   return vars as CSSProperties;
 }
 
+const noSubscribe = () => () => {};
+const noWorld = () => null;
+
+/** The world a returning visitor picked last time (null on a first visit and on the server). */
+function useLastWorld(): WorldId | null {
+  return useSyncExternalStore(noSubscribe, savedWorld, noWorld);
+}
+
 function useInertBehind(open: boolean, dialog: React.RefObject<HTMLElement | null>) {
   useEffect(() => {
     const el = dialog.current;
@@ -55,6 +63,7 @@ function useInertBehind(open: boolean, dialog: React.RefObject<HTMLElement | nul
  */
 export function StartScreen({ rng = mathRng }: { rng?: Rng }) {
   const open = useIntro() === "on";
+  const last = useLastWorld();
   const sound = useSoundOn();
   const dialog = useRef<HTMLDivElement>(null);
   const [left, setLeft] = useState(INTRO_MS);
@@ -67,15 +76,18 @@ export function StartScreen({ rng = mathRng }: { rng?: Rng }) {
     setHeld(on);
   }, []);
 
-  const close = useCallback(
-    (id: WorldId, random: boolean) => {
-      if (introStore.get() !== "on") return;
-      introStore.set("off");
-      enterWorld(id, random ? "Random pick" : "Welcome to");
-    },
-    [],
+  const close = useCallback((id: WorldId, sub: string) => {
+    if (introStore.get() !== "on") return;
+    introStore.set("off");
+    markIntroSeen();
+    enterWorld(id, sub);
+  }, []);
+  const surprise = useCallback(() => close(randomWorld(rng), "Random pick"), [close, rng]);
+  /** Nobody picked: back to last visit's world, or a random one on a first visit. */
+  const fallback = useCallback(
+    () => (last ? close(last, "Welcome back to") : surprise()),
+    [close, last, surprise],
   );
-  const surprise = useCallback(() => close(randomWorld(rng), true), [close, rng]);
 
   useInertBehind(open, dialog);
 
@@ -86,18 +98,18 @@ export function StartScreen({ rng = mathRng }: { rng?: Rng }) {
       if (heldRef.current) return;
       leftRef.current -= TICK_MS;
       setLeft(Math.max(0, leftRef.current));
-      if (leftRef.current <= 0) surprise();
+      if (leftRef.current <= 0) fallback();
     }, TICK_MS);
     return () => clearInterval(timer);
-  }, [open, surprise]);
+  }, [open, fallback]);
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") {
       e.preventDefault();
-      surprise();
+      fallback();
     } else if (/^[1-5]$/.test(e.key) && !e.metaKey && !e.ctrlKey && !e.altKey) {
       e.preventDefault();
-      close(WORLD_IDS[Number(e.key) - 1], false);
+      close(WORLD_IDS[Number(e.key) - 1], "Welcome to");
     } else if (e.key === "Tab") {
       const items = Array.from(dialog.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []);
       if (!items.length) return;
@@ -153,15 +165,21 @@ export function StartScreen({ rng = mathRng }: { rng?: Rng }) {
         >
           {WORLD_IDS.map((id, i) => {
             const w = WORLDS[id];
+            const isLast = id === last;
             return (
               <button
                 key={id}
                 type="button"
                 className={`${styles.tile} va-press`}
                 style={tileVars(id)}
-                onClick={() => close(id, false)}
-                aria-label={`${w.name}: ${w.intro.tag}. ${w.intro.blurb} Press ${i + 1}.`}
+                onClick={() => close(id, isLast ? "Welcome back to" : "Welcome to")}
+                aria-label={`${w.name}: ${w.intro.tag}. ${w.intro.blurb}${isLast ? " Your last world." : ""} Press ${i + 1}.`}
               >
+                {isLast && (
+                  <span className={styles.last} aria-hidden="true">
+                    Last time
+                  </span>
+                )}
                 <span className={styles.stage} aria-hidden="true">
                   <span className={styles.me} style={{ backgroundImage: `url(${sheetUrl(id)})` }} />
                 </span>
@@ -179,7 +197,7 @@ export function StartScreen({ rng = mathRng }: { rng?: Rng }) {
             Surprise me
           </button>
           <div className={styles.count}>
-            <span role="status">{held ? "Take your time" : `Random pick in ${secs}s`}</span>
+            <span role="status">{held ? "Take your time" : last ? `Back to ${WORLDS[last].name} in ${secs}s` : `Random pick in ${secs}s`}</span>
             <span className={styles.track} aria-hidden="true">
               <span className={styles.fill} style={{ transform: `scaleX(${left / INTRO_MS})` }} />
             </span>

@@ -96,6 +96,7 @@
   --t-muted: var(--t-n-muted);
   --t-accent: var(--t-n-accent);
   --t-stage: var(--t-n-stage);
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -115,6 +116,21 @@
   --t-muted: var(--t-d-muted);
   --t-accent: var(--t-d-accent);
   --t-stage: var(--t-d-stage);
+}
+
+/* Returning visitors: the world they picked last time. */
+.last {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  padding: 3px 7px;
+  background: var(--t-accent);
+  color: var(--t-bg);
+  border: 2px solid var(--t-ink);
+  font-family: var(--font-pixel), "Silkscreen", monospace;
+  font-size: 10px;
+  line-height: 1.3;
 }
 
 .stage {

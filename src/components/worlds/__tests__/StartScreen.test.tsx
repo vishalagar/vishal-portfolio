@@ -28,6 +28,8 @@ import { StartScreen } from "../StartScreen";
 beforeEach(() => {
   vi.useFakeTimers();
   enterWorld.mockClear();
+  localStorage.clear();
+  sessionStorage.clear();
   introStore.set("on");
 });
 
@@ -116,5 +118,39 @@ describe("StartScreen", () => {
     expect((document.getElementById("m") as HTMLElement).inert).toBe(true);
     unmount();
     expect((document.getElementById("m") as HTMLElement).inert).toBe(false);
+  });
+
+  it("picking a world remembers the start screen was seen for this tab", () => {
+    render(<StartScreen />);
+    fireEvent.keyDown(dialog(), { key: "1" });
+    expect(sessionStorage.getItem("va-seen")).toBe("1");
+  });
+});
+
+describe("StartScreen for a returning visitor", () => {
+  beforeEach(() => localStorage.setItem("va-world", "gp"));
+
+  it("marks the world they picked last time", () => {
+    render(<StartScreen />);
+    const tile = screen.getByRole("button", { name: /^Grand Prix/, hidden: true });
+    expect(tile.textContent).toContain("Last time");
+    expect(tile.getAttribute("aria-label")).toContain("Your last world.");
+    expect(screen.getAllByText("Last time")).toHaveLength(1);
+  });
+
+  it("counts down back to that world instead of a random one", () => {
+    render(<StartScreen rng={constant(0.99)} />);
+    expect(screen.getByText("Back to Grand Prix in 8s")).toBeTruthy();
+    act(() => void vi.advanceTimersByTime(8100));
+    expect(enterWorld).toHaveBeenCalledWith("gp", "Welcome back to");
+  });
+
+  it("Esc goes back to it too; Surprise me is still random", () => {
+    render(<StartScreen rng={constant(0.99)} />);
+    fireEvent.keyDown(dialog(), { key: "Escape" });
+    expect(enterWorld).toHaveBeenLastCalledWith("gp", "Welcome back to");
+    introStore.set("on");
+    fireEvent.click(screen.getByRole("button", { name: "Surprise me", hidden: true }));
+    expect(enterWorld).toHaveBeenLastCalledWith("ai", "Random pick");
   });
 });

@@ -58,6 +58,22 @@ test.describe("start screen", () => {
     await expect(startScreen(page)).toBeHidden();
   });
 
+  test("coming back later: the start screen again, with last time's world marked", async ({
+    page,
+    context,
+  }) => {
+    await page.goto("/");
+    await expect(startScreen(page)).toBeVisible();
+    await page.keyboard.press("2");
+    await expect(page.locator("html")).toHaveAttribute("data-world", "gp");
+    const later = await context.newPage();
+    await later.goto("/");
+    await expect(startScreen(later)).toBeVisible();
+    await expect(later.locator("html")).toHaveAttribute("data-world", "gp");
+    await expect(startScreen(later).getByText("Last time")).toBeVisible();
+    await expect(startScreen(later).getByText(/Back to Grand Prix in/)).toBeVisible();
+  });
+
   test("click a tile", async ({ page }) => {
     await page.goto("/");
     await startScreen(page)

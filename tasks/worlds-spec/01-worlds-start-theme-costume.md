@@ -26,7 +26,7 @@ Brand names stay generic: no F1, PlayStation or Game Boy marks, and the rival dr
 - The world wipe then shows "Welcome to <World>" or "Random pick / <World>".
 - The start screen has its own sound toggle, and clicking it unlocks audio.
 - A prop (`intro`, default on) turns the start screen off.
-- Real site: a returning visitor skips the start screen and goes straight to their last world (localStorage `va-world`). Decided 2026-10-26.
+- Real site: the start screen shows once per visit. A returning visitor sees it again over their last world (localStorage `va-world`), with that tile marked "Last time"; the countdown and Esc go back to it instead of a random pick. Reloads in the same tab and `?world=` links skip it (sessionStorage `va-seen`). Changed 2026-10-28 at Vishal's request (was: returning visitors skip it).
 
 The header keeps the small world switcher, so visitors can change world at any time.
 
