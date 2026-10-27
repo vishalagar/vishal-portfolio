@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Street Rescue</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&amp;family=Lilita+One&amp;display=swap">
+<style>
+body{margin:0}
+.sr-spr{position:absolute;width:7.5%;height:13.333%;background-image:url(/_blob/fb8d07af50d8de16b2d010b6c25711cd);background-size:300% 600%;background-repeat:no-repeat;image-rendering:pixelated}
+@keyframes sr-up{from{transform:translate(-50%,0)}to{transform:translate(-50%,-14px);opacity:0}}
+@keyframes sr-blink{50%{opacity:.2}}
+</style>
+</helmet>
+<div style="position: relative; width: 100%; height: {{height}}; overflow: hidden; background: #3b2a2e; font-family: 'Pixelify Sans', monospace; color: #fbf0dc; user-select: none">
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 39%; background: linear-gradient(180deg, #5a2a45 0%, #a2483f 40%, #e07a3a 75%, #f2a64a 100%)"></div>
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 39%">
+<sc-for list="{{shops}}" as="s" hint-placeholder-count="9">
+<span style="position: absolute; left: {{s.left}}; bottom: 0; width: 10.6%; height: {{s.h}}; background: {{s.bg}}; border: 1px solid #241626; border-bottom: 0">
+<span style="position: absolute; left: 14%; top: 18%; width: 24%; height: 16%; background: {{s.win}}"></span>
+<span style="position: absolute; right: 14%; top: 18%; width: 24%; height: 16%; background: {{s.win}}"></span>
+<span style="position: absolute; left: 4%; right: 4%; top: 46%; height: 9%; background: {{s.awn}}"></span>
+</span>
+</sc-for>
+</div>
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 39%; height: 54%; background: repeating-linear-gradient(0deg, #5e4a3c 0px, #5e4a3c 21px, #544234 21px, #544234 23px); border-top: 3px solid #2a1c14"></div>
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 93%; bottom: 0; background: #2e2a2a"><span style="position: absolute; left: 0; right: 0; top: 45%; height: 2px; background: repeating-linear-gradient(90deg, #f2b632 0px, #f2b632 16px, transparent 16px, transparent 32px)"></span></div>
+
+<div aria-hidden="true" style="position: absolute; left: 81.9%; top: 60%; width: 16.9%; height: 18.9%; background: #fbf6ea; border: 2px solid #1a120c; box-sizing: border-box">
+<span style="position: absolute; left: 0; right: 0; top: 46%; height: 15%; background: #f2b632"></span>
+<span style="position: absolute; right: 6%; top: 8%; width: 20%; height: 30%; background: #8fc3e0; border: 1px solid #1a120c"></span>
+<span style="position: absolute; left: 8%; top: 12%; font-size: 9px; color: #24180a; font-weight: 700">RESCUE</span>
+<span style="position: absolute; left: 12%; bottom: -14%; width: 16%; height: 22%; background: #1a120c; border-radius: 50%"></span>
+<span style="position: absolute; right: 16%; bottom: -14%; width: 16%; height: 22%; background: #1a120c; border-radius: 50%"></span>
+</div>
+
+<svg aria-hidden="true" viewBox="0 0 320 180" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none">
+<sc-for list="{{leads}}" as="l" hint-placeholder-count="0">
+<line x1="{{l.x1}}" y1="{{l.y1}}" x2="{{l.x2}}" y2="{{l.y2}}" stroke="#ff8a2a" stroke-width="2" vector-effect="non-scaling-stroke"></line>
+</sc-for>
+</svg>
+
+<div aria-hidden="true" style="position: absolute; inset: 0">
+<sc-for list="{{actors}}" as="a" hint-placeholder-count="6">
+<div class="sr-spr" style="left: {{a.left}}; top: {{a.top}}; z-index: {{a.z}}; background-position: {{a.pos}}; transform: {{a.tf}}"></div>
+</sc-for>
+<sc-for list="{{marks}}" as="m" hint-placeholder-count="0">
+<span style="position: absolute; left: {{m.left}}; top: {{m.top}}; z-index: 300; transform: translateX(-50%); font-weight: 700; font-size: 14px; color: {{m.ink}}; text-shadow: 1px 1px 0 #1a120c; animation: {{m.anim}}">{{m.text}}</span>
+</sc-for>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; padding: 5px 10px; background: #120c06cc; font-size: 12px; pointer-events: none; z-index: 400">
+<span style="color: #f5c04a">{{clock}}s</span>
+<span style="color: #8cc274">Rescued {{rescued}}</span>
+<span>Shooed {{shooed}}</span>
+<span style="color: #ff7a52">Scared {{scared}}</span>
+<span style="margin-left: auto; display: flex; align-items: center; gap: 6px">Bark <span style="width: 40px; height: 6px; background: #3a2a1a; position: relative"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: {{barkFill}}; background: #f2b632"></span></span></span>
+</div>
+
+<sc-if value="{{attract}}" hint-placeholder-val="{{ true }}">
+<span style="position: absolute; right: 10px; bottom: 10px; z-index: 400; font-size: 11px; background: #120c06; padding: 2px 7px; pointer-events: none">Vishal on patrol · press play to take over</span>
+</sc-if>
+
+<sc-if value="{{over}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; z-index: 500; background: #120c06e6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 16px">
+<div style="font-size: 12px; color: #cdb894">{{overKicker}}</div>
+<div style="font-family: 'Lilita One', sans-serif; font-size: 52px; line-height: 1; color: #f5c04a">{{rescued}} rescued</div>
+<div style="font-size: 14px">{{shooed}} rowdies shooed · {{scared}} scared off</div>
+<div style="font-size: 12px; color: #8cc274">{{verdict}}</div>
+<div style="font-size: 10px; color: #cdb894">A: patrol again · Exit: back to the page</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["attract","play"],"default":"attract"},"pad":{"editor":null},"playKey":{"editor":null},"height":{"editor":"text","default":"360px"},"sound":{"editor":"boolean","default":false},"$preview":{"width":720,"height":360}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.W = 320; this.TOP = 82; this.BOT = 162; this.VAN = { x: 262, y: 108 };
+    this.ROUND = 90;
+    this.COATS = { cookie: 0, tan: 1, brown: 2, black: 3 };
+    this.prevPad = {};
+    this.state = { g: this.fresh() };
+  }
+  componentDidMount() { this.timer = setInterval(() => this.tick(), 33); }
+  componentWillUnmount() { clearInterval(this.timer); }
+  componentDidUpdate(prev) {
+    if (prev.playKey !== this.props.playKey || prev.mode !== this.props.mode) { this.prevPad = {}; this.setState({ g: this.fresh() }); }
+  }
+  rand() { this.seed = (this.seed * 16807) % 2147483647; return (this.seed - 1) / 2147483646; }
+  fresh() {
+    this.seed = 4242 + Math.floor(Math.random() * 1000);
+    const g = { t: this.ROUND, phase: 'play', over: 0, rescued: 0, shooed: 0, lost: 0, spawnT: 2.4, dogT: 0, bark: 0, n: 0,
+      me: { x: 150, y: 130, dir: 1, moving: false, shoo: 0 }, ck: { x: 132, y: 134, dir: 1, moving: false },
+      dogs: [], rowdies: [], fx: [] };
+    for (let i = 0; i < 3; i++) g.dogs.push(this.dog(g, 40 + i * 80 + this.rand() * 30));
+    return g;
+  }
+  dog(g, x) {
+    const coats = ['tan', 'brown', 'black', 'tan'];
+    g.n += 1;
+    return { id: g.n, x: x == null ? (this.rand() < 0.5 ? -16 : this.W + 16) : x, y: this.TOP + 6 + this.rand() * (this.BOT - this.TOP - 8),
+      vx: 0, vy: 0, wt: 0, dir: 1, coat: coats[g.n % coats.length], state: 'wander' };
+  }
+  rowdy(g) {
+    const left = this.rand() < 0.5;
+    g.n += 1;
+    return { id: g.n, x: left ? -12 : this.W + 12, y: this.TOP + 6 + this.rand() * (this.BOT - this.TOP - 8), dir: left ? 1 : -1,
+      state: 'walk', target: null, t: 0, vx: 0, vy: 0, stun: 0 };
+  }
+  dist(a, b) { return Math.hypot(a.x - b.x, (a.y - b.y) * 1.4); }
+  clampY(y) { return Math.max(this.TOP, Math.min(this.BOT, y)); }
+  audio() {
+    if (!this.ac) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; this.ac = new AC(); }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  }
+  tone(type, f0, f1, dur, vol, delay) {
+    if (!this.props.sound) return;
+    const ac = this.audio();
+    if (!ac) return;
+    const t = ac.currentTime + (delay || 0);
+    const o = ac.createOscillator();
+    const gn = ac.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    gn.gain.setValueAtTime(0.0001, t);
+    gn.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+    gn.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(gn).connect(ac.destination);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  }
+  sfx(name) {
+    if (name === 'pow') { this.tone('square', 180, 60, 0.16, 0.08); this.tone('triangle', 900, 200, 0.08, 0.05); }
+    if (name === 'bark') { this.tone('sawtooth', 260, 150, 0.09, 0.08); this.tone('sawtooth', 300, 160, 0.11, 0.08, 0.14); }
+    if (name === 'clip') this.tone('square', 900, 1200, 0.05, 0.04);
+    if (name === 'rescue') [523, 659, 784, 1046].forEach((f, i) => this.tone('triangle', f, f, 0.12, 0.06, i * 0.08));
+    if (name === 'yelp') this.tone('sine', 1200, 500, 0.25, 0.05);
+  }
+  playing() { return this.props.mode === 'play'; }
+  // attract mode: Vishal patrols on his own
+  auto(g) {
+    const me = g.me;
+    const lead = g.dogs.filter((d) => d.state === 'lead');
+    // the most urgent rowdy: one mid-swing, else the one closest to his dog
+    const urgency = (r) => {
+      if (r.state === 'windup') return -100 + this.dist(r, me) / 10;
+      const d = g.dogs.find((x) => x.id === r.target);
+      return d ? this.dist(r, d) : 999;
+    };
+    const live = g.rowdies.filter((r) => r.state !== 'flee' && r.x > 0 && r.x < this.W).sort((a, b) => urgency(a) - urgency(b));
+    const danger = live.length && urgency(live[0]) < 80 ? live[0] : null;
+    const free = g.dogs.filter((d) => d.state === 'wander' && d.x > 4 && d.x < this.W - 4).sort((a, b) => this.dist(a, me) - this.dist(b, me))[0];
+    let goal = null;
+    if (danger) goal = { x: danger.x - danger.dir * 10, y: danger.y };
+    else if (lead.length >= 2 || (lead.length && !free)) goal = { x: this.VAN.x + 6, y: this.VAN.y + 18 };
+    else if (free) goal = free;
+    else goal = { x: 150, y: 124 };
+    const dx = goal.x - me.x, dy = goal.y - me.y;
+    const near = g.rowdies.filter((r) => r.state !== 'flee' && this.dist(r, g.ck) < 70).length;
+    return {
+      mx: Math.abs(dx) > 3 ? Math.sign(dx) : 0, my: Math.abs(dy) > 3 ? Math.sign(dy) : 0,
+      shoo: live.some((r) => this.dist(r, me) < 22),
+      bark: near >= 2 || live.some((r) => r.state === 'windup' && this.dist(r, me) > 26 && this.dist(r, g.ck) < 70),
+      again: false
+    };
+  }
+  input(g) {
+    if (!this.playing()) return this.auto(g);
+    const p = this.props.pad || {};
+    const prev = this.prevPad;
+    this.prevPad = { ...p };
+    return { mx: (p.right ? 1 : 0) - (p.left ? 1 : 0), my: (p.down ? 1 : 0) - (p.up ? 1 : 0),
+      shoo: !!p.a && !prev.a, bark: !!p.b && !prev.b, again: !!p.a && !prev.a };
+  }
+  fx(g, text, x, y, ink) { g.fx.push({ id: ++g.n, text, x, y, ink, t: 0.8 }); }
+  tick() {
+    const g0 = this.state.g;
+    const inp = this.input(g0);
+    if (g0.phase === 'over') {
+      if (this.playing() && inp.again) { this.prevPad = { a: true }; this.setState({ g: this.fresh() }); }
+      else if (!this.playing() && g0.over > 90) this.setState({ g: this.fresh() });
+      else this.setState({ g: { ...g0, over: g0.over + 1 } });
+      return;
+    }
+    this.setState({ g: this.step(g0, inp, 0.033) });
+  }
+  step(g0, inp, dt) {
+    const g = { ...g0, me: { ...g0.me }, ck: { ...g0.ck }, dogs: g0.dogs.map((d) => ({ ...d })), rowdies: g0.rowdies.map((r) => ({ ...r })), fx: g0.fx.map((f) => ({ ...f, t: f.t - dt, y: f.y - 18 * dt })).filter((f) => f.t > 0) };
+    const me = g.me, ck = g.ck;
+    g.t -= dt; g.bark = Math.max(0, g.bark - dt); me.shoo = Math.max(0, me.shoo - dt);
+    if (inp.mx || inp.my) {
+      const n = Math.hypot(inp.mx, inp.my);
+      me.x += (inp.mx / n) * 78 * dt; me.y += (inp.my / n) * 54 * dt;
+      if (inp.mx) me.dir = inp.mx;
+      me.moving = true;
+    } else me.moving = false;
+    me.x = Math.max(8, Math.min(this.W - 8, me.x)); me.y = this.clampY(me.y);
+    // Cookie trails just behind him
+    const tx = me.x - me.dir * 18, ty = me.y + 4;
+    const cdx = tx - ck.x, cdy = ty - ck.y, cd = Math.hypot(cdx, cdy);
+    if (cd > 3) { ck.x += cdx / cd * Math.min(cd, 90 * dt); ck.y += cdy / cd * Math.min(cd, 70 * dt); ck.dir = Math.sign(cdx) || ck.dir; ck.moving = true; } else ck.moving = false;
+    if (inp.shoo) {
+      me.shoo = 0.25;
+      g.rowdies.filter((r) => r.state !== 'flee' && this.dist(r, me) < 26).forEach((r) => {
+        r.state = 'flee'; r.dir = r.x < me.x ? -1 : 1; r.vx = r.dir * 160; r.vy = -40; r.t = 0; r.target = null; g.shooed += 1;
+        this.fx(g, 'POW!', r.x, r.y - 30, '#ffd34a'); this.sfx('pow');
+      });
+    }
+    if (inp.bark && g.bark === 0) {
+      g.bark = 4;
+      this.fx(g, 'WOOF!', ck.x, ck.y - 22, '#fbf0dc'); this.sfx('bark');
+      g.rowdies.forEach((r) => { if (r.state !== 'flee' && this.dist(r, ck) < 70) { r.stun = 1.6; if (r.state === 'windup') r.state = 'walk'; } });
+    }
+    // rowdies arrive faster as the light goes
+    g.spawnT -= dt;
+    const cap = 2 + Math.floor((this.ROUND - g.t) / 30);
+    if (g.spawnT <= 0 && g.rowdies.filter((r) => r.state !== 'flee').length < cap) { g.rowdies.push(this.rowdy(g)); g.spawnT = Math.max(2.6, 5.6 - (this.ROUND - g.t) * 0.033); }
+    if (g.dogs.filter((d) => d.state === 'wander' || d.state === 'lead').length < 3) { g.dogT -= dt; if (g.dogT <= 0) { g.dogs.push(this.dog(g)); g.dogT = 2.5; } }
+    const lead = g.dogs.filter((d) => d.state === 'lead');
+    g.dogs.forEach((d) => {
+      if (d.state === 'wander') {
+        d.wt -= dt;
+        if (d.x < 6 || d.x > this.W - 6) { d.vx = d.x < 6 ? 22 : -22; d.vy = 0; d.wt = 1.5; }
+        else if (d.wt <= 0) { const go = this.rand() < 0.55; d.vx = go ? (this.rand() * 2 - 1) * 22 : 0; d.vy = go ? (this.rand() * 2 - 1) * 12 : 0; d.wt = 1 + this.rand() * 2; }
+        d.x += d.vx * dt; d.y = this.clampY(d.y + d.vy * dt);
+        if (d.vx) d.dir = Math.sign(d.vx);
+        const threatened = g.rowdies.some((r) => r.target === d.id && r.state === 'windup');
+        if (!threatened && lead.length < 2 && this.dist(d, me) < 12) { d.state = 'lead'; lead.push(d); this.fx(g, 'clip!', d.x, d.y - 22, '#ff8a2a'); this.sfx('clip'); }
+      } else if (d.state === 'lead') {
+        const i = lead.indexOf(d), lx = me.x - me.dir * (30 + i * 14), ly = me.y - 6 + i * 10;
+        const ddx = lx - d.x, ddy = ly - d.y, dd = Math.hypot(ddx, ddy);
+        if (dd > 2) { d.x += ddx / dd * Math.min(dd, 95 * dt); d.y += ddy / dd * Math.min(dd, 70 * dt); d.dir = Math.sign(ddx) || d.dir; d.vx = 1; } else d.vx = 0;
+      } else if (d.state === 'fled') d.x += d.vx * dt;
+    });
+    if (lead.length && me.x > this.VAN.x - 6 && me.y > this.VAN.y) {
+      lead.forEach((d) => { d.state = 'rescued'; g.rescued += 1; });
+      this.fx(g, '+' + lead.length + ' rescued', this.VAN.x + 16, this.VAN.y - 8, '#8cc274'); this.sfx('rescue');
+    }
+    g.rowdies.forEach((r) => {
+      if (r.state === 'flee') { r.x += r.vx * dt; r.y += r.vy * dt; r.vy += 200 * dt; if (r.y > this.BOT) { r.y = this.BOT; r.vy = 0; } r.t += dt; return; }
+      if (r.stun > 0) { r.stun -= dt; return; }
+      let target = g.dogs.find((d) => d.id === r.target && d.state === 'wander');
+      if (!target) {
+        const taken = g.rowdies.filter((o) => o !== r && o.target).map((o) => o.target);
+        target = g.dogs.filter((d) => d.state === 'wander' && d.x > 0 && d.x < this.W && !taken.includes(d.id)).sort((a, b) => this.dist(a, r) - this.dist(b, r))[0];
+        r.target = target ? target.id : null;
+        r.state = 'walk';
+      }
+      if (!target) return;
+      if (r.state === 'walk') {
+        const dx = target.x - r.x, dy = target.y - r.y, d = Math.hypot(dx, dy);
+        if (d < 16) { r.state = 'windup'; r.t = 1.8; target.vx = 0; target.vy = 0; target.wt = 2; }
+        else { r.x += dx / d * 28 * dt; r.y += dy / d * 22 * dt; r.dir = Math.sign(dx) || r.dir; }
+      } else if (r.state === 'windup') {
+        r.t -= dt;
+        if (r.t <= 0) { // the stick comes down: the dog bolts, scared but unhurt
+          target.state = 'fled'; target.vx = (target.x < this.W / 2 ? -1 : 1) * 140; g.lost += 1;
+          this.fx(g, 'yelp!', target.x, target.y - 22, '#ff7a52'); this.sfx('yelp');
+          r.state = 'walk'; r.target = null;
+        }
+      }
+    });
+    g.rowdies = g.rowdies.filter((r) => !(r.state === 'flee' && (r.x < -30 || r.x > this.W + 30)));
+    g.dogs = g.dogs.filter((d) => d.state !== 'rescued' && !(d.state === 'fled' && (d.x < -30 || d.x > this.W + 30)));
+    if (g.t <= 0 || g.lost >= 3) {
+      if (g.lost < 3) [523, 659, 784].forEach((f, i) => this.tone('sine', f, f, 0.2, 0.05, i * 0.12));
+      return { ...g, phase: 'over', over: 0, t: Math.max(0, g.t) };
+    }
+    return g;
+  }
+  renderVals() {
+    const g = this.state.g;
+    const frame = Math.floor(Date.now() / 140) % 2;
+    const cell = (col, row) => (col * 50) + '% ' + (row * 20) + '%';
+    const place = (x, y) => ({ left: ((x - 12) / 3.2).toFixed(2) + '%', top: ((y - 24) / 1.8).toFixed(2) + '%', z: Math.round(y) });
+    const actors = [];
+    g.dogs.forEach((d) => {
+      const still = d.state === 'wander' && !d.vx && !d.vy;
+      actors.push({ ...place(d.x, d.y), pos: cell(still ? 2 : frame, this.COATS[d.coat]), tf: d.dir < 0 ? 'scaleX(-1)' : 'none' });
+    });
+    actors.push({ ...place(g.ck.x, g.ck.y), pos: cell(g.ck.moving ? frame : 2, 0), tf: g.ck.dir < 0 ? 'scaleX(-1)' : 'none' });
+    g.rowdies.forEach((r) => {
+      const col = r.state === 'windup' ? 0 : (r.state === 'flee' ? 1 : 2);
+      const row = r.state === 'walk' ? 4 : 5;
+      const spin = r.state === 'flee' ? ' rotate(' + Math.round(Math.min(80, r.t * 360)) + 'deg)' : '';
+      actors.push({ ...place(r.x, r.y), pos: cell(col, row), tf: (r.dir < 0 ? 'scaleX(-1)' : 'scaleX(1)') + spin });
+    });
+    const me = g.me;
+    actors.push({ ...place(me.x, me.y - (me.moving && frame ? 1 : 0)), pos: cell(me.shoo > 0 ? 1 : 0, 4), tf: me.dir < 0 ? 'scaleX(-1)' : 'none' });
+    const pct = (x, y) => ({ left: (x / 3.2).toFixed(2) + '%', top: (y / 1.8).toFixed(2) + '%' });
+    const marks = g.rowdies.filter((r) => r.state === 'windup').map((r) => ({ ...pct(r.x, r.y - 34), text: '!', ink: '#ff5a3c', anim: 'sr-blink .3s steps(1) infinite' }))
+      .concat(g.rowdies.filter((r) => r.stun > 0 && r.state !== 'flee').map((r) => ({ ...pct(r.x + 6, r.y - 30), text: 'zz', ink: '#fbf0dc', anim: 'none' })))
+      .concat(g.fx.map((f) => ({ ...pct(f.x, f.y), text: f.text, ink: f.ink, anim: 'none' })));
+    const leads = g.dogs.filter((d) => d.state === 'lead').map((d) => ({ x1: (d.x + (d.dir > 0 ? 8 : -8)).toFixed(1), y1: (d.y - 10).toFixed(1), x2: me.x.toFixed(1), y2: (me.y - 12).toFixed(1) }));
+    const human = this.playing();
+    return {
+      height: this.props.height || '360px',
+      shops: [0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => ({ left: (i * 11.25) + '%', h: (52 + ((i * 13) % 26)) + '%', bg: ['#3a2430', '#432a33', '#4d3036'][i % 3], win: i % 2 ? '#ffd27a' : '#5c3b3b', awn: ['#e0623a', '#3f7a2e', '#f2b632'][i % 3] })),
+      actors, marks, leads,
+      clock: Math.max(0, Math.ceil(g.t)),
+      rescued: g.rescued, shooed: g.shooed,
+      scared: g.lost + ' / 3',
+      barkFill: Math.round((1 - g.bark / 4) * 100) + '%',
+      attract: !human,
+      over: g.phase === 'over' && human,
+      overKicker: g.lost >= 3 ? 'Light’s gone · three dogs scared off' : 'Full time · golden hour patrol',
+      verdict: g.rescued >= 6 ? 'Cookie rates this a very good walk.' : 'Cookie rates this a good start.'
+    };
+  }
+}
+</script>
+</body>
+</html>

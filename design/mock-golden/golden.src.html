@@ -1,0 +1,927 @@
+<title>Golden Hour World</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Pixelify+Sans:wght@400;600;700&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one broadcast page lit at golden hour; hard-shadow cards on a warm ground, a dog companion on the bottom edge. */
+:root{
+  --bg:#1a1209; --surface:#251a0e; --surface2:#31230f; --ink:#fbf0dc; --muted:#cdb894;
+  --edge:#e9d3a6; --shadow:#f2b632; --accent:#f2b632; --on-accent:#1f1406; --accent-text:#f5c04a;
+  --leaf:#8cc274; --rust:#ff7a52; --live:#ff5a3c;
+  --display:"Lilita One","Arial Black",system-ui,sans-serif;
+  --label:"Pixelify Sans","Courier New",ui-monospace,monospace;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+  --bg:#fdf3df; --surface:#fffaf0; --surface2:#f6e3bb; --ink:#24180a; --muted:#6a5230;
+  --edge:#24180a; --shadow:#24180a; --accent:#f2b632; --on-accent:#24180a; --accent-text:#8a5800;
+  --leaf:#3f7a2e; --rust:#b8411c; --live:#c8321c; color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#fdf3df; --surface:#fffaf0; --surface2:#f6e3bb; --ink:#24180a; --muted:#6a5230;
+  --edge:#24180a; --shadow:#24180a; --accent:#f2b632; --on-accent:#24180a; --accent-text:#8a5800;
+  --leaf:#3f7a2e; --rust:#b8411c; --live:#c8321c; color-scheme:light}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;overflow-x:clip;transition:background-color .4s ease,color .4s ease}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:.95;margin:0;text-wrap:balance;letter-spacing:.005em}
+.lbl{font-family:var(--label);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-text)}
+.muted{color:var(--muted)}
+.card{background:var(--surface);border:2px solid var(--edge);box-shadow:5px 5px 0 var(--shadow)}
+.btn{font-family:var(--label);font-weight:700;font-size:15px;letter-spacing:.04em;text-transform:uppercase;border:2px solid var(--edge);box-shadow:4px 4px 0 var(--shadow);padding:10px 16px;cursor:pointer;background:var(--surface);color:var(--ink);transition:transform .1s ease}
+.btn:hover{transform:translate(-2px,-2px)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow)}
+.btn.gold{background:var(--accent);color:var(--on-accent)}
+.btn:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.pix{image-rendering:pixelated;image-rendering:crisp-edges}
+section{padding-block:56px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px 24px;margin-bottom:24px}
+.sec-head h2{font-size:clamp(40px,6vw,72px)}
+.sec-head p{max-width:520px;margin:0}
+
+/* mock bar */
+.mockbar{border-bottom:2px dashed var(--edge);padding-block:10px;font-family:var(--label);font-size:13px;letter-spacing:.05em}
+.mockbar .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between}
+.mockbar b{color:var(--accent-text)}
+
+/* start screen strip */
+.start{padding-block:28px 8px}
+.tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-top:14px}
+.tile{border:2px solid #000;box-shadow:4px 4px 0 #000;padding:10px;min-height:118px;display:flex;flex-direction:column;justify-content:space-between;font-family:var(--label);font-size:12px;position:relative}
+.tile .k{opacity:.75}
+.tile .n{font-size:19px;font-weight:700;line-height:1.05}
+.tile.new{outline:3px solid var(--accent);outline-offset:4px;background:linear-gradient(180deg,#f6c35b,#e98a3a 70%,#7a4a1c);color:#24180a}
+.tile.new .badge{position:absolute;top:-12px;right:-8px;background:var(--live);color:#fff;padding:2px 7px;border:2px solid #000;font-weight:700}
+.tile.new .duo{display:flex;align-items:end;gap:2px;height:46px}
+.tile.new .duo div{height:46px;background-repeat:no-repeat}
+
+/* header + scorebug */
+.top{padding-block:18px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.bug{display:flex;align-items:stretch;border:2px solid var(--edge);box-shadow:4px 4px 0 var(--shadow);font-family:var(--label);font-weight:700;font-size:14px;text-transform:uppercase}
+.bug>span{padding:6px 10px;display:flex;align-items:center;gap:6px}
+.bug .live{background:var(--live);color:#fff}
+.bug .live i{width:8px;height:8px;background:#fff;border-radius:50%;animation:blink 1.2s steps(1) infinite}
+.bug .home{background:var(--surface)}
+.bug .score{background:var(--accent);color:var(--on-accent);font-variant-numeric:tabular-nums}
+.bug .away{background:var(--surface2)}
+nav{display:flex;flex-wrap:wrap;gap:4px 16px;font-family:var(--label);font-size:14px}
+nav a{text-decoration:none;color:var(--ink);border-bottom:2px solid transparent}
+nav a:hover{border-color:var(--accent)}
+.toggles{display:flex;gap:10px}
+.toggles .btn{padding:6px 10px;font-size:13px}
+@keyframes blink{50%{opacity:0}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:36px;align-items:center;padding-block:24px 48px}
+.hero h1{font-size:clamp(52px,7.6vw,104px);margin-top:10px}
+.hero h1 em{font-style:normal;color:var(--accent-text)}
+.hero p.sub{font-size:19px;max-width:520px;margin:18px 0 24px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:14px}
+.stage{position:relative;aspect-ratio:16/11;max-width:100%;border:2px solid var(--edge);box-shadow:6px 6px 0 var(--shadow);overflow:hidden;cursor:pointer}
+.stage canvas.bgc{position:absolute;inset:0;width:100%;height:100%}
+.cam{position:absolute;top:10px;left:10px;font-family:var(--label);font-size:12px;background:#000a;color:#fff;padding:3px 8px;display:flex;gap:6px;align-items:center}
+.cam i{width:7px;height:7px;border-radius:50%;background:#ff3b30;animation:blink 1s steps(1) infinite}
+.me,.ck{position:absolute;bottom:0;background-repeat:no-repeat}
+.me{left:12%;width:37%;aspect-ratio:48/56;background-size:500% 100%;animation:glance 9s steps(1) infinite}
+.ck{left:51%;width:34%;aspect-ratio:48/56;background-size:200% 100%;animation:ckblink 5.3s steps(1) infinite}
+@keyframes glance{0%{background-position:0 0}30%{background-position:25% 0}36%{background-position:0 0}62%{background-position:50% 0}66%{background-position:0 0}88%{background-position:100% 0}90%{background-position:0 0}}
+@keyframes ckblink{0%{background-position:0 0}46%{background-position:100% 0}49%{background-position:0 0}}
+.ck.wag{animation:ckblink 5.3s steps(1) infinite,tilt .5s ease 2}
+@keyframes tilt{50%{transform:rotate(-6deg)}}
+.box{position:absolute;border:2px solid var(--accent);pointer-events:none}
+.box span{position:absolute;top:-22px;left:-2px;background:var(--accent);color:#1f1406;font-family:var(--label);font-size:11px;font-weight:700;padding:1px 6px;white-space:nowrap}
+.hint{position:absolute;right:10px;top:10px;font-family:var(--label);font-size:12px;background:var(--accent);color:#1f1406;padding:3px 8px;border:2px solid #1f1406}
+.ball{position:absolute;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4ff7a,#c8e01c 60%,#8fa312);border:2px solid #2d3306;left:86%;bottom:6%;z-index:3}
+.heart{position:fixed;pointer-events:none;font-family:var(--label);font-weight:700;color:var(--live);font-size:22px;z-index:90;animation:floatup 1s ease-out forwards}
+@keyframes floatup{to{transform:translateY(-60px);opacity:0}}
+
+/* unique feature band */
+.only{background:var(--accent);color:var(--on-accent);border-block:2px solid var(--edge)}
+.only .wrap{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:20px 28px;align-items:center;padding-block:22px}
+.only h3{font-size:clamp(28px,3.4vw,40px)}
+.only p{margin:6px 0 0;max-width:640px}
+.only .lbl{color:var(--on-accent)}
+.only .chip{font-family:var(--label);font-weight:700;border:2px solid var(--on-accent);padding:6px 10px;font-size:13px;text-transform:uppercase}
+
+/* pack */
+.leash{position:relative;padding-top:34px}
+.leash::before{content:"";position:absolute;left:0;right:0;top:12px;height:8px;background:repeating-linear-gradient(90deg,#ff8a2a 0 14px,#c4621a 14px 18px);border:2px solid var(--edge)}
+.tags{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:26px 16px}
+.tag{position:relative;padding:14px 12px 12px;text-align:center;border:2px solid var(--edge);background:var(--surface);box-shadow:4px 4px 0 var(--shadow);border-radius:38px 38px 10px 10px;transform-origin:50% -26px;animation:sway 3.4s ease-in-out infinite alternate}
+.tag::before{content:"";position:absolute;left:50%;top:-26px;width:2px;height:26px;background:var(--edge)}
+.tag::after{content:"";position:absolute;left:calc(50% - 6px);top:6px;width:8px;height:8px;border:2px solid var(--edge);border-radius:50%}
+.tag b{display:block;font-family:var(--display);font-weight:400;font-size:26px;line-height:1;margin-top:10px}
+.tag small{font-family:var(--label);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tag.lead{background:var(--accent);color:var(--on-accent)}
+.tag.lead small{color:var(--on-accent)}
+@keyframes sway{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
+
+/* walkies */
+.walk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;position:relative}
+.walk .step{padding:16px;min-width:0}
+.walk .dy{font-family:var(--display);font-size:46px;line-height:1;color:var(--accent-text);font-variant-numeric:tabular-nums}
+.walk .dy small{font-family:var(--label);font-size:13px;margin-left:6px}
+.walk h3{font-size:24px;margin:10px 0 6px}
+.walk p{margin:0;font-size:15px}
+.paws{display:flex;gap:10px;margin:14px 0 18px;font-family:var(--label);font-size:12px;color:var(--muted);align-items:center}
+.paws::before{content:"";flex:1;height:10px;background:radial-gradient(circle,var(--accent) 2.5px,transparent 3px) 0 0/22px 10px repeat-x}
+
+/* game */
+.game{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px;align-items:start}
+.screen{position:relative;border:2px solid var(--edge);box-shadow:6px 6px 0 var(--shadow);background:#120c06}
+.screen canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;touch-action:none}
+.screen .over{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#120c06d9;color:#fbf0dc;text-align:center;padding:16px}
+.screen .over h3{font-size:clamp(32px,5vw,56px);color:#f5c04a}
+.screen .over p{margin:0;max-width:440px;font-size:15px}
+.pad{display:none;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;touch-action:none;user-select:none;-webkit-user-select:none}
+.dpad{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(3,48px)}
+.dpad button,.ab button{font-family:var(--label);font-weight:700;border:2px solid var(--edge);background:var(--surface);color:var(--ink);box-shadow:3px 3px 0 var(--shadow);touch-action:none}
+.dpad button:nth-child(1){grid-area:1/2}.dpad button:nth-child(2){grid-area:2/1}.dpad button:nth-child(3){grid-area:2/3}.dpad button:nth-child(4){grid-area:3/2}
+.ab{display:flex;gap:14px}
+.ab button{width:76px;height:76px;border-radius:50%;font-size:13px}
+.ab button.a{background:var(--accent);color:var(--on-accent)}
+.rules{padding:18px}
+.rules h3{font-size:30px;margin-bottom:10px}
+.rules ol{margin:0 0 14px;padding-left:20px}
+.rules li{margin-bottom:6px}
+.keys{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;font-size:15px;margin:0}
+.keys dt{font-family:var(--label);font-weight:700;color:var(--accent-text)}
+.keys dd{margin:0}
+
+/* off the leash */
+.off{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.off .card{padding:20px}
+.off h3{font-size:34px;margin:8px 0 10px}
+.off ul{margin:0;padding-left:18px}
+.tbc{font-family:var(--label);font-size:12px;background:var(--surface2);border:1px dashed var(--edge);padding:1px 6px;white-space:nowrap}
+.album{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:28px}
+.polaroid{background:#fffaf0;color:#24180a;padding:8px 8px 10px;border:2px solid #24180a;box-shadow:4px 4px 0 var(--shadow);cursor:pointer;transition:transform .15s ease;text-align:left;font:inherit}
+.polaroid:nth-child(odd){transform:rotate(-1.5deg)}.polaroid:nth-child(even){transform:rotate(1.2deg)}
+.polaroid:hover,.polaroid:focus-visible{transform:rotate(0) translate(-2px,-2px)}
+.polaroid canvas{display:block;width:100%;height:auto;aspect-ratio:1;background:#e7d6b4}
+.polaroid span{display:block;font-family:var(--label);font-size:13px;margin-top:8px}
+
+/* ask cookie */
+.ask{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:start}
+.ask .ckbig{width:180px;aspect-ratio:48/56;background-size:200% 100%;border:2px solid var(--edge);box-shadow:5px 5px 0 var(--shadow);background-color:var(--surface2);animation:ckblink 4.1s steps(1) infinite}
+.chat{padding:18px;min-width:0}
+.qs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.qs button{font-family:var(--label);font-size:13px;padding:6px 10px;border:2px solid var(--edge);background:var(--surface2);color:var(--ink);cursor:pointer}
+.qs button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.bubble{background:var(--surface2);border:2px solid var(--edge);padding:14px 16px;min-height:96px}
+.bubble .woof{font-family:var(--display);font-size:28px;color:var(--accent-text);display:block}
+
+/* spec */
+.spec{overflow-x:auto;border:2px solid var(--edge);box-shadow:5px 5px 0 var(--shadow);background:var(--surface)}
+.spec table{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
+.spec th,.spec td{text-align:left;padding:10px 14px;border-bottom:1px solid color-mix(in srgb,var(--edge) 30%,transparent);vertical-align:top}
+.spec th{font-family:var(--label);font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-text);width:210px}
+.todo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:24px}
+.todo .card{padding:18px}
+.todo h3{font-size:26px;margin-bottom:8px}
+.todo ul{margin:0;padding-left:18px}
+
+footer{border-top:2px solid var(--edge);padding-block:28px 120px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+
+/* companion */
+.buddy{position:fixed;left:0;bottom:calc(6px + env(safe-area-inset-bottom,0px));width:96px;height:64px;z-index:80;border:0;padding:0;background:transparent;cursor:pointer;will-change:transform}
+.buddy canvas{width:100%;height:100%}
+.buddy .say{position:absolute;bottom:58px;left:50%;transform:translateX(-50%);font-family:var(--label);font-weight:700;font-size:12px;background:var(--surface);color:var(--ink);border:2px solid var(--edge);padding:2px 6px;white-space:nowrap}
+.lane{position:fixed;left:0;right:0;bottom:env(safe-area-inset-bottom,0px);height:6px;background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 20px);opacity:.5;z-index:79;pointer-events:none}
+.fetchball{position:fixed;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4ff7a,#c8e01c 60%,#8fa312);border:2px solid #2d3306;z-index:81;pointer-events:none}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .walk{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .game{grid-template-columns:minmax(0,1fr)}
+  .off,.todo{grid-template-columns:minmax(0,1fr)}
+  .album{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .only .wrap{grid-template-columns:minmax(0,1fr)}
+  .pad{display:flex}
+}
+@media (max-width:520px){
+  .walk{grid-template-columns:minmax(0,1fr)}
+  .ask{grid-template-columns:minmax(0,1fr)}
+  .ask .ckbig{width:120px}
+  .buddy{width:72px;height:48px}
+}
+@media (pointer:coarse){.pad{display:flex}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="mockbar"><div class="wrap">
+  <span><b>Mock</b> · World 6 · Golden Hour · same site, new world</span>
+  <span>Night by default · try the theme toggle, the ball and the game</span>
+</div></div>
+
+<div class="wrap start" aria-labelledby="start-h">
+  <div class="lbl" id="start-h">Start screen · Choose your world · press 1–6</div>
+  <div class="tiles">
+    <div class="tile" style="background:#0f1f17;color:#eef3ea"><span class="k">1</span><span class="n" style="font-family:'Barlow',sans-serif">Football</span></div>
+    <div class="tile" style="background:#17171d;color:#f4f4f6;border-color:#e10600"><span class="k">2</span><span class="n">Grand Prix</span></div>
+    <div class="tile" style="background:#16171f;color:#e8eaf2"><span class="k">3</span><span class="n">Gaming</span></div>
+    <div class="tile" style="background:#1d4fbf;color:#fff"><span class="k">4</span><span class="n">Running</span></div>
+    <div class="tile" style="background:#140c26;color:#2de2e6"><span class="k">5</span><span class="n">AI</span></div>
+    <div class="tile new"><span class="badge">New</span><span class="k">6</span>
+      <div class="duo"><div class="pix" data-sheet="me" style="width:40px;background-size:500% 100%"></div><div class="pix" data-sheet="ck" style="width:40px;background-size:200% 100%"></div></div>
+      <span class="n" style="font-family:var(--display);font-weight:400;font-size:22px">Golden Hour</span></div>
+  </div>
+</div>
+
+<header class="wrap top">
+  <div class="bug" aria-label="Scorebug: live from the dog park, VA and Cookie, off leash">
+    <span class="live"><i></i>Live</span><span class="home">VA 4</span><span class="score">&amp;</span><span class="home">Cookie</span><span class="away">Off leash</span>
+  </div>
+  <nav aria-label="Sections">
+    <a href="#pack">The pack</a><a href="#walkies">Walkies</a><a href="#rescue">Street Rescue</a><a href="#leash">Off the leash</a><a href="#ask">Ask Cookie</a>
+  </nav>
+  <div class="toggles">
+    <button class="btn" id="themeBtn" type="button">Dusk walk</button>
+    <button class="btn" id="soundBtn" type="button" aria-pressed="false">Sound off</button>
+  </div>
+</header>
+
+<main>
+<div class="wrap hero">
+  <div>
+    <div class="lbl">Live from the dog park · golden hour</div>
+    <h1>Fetching models. <em>Rescuing dogs.</em></h1>
+    <p class="sub">Vishal Agarwal, AI engineer at Samsung Electro-Mechanics. Off the clock he volunteers with a dog-rescue NGO and runs the park with Cookie, the golden girl on the right.</p>
+    <div class="ctas">
+      <a class="btn gold" href="#rescue" style="text-decoration:none">Play Street Rescue</a>
+      <a class="btn" href="#ask" style="text-decoration:none">Ask Cookie</a>
+    </div>
+  </div>
+  <div class="stage" id="stage" role="img" aria-label="Pixel-art Vishal in a floppy dog-ear headband and NGO lanyard, sitting next to pixel Cookie in a park at golden hour">
+    <canvas class="bgc pix" id="parkCanvas" width="160" height="110"></canvas>
+    <div class="cam"><i></i>Cam 2 · Park gate</div>
+    <div class="hint" id="hint">Tap the ball · Cookie fetches</div>
+    <div class="me pix" data-sheet="me"></div>
+    <div class="ck pix" data-sheet="ck" id="heroCk"></div>
+    <div class="box" style="left:15%;top:42%;width:31%;height:46%"><span>volunteer 0.97</span></div>
+    <div class="box" style="left:54%;top:49%;width:28%;height:38%"><span>good_girl 0.99</span></div>
+    <button class="ball" id="ball" type="button" aria-label="Throw the ball for Cookie"></button>
+  </div>
+</div>
+
+<div class="only">
+  <div class="wrap">
+    <span class="lbl">Only in this world</span>
+    <div>
+      <h3>Cookie walks the page with you</h3>
+      <p>She trots along the bottom edge, follows your pointer, sits when you stop to read and fetches the ball. Tap her for a boop. In the other worlds the sprite takes its costume off as you scroll; here Vishal keeps the ears on.</p>
+    </div>
+    <span class="chip">Look down ↓</span>
+  </div>
+</div>
+
+<section id="pack"><div class="wrap">
+  <div class="sec-head">
+    <div><div class="lbl">Line-up · new layout: the leash</div><h2>The pack</h2></div>
+    <p class="muted">The same eleven tools as the Starting XI, hung as dog tags on one lead. Python leads the walk.</p>
+  </div>
+  <div class="leash"><div class="tags" id="tags"></div></div>
+</div></section>
+
+<section id="walkies"><div class="wrap">
+  <div class="sec-head">
+    <div><div class="lbl">Career · units: dog years</div><h2>Walkies so far</h2></div>
+    <p class="muted">Timeline units switch to dog years, using the old rule of thumb: one human year is seven dog years, counted from 2021.</p>
+  </div>
+  <div class="paws">Start of the walk · 2021</div>
+  <div class="walk">
+    <div class="card step"><div class="dy">DY 0<small>2021</small></div><h3>MIT Manipal</h3><p>B.Tech CSE (AI &amp; ML), 2021–25.</p></div>
+    <div class="card step"><div class="dy">DY 21<small>2024</small></div><h3>Netweb · Afame</h3><p>Cloud intern at Netweb, ML intern at Afame.</p></div>
+    <div class="card step"><div class="dy">DY 28<small>Jan 2025</small></div><h3>Samsung E-M</h3><p>ML intern, January to July 2025.</p></div>
+    <div class="card step"><div class="dy">DY 32<small>Aug 2025</small></div><h3>AI Engineer</h3><p>Promoted to AI Engineer at Samsung Electro-Mechanics.</p></div>
+  </div>
+</div></section>
+
+<section id="rescue"><div class="wrap">
+  <div class="sec-head">
+    <div><div class="lbl">Featured game · this world's game</div><h2>Street Rescue</h2></div>
+    <p class="muted">Rowdies are after the street dogs. Get between them, shoo them off, and walk every dog to the NGO van before the light goes.</p>
+  </div>
+  <div class="game">
+    <div>
+      <div class="screen" id="screen">
+        <canvas id="game" class="pix" width="320" height="180" tabindex="0" aria-label="Street Rescue game"></canvas>
+        <div class="over" id="over">
+          <div class="lbl" style="color:#f5c04a">Street Rescue · 90 seconds</div>
+          <h3 id="overTitle">Golden hour patrol</h3>
+          <p id="overText">Shoo the rowdies before they swing, then lead the dogs to the van. Three scared-off dogs ends the round.</p>
+          <button class="btn gold" id="startBtn" type="button">Start patrol</button>
+        </div>
+      </div>
+      <div class="pad" id="pad" aria-label="Touch controls">
+        <div class="dpad">
+          <button type="button" data-k="up" aria-label="Up">▲</button>
+          <button type="button" data-k="left" aria-label="Left">◀</button>
+          <button type="button" data-k="right" aria-label="Right">▶</button>
+          <button type="button" data-k="down" aria-label="Down">▼</button>
+        </div>
+        <div class="ab">
+          <button type="button" data-k="bark" aria-label="Cookie barks">Bark</button>
+          <button type="button" class="a" data-k="shoo" aria-label="Shoo">Shoo</button>
+        </div>
+      </div>
+    </div>
+    <div class="card rules">
+      <h3>How a rescue works</h3>
+      <ol>
+        <li>A rowdy walks up to a dog and raises a stick. You see a <b>!</b> over his head.</li>
+        <li>Get close and <b>Shoo</b>. He tumbles over and runs off.</li>
+        <li>In a crowd, Cookie <b>barks</b>: everyone near her freezes for a moment.</li>
+        <li>Walk into a dog to clip on a lead (two at a time), then walk to the van.</li>
+      </ol>
+      <dl class="keys">
+        <dt>Arrows / WASD</dt><dd>move</dd>
+        <dt>Space</dt><dd>shoo</dd>
+        <dt>X</dt><dd>Cookie barks (recharges)</dd>
+        <dt>Enter</dt><dd>restart</dd>
+      </dl>
+    </div>
+  </div>
+</div></section>
+
+<section id="leash"><div class="wrap">
+  <div class="sec-head">
+    <div><div class="lbl">Off the pitch · this world: off the leash</div><h2>Off the leash</h2></div>
+    <p class="muted">The NGO and the dog park get their own cards here. Cookie's album sits below: tap a photo to unpixel it.</p>
+  </div>
+  <div class="off">
+    <div class="card">
+      <div class="lbl">Volunteer</div>
+      <h3>Dog-rescue NGO</h3>
+      <p>Vishal volunteers with <span class="tbc">NGO name</span> in <span class="tbc">city</span>.</p>
+      <ul>
+        <li>What he does there <span class="tbc">rescues, feeding, adoption drives?</span></li>
+        <li>Since <span class="tbc">year</span></li>
+        <li>Link to the NGO <span class="tbc">URL</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="lbl">Weekends</div>
+      <h3>The dog park</h3>
+      <p>Meetups at <span class="tbc">park name</span>, where Cookie runs the zoomies and Vishal helps out as a volunteer.</p>
+      <ul>
+        <li>Event or community name <span class="tbc">to confirm</span></li>
+        <li>What a meetup looks like <span class="tbc">one line from you</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="album" id="album"></div>
+</div></section>
+
+<section id="ask"><div class="wrap">
+  <div class="sec-head">
+    <div><div class="lbl">The Pundit · this world: Cookie</div><h2>Ask Cookie</h2></div>
+    <p class="muted">Same assistant, new voice. Every answer starts with a woof, then the translation.</p>
+  </div>
+  <div class="ask">
+    <div class="ckbig pix" data-sheet="ck" role="img" aria-label="Pixel Cookie"></div>
+    <div class="card chat">
+      <div class="qs" id="qs"></div>
+      <div class="bubble" id="bubble" aria-live="polite"></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="spec"><div class="wrap">
+  <div class="sec-head">
+    <div><div class="lbl">For the build</div><h2>What this world changes</h2></div>
+    <p class="muted">The row this world adds to the worlds spec. Values are proposals until you approve the mock.</p>
+  </div>
+  <div class="spec"><table>
+    <tbody id="specRows"></tbody>
+  </table></div>
+  <div class="todo">
+    <div class="card"><h3>Needed from you</h3><ul>
+      <li>The NGO's name, your role and since when.</li>
+      <li>The dog park or community name.</li>
+      <li>OK to show real photos of Cookie (the rule today is: only the medal photo is real). No people in any of them.</li>
+      <li>Cookie facts you want in her answers: age, favourite thing, worst habit.</li>
+    </ul></div>
+    <div class="card"><h3>Left out on purpose</h3><ul>
+      <li>Photos with you or other people in them (pixel sprite only).</li>
+      <li>Rescue counts or NGO numbers until you give real ones.</li>
+      <li>Any real violence: rowdies get shooed and tumble away, dogs run off scared, nobody gets hurt on screen.</li>
+    </ul></div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <span class="lbl">Full time at the park · Vishal Agarwal · No. 4</span>
+  <span class="muted" style="font-size:14px">Mock for World 6. Sprites: design/pixel-me/generate_golden.py</span>
+</div></footer>
+
+<div class="lane" aria-hidden="true"></div>
+<button class="buddy" id="buddy" type="button" aria-label="Boop Cookie"><canvas id="buddyCanvas" class="pix" width="24" height="16"></canvas></button>
+
+<script>
+const ASSETS = {me: "%%VISHAL%%", ck: "%%COOKIE%%"};
+const SMALL = %%SMALL%%;
+const PHOTOS = %%PHOTOS%%;
+</script>
+<script>
+(() => {
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch { /* storage blocked: keep in memory only */ } },
+};
+
+/* ---------- sprite sheets ---------- */
+document.querySelectorAll("[data-sheet]").forEach(el => { el.style.backgroundImage = `url(${ASSETS[el.dataset.sheet]})`; });
+
+/* ---------- small sprites -> canvases ---------- */
+const spriteCache = new Map();
+function sprite(rows, pal, flip = false) {
+  const key = rows.join("") + JSON.stringify(pal) + flip;
+  if (spriteCache.has(key)) return spriteCache.get(key);
+  const c = document.createElement("canvas");
+  c.width = rows[0].length; c.height = rows.length;
+  const g = c.getContext("2d");
+  rows.forEach((row, y) => [...row].forEach((ch, x) => {
+    if (ch === "." || !pal[ch]) return;
+    g.fillStyle = pal[ch];
+    g.fillRect(flip ? c.width - 1 - x : x, y, 1, 1);
+  }));
+  spriteCache.set(key, c);
+  return c;
+}
+const dogPal = coat => ({...SMALL.pal, ...SMALL.coats[coat]});
+
+/* ---------- theme + sound ---------- */
+const themeBtn = $("#themeBtn"), soundBtn = $("#soundBtn");
+const isNight = () => {
+  const t = document.documentElement.dataset.theme;
+  if (t) return t === "dark";
+  return !matchMedia("(prefers-color-scheme: light)").matches;
+};
+function applyTheme(mode) {
+  if (mode) document.documentElement.dataset.theme = mode;
+  themeBtn.textContent = isNight() ? "Dusk walk" : "Golden hour";
+  themeBtn.setAttribute("aria-label", `Theme: ${themeBtn.textContent}. Switch`);
+  drawPark();
+}
+themeBtn.addEventListener("click", () => {
+  const next = isNight() ? "light" : "dark";
+  store.set("va-golden-theme", next);
+  applyTheme(next);
+});
+
+let audio = null, soundOn = false;
+soundBtn.addEventListener("click", () => {
+  soundOn = !soundOn;
+  soundBtn.textContent = soundOn ? "Sound on" : "Sound off";
+  soundBtn.setAttribute("aria-pressed", String(soundOn));
+  if (soundOn && !audio) {
+    try { audio = new (window.AudioContext || window.webkitAudioContext)(); } catch { soundOn = false; }
+  }
+  if (soundOn) sfx("boop");
+});
+function tone(type, f0, f1, dur, vol = 0.12, delay = 0) {
+  const t = audio.currentTime + delay;
+  const o = audio.createOscillator(), g = audio.createGain();
+  o.type = type; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  o.connect(g).connect(audio.destination); o.start(t); o.stop(t + dur + 0.02);
+}
+function sfx(name) {
+  if (!soundOn || !audio) return;
+  if (audio.state === "suspended") audio.resume();
+  if (name === "boop") { tone("sine", 700, 1500, 0.12); tone("sine", 1500, 900, 0.1, 0.08, 0.12); }
+  if (name === "bark") { tone("sawtooth", 260, 150, 0.09, 0.14); tone("sawtooth", 300, 160, 0.11, 0.14, 0.14); }
+  if (name === "pow") { tone("square", 180, 60, 0.16, 0.12); tone("triangle", 900, 200, 0.08, 0.08); }
+  if (name === "clip") tone("square", 900, 1200, 0.05, 0.06);
+  if (name === "rescue") [523, 659, 784, 1046].forEach((f, i) => tone("triangle", f, f, 0.12, 0.09, i * 0.08));
+  if (name === "yelp") tone("sine", 1200, 500, 0.25, 0.08);
+  if (name === "whistle") tone("sine", 1800, 2600, 0.3, 0.06);
+}
+
+/* ---------- golden-hour park (hero stage) ---------- */
+const park = $("#parkCanvas"), pg = park.getContext("2d");
+function drawPark() {
+  const night = isNight();
+  const W = park.width, H = park.height;
+  const sky = night ? ["#2b1838", "#5a2a45", "#a2483f", "#e07a3a", "#f2a64a"] : ["#ffd98a", "#ffc766", "#f9ad4e", "#f2953f", "#e9823a"];
+  const band = Math.ceil(70 / sky.length);
+  sky.forEach((c, i) => {
+    pg.fillStyle = c; pg.fillRect(0, i * band, W, band);
+    if (i < sky.length - 1) { // dither between bands
+      pg.fillStyle = sky[i + 1];
+      for (let x = (i % 2); x < W; x += 2) pg.fillRect(x, i * band + band - 1, 1, 1);
+    }
+  });
+  pg.fillStyle = night ? "#ffcf6e" : "#fff3c4"; // low sun
+  for (let y = -9; y <= 9; y++) for (let x = -9; x <= 9; x++) if (x * x + y * y <= 81) pg.fillRect(120 + x, 58 + y, 1, 1);
+  const treeCol = night ? "#241626" : "#7a4a1c", treeCol2 = night ? "#331d2c" : "#8f5a24";
+  [[8, 46, 15], [34, 40, 18], [62, 50, 12], [146, 44, 16]].forEach(([cx, cy, r], i) => {
+    pg.fillStyle = i % 2 ? treeCol : treeCol2;
+    for (let y = -r; y <= r; y++) for (let x = -r; x <= r; x++) if (x * x + y * y * 1.3 <= r * r) pg.fillRect(cx + x, cy + y, 1, 1);
+    pg.fillRect(cx - 1, cy + r - 3, 3, 30);
+  });
+  pg.fillStyle = night ? "#2a3a1c" : "#9cb84a"; pg.fillRect(0, 70, W, H - 70);
+  pg.fillStyle = night ? "#22301a" : "#86a33e";
+  for (let x = 0; x < W; x += 3) pg.fillRect(x, 70 + ((x * 7) % 5), 1, 1);
+  pg.fillStyle = night ? "#6a4a33" : "#e2b27c"; // path
+  for (let y = 78; y < H; y++) { const w = 20 + (y - 78) * 1.6; pg.fillRect(100 - w / 2, y, w, 1); }
+  pg.fillStyle = night ? "#3b2a22" : "#5a3a22"; pg.fillRect(140, 30, 2, 48); pg.fillRect(136, 28, 10, 3); // lamp post
+  pg.fillStyle = night ? "#ffe08a" : "#c9b48a"; pg.fillRect(137, 31, 8, 2);
+  if (night) { pg.fillStyle = "rgba(255,210,120,.18)"; for (let y = 33; y < 80; y++) { const w = (y - 33) * 0.9; pg.fillRect(141 - w / 2, y, w, 1); } }
+  pg.fillStyle = night ? "#4a2f22" : "#6b4424"; pg.fillRect(6, 82, 30, 3); pg.fillRect(8, 85, 2, 6); pg.fillRect(32, 85, 2, 6); pg.fillRect(6, 77, 30, 2); // bench
+}
+
+/* ---------- Cookie companion ---------- */
+const buddy = $("#buddy"), bc = $("#buddyCanvas"), bg = bc.getContext("2d");
+const B = {x: 40, target: 40, dir: 1, frame: 0, t: 0, carrying: false, mode: "sit", say: null, sayT: 0};
+let ballEl = null, ballX = 0;
+function buddyDraw() {
+  bg.clearRect(0, 0, 24, 16);
+  const key = B.mode === "sit" ? "sit" : (B.frame ? "walk2" : "walk1");
+  bg.drawImage(sprite(SMALL.dog[key], dogPal("cookie"), B.dir < 0), 0, 0);
+  if (B.carrying) { bg.fillStyle = "#c8e01c"; bg.fillRect(B.dir > 0 ? 21 : 1, 8, 2, 2); }
+}
+function buddySay(text, ms = 1200) {
+  let s = buddy.querySelector(".say");
+  if (!s) { s = document.createElement("span"); s.className = "say"; buddy.appendChild(s); }
+  s.textContent = text; B.sayT = ms;
+}
+function hearts(x, y, n = 3) {
+  for (let i = 0; i < n; i++) {
+    const h = document.createElement("span");
+    h.className = "heart"; h.textContent = "♥";
+    h.style.left = `${x + (i - 1) * 16}px`; h.style.top = `${y - i * 6}px`; h.style.animationDelay = `${i * 0.08}s`;
+    document.body.appendChild(h); setTimeout(() => h.remove(), 1300);
+  }
+}
+buddy.addEventListener("click", () => {
+  const r = buddy.getBoundingClientRect();
+  hearts(r.left + r.width / 2, r.top); buddySay("boop!"); sfx("boop");
+});
+addEventListener("pointermove", e => {
+  if (e.pointerType !== "mouse" || ballEl) return;
+  if (e.clientY > innerHeight * 0.55) B.target = Math.max(8, Math.min(innerWidth - 104, e.clientX - 48));
+});
+let lastScroll = scrollY;
+addEventListener("scroll", () => {
+  if (ballEl) return;
+  const d = scrollY - lastScroll; lastScroll = scrollY;
+  if (Math.abs(d) > 30) B.target = Math.max(8, Math.min(innerWidth - 104, B.x + Math.sign(d) * 120));
+}, {passive: true});
+
+$("#ball").addEventListener("click", e => {
+  e.stopPropagation();
+  if (ballEl) return;
+  const src = e.currentTarget, r = src.getBoundingClientRect();
+  src.style.visibility = "hidden";
+  ballX = 30 + Math.random() * (innerWidth - 120);
+  ballEl = document.createElement("span"); ballEl.className = "fetchball"; document.body.appendChild(ballEl);
+  const y0 = r.top, x0 = r.left, y1 = innerHeight - 22, t0 = performance.now(), dur = reduced ? 1 : 900;
+  sfx("whistle");
+  $("#hint").textContent = "Cookie's on it";
+  const fly = now => {
+    const p = Math.min(1, (now - t0) / dur);
+    const x = x0 + (ballX - x0) * p, y = y0 + (y1 - y0) * p - Math.sin(p * Math.PI) * 160;
+    ballEl.style.transform = `translate(${x}px, ${y}px)`;
+    if (p < 1) requestAnimationFrame(fly); else { B.target = ballX - 48 + 12; B.mode = "walk"; buddySay("!!"); }
+  };
+  ballEl.style.left = "0"; ballEl.style.top = "0";
+  requestAnimationFrame(fly);
+});
+$("#stage").addEventListener("click", () => { const h = $("#heroCk"); h.classList.remove("wag"); void h.offsetWidth; h.classList.add("wag"); });
+
+let lastT = performance.now();
+function buddyTick(now) {
+  const dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
+  const dx = B.target - B.x, speed = ballEl || B.carrying ? 260 : 120;
+  if (Math.abs(dx) > 2 && !reduced) {
+    B.mode = "walk"; B.dir = Math.sign(dx);
+    B.x += Math.sign(dx) * Math.min(Math.abs(dx), speed * dt);
+    B.t += dt; if (B.t > 0.14) { B.t = 0; B.frame ^= 1; }
+  } else {
+    if (reduced) B.x = B.target;
+    if (ballEl && Math.abs(B.x + 48 - ballX) < 40) { // picked up the ball, bring it back
+      ballEl.remove(); ballEl = null; B.carrying = true; B.target = 40; buddySay("got it!"); sfx("boop");
+    } else if (B.carrying && Math.abs(B.x - 40) < 4) {
+      B.carrying = false; $("#ball").style.visibility = "visible"; $("#hint").textContent = "Good girl. Again?";
+      const r = buddy.getBoundingClientRect(); hearts(r.left + r.width / 2, r.top, 2);
+    }
+    B.mode = "sit";
+  }
+  if (B.sayT > 0) { B.sayT -= dt * 1000; if (B.sayT <= 0) buddy.querySelector(".say")?.remove(); }
+  buddy.style.transform = `translateX(${B.x}px)`;
+  buddyDraw();
+  requestAnimationFrame(buddyTick);
+}
+
+/* ---------- the pack ---------- */
+const PACK = [["Python", "Pack leader"], ["PyTorch", "Fetch"], ["YOLOv8", "Sniffer"], ["OpenCV", "Lookout"], ["FastAPI", "Runner"], ["Next.js", "Show dog"], ["TypeScript", "Good boy"], ["NumPy", "Herder"], ["Pandas", "Herder"], ["MySQL", "Guard"], ["Azure", "Guard"]];
+$("#tags").innerHTML = PACK.map(([n, role], i) =>
+  `<div class="tag${i ? "" : " lead"}" style="animation-duration:${(3 + (i % 4) * 0.45).toFixed(2)}s"><small>${role}</small><b>${n}</b></div>`).join("");
+
+/* ---------- album: pixel -> photo ---------- */
+const ALBUM = [["dupatta", "Dupatta day"], ["medals", "Wears his medals"], ["boop", "Boop range"], ["sky", "Golden hour"], ["zoomies", "Post-zoomies"], ["lamp", "Lamp light"], ["sit", "Sit. Good."], ["look", "Sky watch"]];
+const album = $("#album");
+ALBUM.forEach(([key, cap]) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "polaroid";
+  b.setAttribute("aria-label", `Photo of Cookie: ${cap}. Tap to unpixel.`);
+  b.innerHTML = `<canvas width="360" height="360"></canvas><span>${cap}</span>`;
+  album.appendChild(b);
+  const c = b.querySelector("canvas"), g = c.getContext("2d"), img = new Image();
+  let res = 18, goal = 18, raf = 0;
+  const paint = () => {
+    const n = Math.round(res);
+    const tmp = document.createElement("canvas"); tmp.width = n; tmp.height = n;
+    tmp.getContext("2d").drawImage(img, 0, 0, n, n);
+    g.imageSmoothingEnabled = n >= 300; g.clearRect(0, 0, 360, 360); g.drawImage(tmp, 0, 0, 360, 360);
+  };
+  const step = () => {
+    res += (goal - res) * (reduced ? 1 : 0.18);
+    if (Math.abs(goal - res) < 1) res = goal;
+    paint();
+    raf = res !== goal ? requestAnimationFrame(step) : 0;
+  };
+  const go = g2 => { goal = g2; if (!raf) raf = requestAnimationFrame(step); };
+  img.onload = paint;
+  img.onerror = () => { g.fillStyle = "#e7d6b4"; g.fillRect(0, 0, 360, 360); };
+  img.src = PHOTOS[key];
+  b.addEventListener("mouseenter", () => go(360));
+  b.addEventListener("mouseleave", () => go(18));
+  b.addEventListener("click", () => go(goal === 360 ? 18 : 360));
+});
+
+/* ---------- ask Cookie ---------- */
+const QA = [
+  ["Who are you?", "Woof! Arf.", "I'm Cookie, Vishal's golden girl. He earns the medals, I wear them. Ask anyone at the park."],
+  ["What does he do at the NGO?", "Woof woof.", "He volunteers with [NGO name]. What he does there and since when are still to come from Vishal, so I won't make it up."],
+  ["What's his day job?", "Wuf.", "He's an AI engineer at Samsung Electro-Mechanics. Computer vision, mostly. He can spot a dog in a photo faster than I can spot a squirrel."],
+  ["Should we hire him?", "WOOF!", "He's patient, he shows up every day, and he always brings the ball back. Good human. Scroll to the bottom for how to reach him."],
+];
+const qs = $("#qs"), bubble = $("#bubble");
+function answer(i) {
+  qs.querySelectorAll("button").forEach((b, j) => b.setAttribute("aria-pressed", String(i === j)));
+  const [, woof, text] = QA[i];
+  bubble.innerHTML = `<span class="woof">${woof}</span><span class="muted" style="font-family:var(--label);font-size:12px">Translation</span><br>${text}`;
+  sfx("bark");
+}
+QA.forEach(([q], i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = q; b.addEventListener("click", () => answer(i)); qs.appendChild(b); });
+answer(0);
+
+/* ---------- spec rows ---------- */
+const SPEC = [
+  ["id / name", "golden · Golden Hour (tile 6 on the start screen)"],
+  ["Display / label font", "Lilita One · Pixelify Sans (body stays Barlow)"],
+  ["Costume", "Floppy golden dog-ear headband + orange NGO volunteer lanyard over a dark tee. Pixel Cookie sits beside him in the hero."],
+  ["Sections", "The pack / Walkies so far / Good boys & rescues / Off the leash"],
+  ["Line-up layout", "New: leash (dog tags on one lead, Python leads)"],
+  ["Assistant · review overlay", "Cookie (answers open with a woof) · Sniff test"],
+  ["Scorebug · camera · box label", "LIVE · VA 4 & Cookie · Off leash · Cam 2 · Park gate · good_girl 0.99"],
+  ["Prop", "Tennis ball: thrown from the hero, fetched by the companion"],
+  ["Timeline units", "Dog years (×7 from 2021): DY 0, DY 21, DY 28, DY 32"],
+  ["Theme labels", "Dusk walk (night, default) · Golden hour (day)"],
+  ["Night palette", "bg #1a1209 · surface #251a0e · ink #fbf0dc · accent #f2b632 · gold hard shadows"],
+  ["Day palette", "bg #fdf3df · surface #fffaf0 · ink #24180a · accent #f2b632 · accent text #8a5800"],
+  ["Game", "Street Rescue: shoo rowdies, Cookie barks to freeze them, lead dogs to the NGO van. Phone: A = Shoo, B = Bark."],
+  ["Only in this world", "Cookie companion on the bottom edge (follows, sits, fetches, boops) and the unpixel photo album"],
+  ["Sound", "Squeaky-toy boop, two-note bark, whistle on throw, rescue jingle"],
+];
+$("#specRows").innerHTML = SPEC.map(([k, v]) => `<tr><th scope="row">${k}</th><td>${v}</td></tr>`).join("");
+
+/* ---------- Street Rescue ---------- */
+const cv = $("#game"), g = cv.getContext("2d");
+const GW = 320, GH = 180, TOP = 78, BOT = 166, VAN = {x: 262, y: 108, w: 54, h: 34};
+const keys = {up: false, down: false, left: false, right: false};
+let S = null, playing = false, visible = true, last = 0;
+
+function newGame() {
+  S = {t: 90, rescued: 0, shooed: 0, lost: 0, spawnT: 2.5, dogT: 0, bark: 0, fx: [],
+    me: {x: 150, y: 128, dir: 1, frame: 0, ft: 0, shoo: 0},
+    ck: {x: 132, y: 132, dir: 1, frame: 0},
+    dogs: [], rowdies: []};
+  for (let i = 0; i < 3; i++) addDog(40 + i * 80 + Math.random() * 30);
+}
+const COATS = ["tan", "brown", "black", "tan"];
+function addDog(x) {
+  S.dogs.push({x: x ?? (Math.random() < 0.5 ? -20 : GW + 20), y: TOP + 8 + Math.random() * (BOT - TOP - 14), vx: 0, vy: 0,
+    coat: COATS[Math.floor(Math.random() * COATS.length)], state: "wander", wt: 0, frame: 0, ft: 0, dir: 1});
+}
+function addRowdy() {
+  const left = Math.random() < 0.5;
+  S.rowdies.push({x: left ? -14 : GW + 14, y: TOP + 6 + Math.random() * (BOT - TOP - 10), state: "walk", target: null, t: 0, vx: 0, vy: 0, dir: left ? 1 : -1, frame: 0, ft: 0, stun: 0});
+}
+const dist = (a, b) => Math.hypot(a.x - b.x, (a.y - b.y) * 1.4);
+const clampY = y => Math.max(TOP, Math.min(BOT, y));
+function fx(text, x, y, color) { S.fx.push({text, x, y, color, t: 0.8}); }
+
+function shoo() {
+  if (!playing) return;
+  S.me.shoo = 0.25;
+  const hit = S.rowdies.filter(r => r.state !== "flee" && dist(r, S.me) < 26);
+  if (!hit.length) return;
+  hit.forEach(r => { r.state = "flee"; r.dir = r.x < S.me.x ? -1 : 1; r.vx = r.dir * 160; r.vy = -40; r.t = 0; S.shooed++; fx("POW!", r.x, r.y - 26, "#ffd34a"); });
+  sfx("pow");
+}
+function bark() {
+  if (!playing || S.bark > 0) return;
+  S.bark = 4;
+  fx("WOOF!", S.ck.x, S.ck.y - 18, "#fbf0dc");
+  S.rowdies.forEach(r => { if (r.state !== "flee" && dist(r, S.ck) < 70) { r.stun = 1.6; if (r.state === "windup") r.state = "walk"; } });
+  sfx("bark");
+}
+
+function update(dt) {
+  S.t -= dt; S.bark = Math.max(0, S.bark - dt); S.me.shoo = Math.max(0, S.me.shoo - dt);
+  const me = S.me;
+  const mx = (keys.right ? 1 : 0) - (keys.left ? 1 : 0), my = (keys.down ? 1 : 0) - (keys.up ? 1 : 0);
+  if (mx || my) {
+    const n = Math.hypot(mx, my); me.x += (mx / n) * 78 * dt; me.y += (my / n) * 54 * dt;
+    if (mx) me.dir = mx; me.ft += dt; if (me.ft > 0.13) { me.ft = 0; me.frame ^= 1; }
+  }
+  me.x = Math.max(8, Math.min(GW - 8, me.x)); me.y = clampY(me.y);
+  // Cookie trails behind
+  const tx = me.x - me.dir * 18, ty = me.y + 4, ck = S.ck;
+  const cdx = tx - ck.x, cdy = ty - ck.y, cd = Math.hypot(cdx, cdy);
+  if (cd > 3) { ck.x += cdx / cd * Math.min(cd, 90 * dt); ck.y += cdy / cd * Math.min(cd, 70 * dt); ck.dir = Math.sign(cdx) || ck.dir; ck.frame = (performance.now() / 130 | 0) & 1; ck.moving = true; } else ck.moving = false;
+
+  // spawns: rowdies speed up over the round
+  S.spawnT -= dt;
+  if (S.spawnT <= 0) { addRowdy(); S.spawnT = Math.max(2.2, 5.2 - (90 - S.t) * 0.035); }
+  if (S.dogs.filter(d => d.state === "wander" || d.state === "lead").length < 3) { S.dogT -= dt; if (S.dogT <= 0) { addDog(); S.dogT = 2.5; } }
+
+  // dogs
+  const following = S.dogs.filter(d => d.state === "lead");
+  S.dogs.forEach(d => {
+    d.ft += dt; if (d.ft > 0.16) { d.ft = 0; d.frame ^= 1; }
+    if (d.state === "wander") {
+      d.wt -= dt;
+      if (d.x < 6 || d.x > GW - 6) { d.vx = d.x < 6 ? 22 : -22; d.vy = 0; d.wt = 1.5; }
+      else if (d.wt <= 0) { const go = Math.random() < 0.55; d.vx = go ? (Math.random() * 2 - 1) * 22 : 0; d.vy = go ? (Math.random() * 2 - 1) * 12 : 0; d.wt = 1 + Math.random() * 2; }
+      d.x += d.vx * dt; d.y = clampY(d.y + d.vy * dt); if (d.vx) d.dir = Math.sign(d.vx);
+      const threatened = S.rowdies.some(r => r.target === d && r.state === "windup");
+      if (!threatened && following.length < 2 && dist(d, me) < 12) { d.state = "lead"; fx("clip!", d.x, d.y - 16, "#ff8a2a"); sfx("clip"); following.push(d); }
+    } else if (d.state === "lead") {
+      const idx = following.indexOf(d), lx = me.x - me.dir * (30 + idx * 14), ly = me.y - 6 + idx * 10;
+      const ddx = lx - d.x, ddy = ly - d.y, dd = Math.hypot(ddx, ddy);
+      if (dd > 2) { d.x += ddx / dd * Math.min(dd, 95 * dt); d.y += ddy / dd * Math.min(dd, 70 * dt); d.dir = Math.sign(ddx) || d.dir; d.moving = true; } else d.moving = false;
+    } else if (d.state === "fled") {
+      d.x += d.vx * dt; d.frame = (performance.now() / 70 | 0) & 1;
+    }
+  });
+  if (me.x > VAN.x - 6 && me.y > VAN.y && following.length) {
+    following.forEach(d => { d.state = "rescued"; S.rescued++; });
+    fx(`+${following.length} RESCUED`, VAN.x + 10, VAN.y - 6, "#8cc274"); sfx("rescue");
+  }
+
+  // rowdies
+  S.rowdies.forEach(r => {
+    r.ft += dt; if (r.ft > 0.18) { r.ft = 0; r.frame ^= 1; }
+    if (r.state === "flee") { r.x += r.vx * dt; r.y += r.vy * dt; r.vy += 200 * dt; if (r.y > clampY(r.y)) { r.y = clampY(r.y); r.vy = 0; } r.t += dt; return; }
+    if (r.stun > 0) { r.stun -= dt; return; }
+    if (!r.target || r.target.state !== "wander") {
+      const pool = S.dogs.filter(d => d.state === "wander" && d.x > 0 && d.x < GW);
+      r.target = pool.sort((a, b) => dist(a, r) - dist(b, r))[0] || null;
+      if (!r.target) { r.state = "walk"; }
+    }
+    if (r.state === "walk" && r.target) {
+      const dx = r.target.x - r.x, dy = r.target.y - r.y, d = Math.hypot(dx, dy);
+      if (d < 16) { r.state = "windup"; r.t = 1.15; r.target.vx = 0; r.target.vy = 0; r.target.wt = 2; }
+      else { r.x += dx / d * 34 * dt; r.y += dy / d * 26 * dt; r.dir = Math.sign(dx) || r.dir; }
+    } else if (r.state === "windup") {
+      r.t -= dt;
+      if (r.t <= 0) { // the swing lands: the dog runs off scared
+        const d = r.target; d.state = "fled"; d.vx = (d.x < GW / 2 ? -1 : 1) * 140; S.lost++;
+        fx("yelp!", d.x, d.y - 16, "#ff7a52"); sfx("yelp"); r.state = "walk"; r.target = null;
+      }
+    }
+  });
+  S.rowdies = S.rowdies.filter(r => !(r.state === "flee" && (r.x < -30 || r.x > GW + 30)));
+  S.dogs = S.dogs.filter(d => d.state !== "rescued" && !(d.state === "fled" && (d.x < -30 || d.x > GW + 30)));
+  S.fx.forEach(f => { f.t -= dt; f.y -= 18 * dt; }); S.fx = S.fx.filter(f => f.t > 0);
+  if (S.t <= 0 || S.lost >= 3) end();
+}
+
+function drawStreet() {
+  const night = isNight();
+  const sky = night ? ["#2b1838", "#5a2a45", "#a2483f", "#e07a3a"] : ["#ffd98a", "#ffc766", "#f9ad4e", "#f2953f"];
+  sky.forEach((c, i) => { g.fillStyle = c; g.fillRect(0, i * 10, GW, 10); });
+  const shops = night ? ["#3a2430", "#432a33", "#4d3036"] : ["#d9a066", "#e4b07a", "#c98c55"];
+  for (let i = 0; i < 9; i++) {
+    const x = i * 36, h = 32 + ((i * 13) % 14);
+    g.fillStyle = shops[i % 3]; g.fillRect(x, 70 - h, 34, h);
+    g.fillStyle = night ? (i % 2 ? "#ffd27a" : "#5c3b3b") : "#7a4a2a";
+    g.fillRect(x + 6, 70 - h + 8, 8, 7); g.fillRect(x + 20, 70 - h + 8, 8, 7);
+    g.fillStyle = ["#e0623a", "#3f7a2e", "#f2b632"][i % 3]; g.fillRect(x + 2, 70 - h + 20, 30, 4); // shop awnings
+  }
+  g.fillStyle = night ? "#5e4a3c" : "#cdb08a"; g.fillRect(0, 70, GW, 98); // footpath
+  g.fillStyle = night ? "#544234" : "#c2a47c";
+  for (let y = 74; y < 168; y += 12) for (let x = (y / 12 % 2) * 12; x < GW; x += 24) g.fillRect(x, y, 22, 1);
+  g.fillStyle = night ? "#2e2a2a" : "#6a625c"; g.fillRect(0, 168, GW, 12); // road
+  g.fillStyle = "#f2b632"; for (let x = 4; x < GW; x += 20) g.fillRect(x, 174, 10, 1);
+  // NGO van
+  const v = VAN;
+  g.fillStyle = "#1a120c"; g.fillRect(v.x - 1, v.y - 1, v.w + 2, v.h + 2);
+  g.fillStyle = "#fbf6ea"; g.fillRect(v.x, v.y, v.w, v.h);
+  g.fillStyle = "#f2b632"; g.fillRect(v.x, v.y + 16, v.w, 5);
+  g.fillStyle = "#8fc3e0"; g.fillRect(v.x + v.w - 14, v.y + 3, 11, 10);
+  g.fillStyle = "#1a120c"; g.fillRect(v.x + 8, v.y + v.h - 2, 9, 6); g.fillRect(v.x + v.w - 18, v.y + v.h - 2, 9, 6);
+  g.fillStyle = "#e0623a"; [[8, 5], [11, 4], [14, 5], [9, 9], [13, 9], [11, 8], [11, 10], [10, 9], [12, 9]].forEach(([x, y]) => g.fillRect(v.x + x, v.y + y, 2, 2));
+  g.fillStyle = "#24180a"; g.font = "bold 7px 'Pixelify Sans', monospace"; g.fillText("RESCUE", v.x + 19, v.y + 12);
+}
+
+function drawActors() {
+  const list = [];
+  S.dogs.forEach(d => list.push({y: d.y, draw: () => {
+    const key = d.state === "wander" && !d.vx && !d.vy ? "sit" : (d.frame ? "walk2" : "walk1");
+    g.drawImage(sprite(SMALL.dog[key], dogPal(d.coat), d.dir < 0), Math.round(d.x - 12), Math.round(d.y - 15));
+    if (d.state === "lead") { g.strokeStyle = "#ff8a2a"; g.beginPath(); g.moveTo(d.x + (d.dir > 0 ? 8 : -8), d.y - 9); g.lineTo(S.me.x, S.me.y - 10); g.stroke(); }
+  }}));
+  const ck = S.ck;
+  list.push({y: ck.y, draw: () => g.drawImage(sprite(SMALL.dog[ck.moving ? (ck.frame ? "walk2" : "walk1") : "sit"], dogPal("cookie"), ck.dir < 0), Math.round(ck.x - 12), Math.round(ck.y - 15))});
+  S.rowdies.forEach(r => list.push({y: r.y, draw: () => {
+    const x = Math.round(r.x - 6), y = Math.round(r.y - 21);
+    g.save();
+    if (r.state === "flee") { g.translate(r.x, r.y - 10); g.rotate(r.dir * Math.min(1.4, r.t * 6)); g.translate(-r.x, -(r.y - 10)); }
+    g.drawImage(sprite(SMALL.person.rowdy, SMALL.pal, r.dir < 0), x, y);
+    g.strokeStyle = "#7a4a1c"; g.lineWidth = 1.5; g.beginPath(); // the stick
+    const hx = r.x + r.dir * 4, hy = r.y - 11;
+    if (r.state === "windup") { g.moveTo(hx, hy); g.lineTo(hx - r.dir * 3, hy - 12); } else { g.moveTo(hx, hy); g.lineTo(hx + r.dir * 7, hy + 5); }
+    g.stroke(); g.restore(); g.lineWidth = 1;
+    if (r.state === "windup") { g.fillStyle = "#ff5a3c"; g.fillRect(r.x - 1, y - 10, 3, 6); g.fillRect(r.x - 1, y - 3, 3, 2); }
+    if (r.stun > 0) { g.fillStyle = "#fbf0dc"; g.font = "7px 'Pixelify Sans', monospace"; g.fillText("zz", r.x + 4, y - 2); }
+  }}));
+  const me = S.me;
+  list.push({y: me.y, draw: () => {
+    g.drawImage(sprite(SMALL.person.vishal, SMALL.pal, me.dir < 0), Math.round(me.x - 6), Math.round(me.y - 21) - (me.frame && (keys.left || keys.right || keys.up || keys.down) ? 1 : 0));
+    if (me.shoo > 0) { g.fillStyle = "#f2b632"; g.fillRect(Math.round(me.x + me.dir * 7), Math.round(me.y - 13), me.dir * 6, 3); }
+  }});
+  list.sort((a, b) => a.y - b.y).forEach(o => o.draw());
+}
+
+function drawHud() {
+  g.fillStyle = "#120c06cc"; g.fillRect(0, 0, GW, 14);
+  g.font = "bold 9px 'Pixelify Sans', monospace"; g.textBaseline = "top";
+  g.fillStyle = "#f5c04a"; g.fillText(`${Math.max(0, Math.ceil(S.t))}s`, 6, 3);
+  g.fillStyle = "#8cc274"; g.fillText(`RESCUED ${S.rescued}`, 40, 3);
+  g.fillStyle = "#fbf0dc"; g.fillText(`SHOOED ${S.shooed}`, 116, 3);
+  g.fillStyle = "#ff7a52"; g.fillText("SCARED " + "●".repeat(S.lost) + "○".repeat(Math.max(0, 3 - S.lost)), 190, 3);
+  g.fillStyle = S.bark > 0 ? "#6a5230" : "#f2b632"; g.fillRect(286, 4, 28 * (1 - S.bark / 4), 6);
+  g.strokeStyle = "#fbf0dc"; g.strokeRect(285.5, 3.5, 29, 7);
+  S.fx.forEach(f => { g.fillStyle = f.color; g.font = "bold 10px 'Pixelify Sans', monospace"; g.textAlign = "center"; g.fillText(f.text, f.x, f.y); g.textAlign = "left"; });
+  g.textBaseline = "alphabetic";
+}
+
+function frame(now) {
+  if (!playing) return;
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  if (visible) { update(dt); drawStreet(); drawActors(); drawHud(); }
+  if (playing) requestAnimationFrame(frame);
+}
+function start() {
+  newGame(); playing = true; $("#over").hidden = true; cv.focus({preventScroll: true});
+  last = performance.now(); requestAnimationFrame(frame);
+}
+function end() {
+  playing = false;
+  $("#overTitle").textContent = S.lost >= 3 ? "Light's gone" : "Full time";
+  $("#overText").textContent = `${S.rescued} rescued, ${S.shooed} rowdies shooed, ${S.lost} dogs scared off. Cookie rates this ${S.rescued >= 6 ? "a very good walk" : "a good start"}.`;
+  $("#startBtn").textContent = "Patrol again";
+  $("#over").hidden = false;
+}
+$("#startBtn").addEventListener("click", start);
+
+const KEYMAP = {ArrowUp: "up", KeyW: "up", ArrowDown: "down", KeyS: "down", ArrowLeft: "left", KeyA: "left", ArrowRight: "right", KeyD: "right"};
+addEventListener("keydown", e => {
+  if (e.code === "Enter" && (playing || document.activeElement === cv)) { e.preventDefault(); start(); return; }
+  if (!playing) return;
+  if (KEYMAP[e.code]) { keys[KEYMAP[e.code]] = true; e.preventDefault(); }
+  if (e.code === "Space") { e.preventDefault(); if (!e.repeat) shoo(); }
+  if (e.code === "KeyX") bark();
+});
+addEventListener("keyup", e => { if (KEYMAP[e.code]) keys[KEYMAP[e.code]] = false; });
+$("#pad").querySelectorAll("button").forEach(b => {
+  const k = b.dataset.k;
+  const down = e => { e.preventDefault(); if (k === "shoo") shoo(); else if (k === "bark") bark(); else keys[k] = true; };
+  const up = e => { e.preventDefault(); if (keys[k] !== undefined) keys[k] = false; };
+  b.addEventListener("pointerdown", down); b.addEventListener("pointerup", up); b.addEventListener("pointercancel", up); b.addEventListener("pointerleave", up);
+});
+// pause off screen, like every demo on the site
+new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) last = performance.now(); }, {threshold: 0.2}).observe($("#screen"));
+
+/* ---------- boot ---------- */
+applyTheme(store.get("va-golden-theme") || "dark");
+newGame(); drawStreet(); drawActors(); drawHud(); S = null; newGame();
+requestAnimationFrame(t => { lastT = t; buddyTick(t); });
+document.fonts?.ready.then(() => { if (!playing && S) { drawStreet(); drawActors(); drawHud(); } });
+})();
+</script>

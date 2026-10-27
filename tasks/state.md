@@ -24,6 +24,7 @@
 - 2026-10-27: docs rule: no doc over 100 lines. Specs split into `tasks/portfolio-spec/` and `tasks/worlds-spec/` (section numbers unchanged), done log moved to `tasks/state/`. Work report: `docs/work-report-2026-10-27.docx`.
 
 ## Next
+- World 6 "Golden Hour" (dog world, Cookie) mock: `design/mock-golden/` (`golden.src.html` → `build.py` → `GoldenHour.html`), sprites from `design/pixel-me/generate_golden.py`, artifact https://claude.ai/artifact/LvarEH9AnxpQvWpHZDbRGc. Merged into the worlds mock as World 6 (artifact XGXN81pFWpSf4rW7ndv7CC v27; `design/mock-worlds/StreetRescueGame.dc.html`; patch script `design/mock-golden/patch_main.py`). Waiting on Vishal: approval, NGO name/role/since, dog-park name, OK for real Cookie photos.
 - Known gaps:
   - Start-screen tiles show a static sprite (no blink yet).
   - The theme switch plays the football floodlight effect in every world.
