@@ -146,7 +146,7 @@ export function Pundit() {
           <div className={styles.blurb}>{PUNDIT_COPY.intro}</div>
         </div>
 
-        <div className={styles.chat}>
+        <div className={styles.chat} data-ph-mask>
           <div className={styles.chips} role="group" aria-label="Suggested questions">
             {PUNDIT_QA.map((x, i) => (
               <button

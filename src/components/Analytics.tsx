@@ -30,7 +30,7 @@ function startPostHog(): () => void {
         capture_exceptions: true,
         capture_performance: true,
         disable_session_recording: false,
-        session_recording: { maskAllInputs: true },
+        session_recording: { maskAllInputs: true, maskTextSelector: "[data-ph-mask]" },
         persistence: "localStorage+cookie",
       });
       tracker.attach({

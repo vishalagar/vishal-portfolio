@@ -73,5 +73,5 @@ export const FOOTER = {
   titleAccent: "something that sees.",
   copyright: "© 2026 Vishal Agarwal",
   hint: "psst — type VAR anywhere",
-  privacy: "This site uses PostHog and Vercel Analytics to see how it’s used, including anonymous session replays. What you type is masked.",
+  privacy: "This site uses PostHog and Vercel Analytics to see how it’s used, including session replays with typed text masked. Questions sent to the Pundit are logged so I can see what people ask.",
 } as const;
