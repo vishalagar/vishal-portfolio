@@ -29,7 +29,7 @@ export function TeamTalk() {
           ))}
         </p>
         <div className={styles.stmtBall} aria-hidden="true">
-          <PixelBall />
+          <PixelBall colors={world.hero.prop} />
         </div>
       </div>
     </section>

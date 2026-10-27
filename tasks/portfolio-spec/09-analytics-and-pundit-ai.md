@@ -24,6 +24,8 @@ The model knows nothing about Vishal on its own. Every question is sent with:
 
 Code: `src/components/Analytics.tsx`, `src/lib/analytics/`. PostHog project "Personal Websitr" (US cloud), plus Vercel Web Analytics and Speed Insights. The footer tells visitors about it.
 
+PostHog traffic goes through the site's own domain at `/relay` (rewrites in `next.config.ts`), because Brave Shields and uBlock block posthog.com: before this, Brave visits logged pageviews only. Headless browsers are filtered out by PostHog as bots, so test with a real (headed) browser.
+
 **Automatic (PostHog):** pageviews, page leave with scroll depth, every click, heatmaps, dead clicks, web vitals, JS errors, session replays (typed text and the Pundit chat are masked). Every visitor gets a person profile: country/city, device, browser, referrer. Anonymous unless they identify themselves.
 
 **Custom events** (each also carries `world`, `theme`, `sound`):

@@ -243,7 +243,7 @@ test.describe("the Pundit", () => {
     await input.fill("Tell me about PrintSafe");
     await page.getByRole("button", { name: "Ask", exact: true }).click();
     await expect(
-      page.getByText(/The Pundit needs a breather/).first(),
+      page.getByText(/your three questions for today/).first(),
     ).toBeVisible();
   });
 });

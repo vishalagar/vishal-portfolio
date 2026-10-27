@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { sfx } from "@/lib/sound";
-import { varStore } from "@/lib/stores/htmlAttr";
+import { varStore, worldStore } from "@/lib/stores/htmlAttr";
 
 const SECRET = "var";
 
@@ -13,7 +13,7 @@ function isTyping(target: EventTarget | null): boolean {
   return ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName);
 }
 
-/** Type V-A-R anywhere (outside a text field or game) to put detection boxes on the whole page. */
+/** Football world only: type V-A-R anywhere (outside a text field or game) to put detection boxes on the whole page. */
 export function EasterEggs() {
   const [toast, setToast] = useState<string | null>(null);
 
@@ -22,6 +22,7 @@ export function EasterEggs() {
     let hide: ReturnType<typeof setTimeout> | undefined;
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey || e.key.length !== 1 || isTyping(e.target)) return;
+      if (worldStore.get() !== "football") return;
       typed = (typed + e.key.toLowerCase()).slice(-SECRET.length);
       if (typed !== SECRET) return;
       typed = "";

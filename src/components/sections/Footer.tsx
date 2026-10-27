@@ -49,7 +49,7 @@ export function Footer() {
       <div className={styles.bottom}>
         <span>{FOOTER.copyright}</span>
         <span className={styles.privacy}>{FOOTER.privacy}</span>
-        <span className="pixel" style={{ fontSize: 11 }}>
+        <span className={`pixel ${styles.varHint}`} style={{ fontSize: 11 }}>
           {FOOTER.hint}
         </span>
       </div>

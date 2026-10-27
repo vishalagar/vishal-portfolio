@@ -60,6 +60,7 @@ export type LineupLayout =
 export type GameId = "football" | "race" | "pace" | "label" | "snake";
 export type FeaturedId = "sports" | "snake" | "pacecoach" | "retrain";
 export type Headgear = "helmet" | "headset" | "headband" | "visor";
+export type PropShape = "ball" | "tyre" | "coin" | "bottle" | "cube";
 
 export interface PlayDef {
   title: string;
@@ -88,7 +89,15 @@ export interface World {
     cta: string;
     /** Detection box label while the costume is on. */
     box: string;
-    prop: { a: string; b: string; c: string; label: string; hint: string };
+    /** The thing on the hero stage and under the team talk quote. */
+    prop: {
+      shape: PropShape;
+      a: string;
+      b: string;
+      c: string;
+      label: string;
+      hint: string;
+    };
   };
   /** Assistant name: "Ask the {assistant}". */
   assistant: string;
@@ -249,6 +258,7 @@ export const WORLDS: Record<WorldId, World> = {
       cta: "Watch highlights",
       box: "vishal 0.99",
       prop: {
+        shape: "ball",
         a: "#f3eee2",
         b: "#120e14",
         c: "#120e14",
@@ -257,7 +267,8 @@ export const WORLDS: Record<WorldId, World> = {
       },
     },
     assistant: "Pundit",
-    voice: "a warm football pundit in the TV studio, talking in match-commentary style; at most one light football metaphor",
+    voice:
+      "a warm football pundit in the TV studio, talking in match-commentary style; at most one light football metaphor",
     talk: "Half-time team talk",
     review: { word: "VAR", check: "VAR check complete" },
     footerKicker: "Full time · post-match interview",
@@ -356,6 +367,7 @@ export const WORLDS: Record<WorldId, World> = {
       cta: "Watch onboards",
       box: "driver 0.99",
       prop: {
+        shape: "tyre",
         a: "#16161a",
         b: "#c8102e",
         c: "#ffffff",
@@ -364,7 +376,8 @@ export const WORLDS: Record<WorldId, World> = {
       },
     },
     assistant: "Race Engineer",
-    voice: "a calm Grand Prix race engineer on team radio, short and clipped; at most one racing term",
+    voice:
+      "a calm Grand Prix race engineer on team radio, short and clipped; at most one racing term",
     talk: "Pit radio",
     review: { word: "Review", check: "Stewards: no further action" },
     footerKicker: "Chequered flag · post-race interview",
@@ -500,6 +513,7 @@ export const WORLDS: Record<WorldId, World> = {
       cta: "Press start",
       box: "player 1 · 0.99",
       prop: {
+        shape: "coin",
         a: "#ffd43b",
         b: "#b8860b",
         c: "#fff3b0",
@@ -508,7 +522,8 @@ export const WORLDS: Record<WorldId, World> = {
       },
     },
     assistant: "Guide",
-    voice: "a friendly in-game guide character in a video game; at most one light gaming reference",
+    voice:
+      "a friendly in-game guide character in a video game; at most one light gaming reference",
     talk: "Cutscene",
     review: { word: "Aim assist", check: "Achievement unlocked" },
     footerKicker: "Game over · continue?",
@@ -644,6 +659,7 @@ export const WORLDS: Record<WorldId, World> = {
       cta: "See the splits",
       box: "runner #4 · 0.99",
       prop: {
+        shape: "bottle",
         a: "#7fd3ff",
         b: "#1d4fbf",
         c: "#ffffff",
@@ -652,7 +668,8 @@ export const WORLDS: Record<WorldId, World> = {
       },
     },
     assistant: "Coach",
-    voice: "an upbeat running coach at the finish line; at most one running reference",
+    voice:
+      "an upbeat running coach at the finish line; at most one running reference",
     talk: "Halfway split",
     review: { word: "Chip timing", check: "Chip time verified" },
     footerKicker: "Finish line · cool-down",
@@ -790,6 +807,7 @@ export const WORLDS: Record<WorldId, World> = {
       cta: "Run inference",
       box: "human 0.99 · cyborg 0.01",
       prop: {
+        shape: "cube",
         a: "#2de2e6",
         b: "#ff2a6d",
         c: "#ffffff",
@@ -798,7 +816,8 @@ export const WORLDS: Record<WorldId, World> = {
       },
     },
     assistant: "Agent",
-    voice: "a precise AI agent answering in a terminal, dry and exact; at most one machine-learning reference",
+    voice:
+      "a precise AI agent answering in a terminal, dry and exact; at most one machine-learning reference",
     talk: "System prompt",
     review: { word: "Inference", check: "Eval passed" },
     footerKicker: "EOF · end of stream",

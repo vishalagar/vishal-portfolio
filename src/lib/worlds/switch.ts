@@ -1,7 +1,7 @@
 import { WORLD_IDS, type WorldId } from "@/content/worlds";
 import { mathRng, type Rng } from "@/lib/engines/rng";
 import { setSoundWorld, sfx } from "@/lib/sound";
-import { worldStore } from "@/lib/stores/htmlAttr";
+import { varStore, worldStore } from "@/lib/stores/htmlAttr";
 
 /** The world swaps while the wipe covers the screen, then the wipe clears (mock: 320 ms / 920 ms). */
 export const WIPE_SWAP_MS = 320;
@@ -42,6 +42,8 @@ function prefersReducedMotion(): boolean {
 }
 
 function applyWorld(id: WorldId): void {
+  // VAR is a football joke: its boxes and labels don't follow the visitor into another world
+  if (id !== worldStore.get() && varStore.get() === "on") varStore.set("off");
   worldStore.set(id);
   setSoundWorld(id);
   sfx.signature(); // gated: silent while sound is off

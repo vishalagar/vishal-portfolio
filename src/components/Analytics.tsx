@@ -10,7 +10,9 @@ import { isSoundOn, subscribeSound } from "@/lib/sound";
 import { introStore, themeStore, varStore, worldStore } from "@/lib/stores/htmlAttr";
 
 const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-const POSTHOG_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
+/** Same-origin proxy to PostHog (rewrites in next.config.ts), so ad blockers don't drop events. */
+const POSTHOG_RELAY = "/relay";
+const POSTHOG_UI = "https://us.posthog.com";
 
 /** Loads PostHog with everything on: pageviews, clicks, heatmaps, replays (inputs masked), vitals, errors. */
 function startPostHog(): () => void {
@@ -20,7 +22,8 @@ function startPostHog(): () => void {
     .then(({ default: posthog }) => {
       if (cancelled) return;
       posthog.init(POSTHOG_KEY, {
-        api_host: POSTHOG_HOST,
+        api_host: POSTHOG_RELAY,
+        ui_host: POSTHOG_UI,
         person_profiles: "always",
         capture_pageview: "history_change",
         capture_pageleave: true,

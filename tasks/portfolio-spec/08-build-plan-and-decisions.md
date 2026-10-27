@@ -63,7 +63,7 @@ Part of `tasks/portfolio-spec/` (index: `README.md`).
 ## 11. Known gaps in the mock
 
 - The Pundit text input does nothing (only the chips work).
-- The "type VAR anywhere" and Konami easter eggs are not implemented.
+- The Konami easter egg is not implemented. "Type VAR" is built, football world only: it switches off on a world change and its footer hint shows only in football (2026-10-27).
 - Demos keep running when off screen.
 - Scroll moments need Chrome, Edge or Safari 26+. Firefox shows the static fallback.
 - Not yet tested on a real iPhone. The game, retraining and image-generation logic was verified only with Node simulations and the smoke test.
