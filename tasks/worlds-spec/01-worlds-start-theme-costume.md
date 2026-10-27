@@ -12,7 +12,7 @@ Part of `tasks/worlds-spec/` (index: `README.md`).
 | `run` | Running | Anton | Silkscreen | headband + singlet with No. 4 bib | Start corrals / Career splits / PBs & photo finishes / Race day | Coach | Chip timing |
 | `ai` | AI | Chakra Petch | Share Tech Mono | neon visor + dark jacket | Architecture / Career epochs / Evals & ablations / Human mode | Agent | Inference |
 
-Per world the mock also swaps: the scorebug text, the hero kicker, the camera label, the detection-box label, the kickable prop (ball / tyre / coin / water bottle / cube), timeline units (minutes / laps / levels / km / epochs) and the event tags. All of this lives in `worldDefs()` in `Main.dc.html`; port it as typed content (e.g. `src/content/worlds.ts`), not into components.
+Per world the mock also swaps: the scorebug text, the hero kicker, the camera label, the detection-box label, the kickable prop (ball / tyre / coin / water bottle / cube; each its own 8×8 shape, `hero.prop.shape`, drawn in `PixelBall.tsx` and also shown under the team talk), timeline units (minutes / laps / levels / km / epochs) and the event tags. All of this lives in `worldDefs()` in `Main.dc.html`; port it as typed content (e.g. `src/content/worlds.ts`), not into components.
 
 Timeline units stop at the finish: laps cap at L58 and km at 21.1, so stoppage and extra time never run past the race.
 
@@ -27,6 +27,7 @@ Brand names stay generic: no F1, PlayStation or Game Boy marks, and the rival dr
 - The start screen has its own sound toggle, and clicking it unlocks audio.
 - A prop (`intro`, default on) turns the start screen off.
 - Real site: the start screen shows once per visit. A returning visitor sees it again over their last world (localStorage `va-world`), with that tile marked "Last time"; the countdown and Esc go back to it instead of a random pick. Reloads in the same tab and `?world=` links skip it (sessionStorage `va-seen`). Changed 2026-10-28 at Vishal's request (was: returning visitors skip it).
+- The "type VAR" easter egg is football-only (its labels are football words) and switches off on any world change.
 
 The header keeps the small world switcher, so visitors can change world at any time.
 

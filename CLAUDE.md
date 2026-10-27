@@ -33,6 +33,7 @@ Playwright needs its browser once: `npx playwright install chromium` (or set `PW
 - `src/lib/stores/htmlAttr.ts` — theme (`data-theme` night/day), world (`data-world`), start screen (`data-intro`) and VAR easter egg (`data-var`) as attributes on `<html>`. `BOOT_SCRIPT` applies the saved theme and world before paint and sets `data-js`.
 - `src/lib/hooks/` — shared hooks (`useStores.ts`: `useWorld`, `useWorldId`, `usePalette`, `useIntro`; `useUnmask` + `unmaskMath.ts` for the costume-off sprite).
 - `src/lib/pundit/` + `src/app/api/pundit/route.ts` — "Ask the Pundit": zod validation, same-origin check, rate limits (3 questions per visitor per day, global daily cap), streamed OpenAI answer in the current world's voice (`voice` in `worlds.ts`).
+- `src/lib/analytics/` + `src/components/Analytics.tsx` — PostHog (through the same-origin `/relay` rewrite in `next.config.ts`, so ad blockers don't drop events), Vercel Analytics and Speed Insights. Report interactions with `track()`; events and dashboard: `tasks/portfolio-spec/09-analytics-and-pundit-ai.md`.
 - `src/components/` — `header/` (incl. world switcher), `sections/` (`lineup/` holds the per-world line-ups), `demos/` (one client component per demo; `football/`, `race/`, `pace/`, `label/` are the game folders), `play/` (PlayOverlay, handheld controller, page lock), `worlds/` (start screen, world wipe), `sprite/`.
 
 ## Rules that are easy to break
@@ -48,6 +49,7 @@ Playwright needs its browser once: `npx playwright install chromium` (or set `PW
 - Accent text on theme backgrounds uses `--accent-text` (deep gold in day mode, for contrast); accent backgrounds keep `--accent`.
 - **Worlds:** all per-world values live in `src/content/worlds.ts` and reach CSS through the variables from `src/lib/worlds/css.ts`. Never hardcode world colours in components. Big display font sizes multiply by `var(--display-scale)`.
 - **Games** take `GameProps` and read the shared `Pad`. The overlay (`src/components/play/`) owns keyboard and touch input; games don't bind their own.
+- **Nothing from one world leaks into another:** props, labels and easter eggs come from `worlds.ts` or are limited to their world (VAR is football-only and switches off on a world change).
 - **e2e** must load `/?world=<id>` (or handle the start screen). Every new tab gets the start screen; returning visitors see their last world marked.
 - **`next/font` calls** need literal options (no spread).
 

@@ -31,7 +31,7 @@ Part of `tasks/portfolio-spec/` (index: `README.md`).
 
 ### Half-time team talk
 
-"I build models that **see**, pipelines that **retrain themselves**, and products people actually **use**." The highlighted words are in the accent colour.
+"I build models that **see**, pipelines that **retrain themselves**, and products people actually **use**." The highlighted words are in the accent colour. Below it rolls the current world's pixel prop, the same one as the hero (football: the ball).
 
 ### 01 · Starting XI (4-3-3)
 
