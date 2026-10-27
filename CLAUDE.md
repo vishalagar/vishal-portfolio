@@ -38,6 +38,7 @@ Playwright needs its browser once: `npx playwright install chromium` (or set `PW
 
 ## Rules that are easy to break
 
+- **Docs ship with the code:** before replying on any code change, update every affected `.md` (README, this file, `tasks/portfolio-spec/`, `tasks/worlds-spec/`, `tasks/state.md`) and commit them together. Never wait to be asked.
 - **Content and privacy (spec §2):** no real photos of Vishal (pixel sprite only; the medal photo is the one real image). No phone numbers, recommenders, LinkedIn analytics, heart-rate data, "open to work" or grad-school plans. Shirt number is always 4. No invented numbers.
 - **Night (dark) is the default theme** here, deliberately overriding the usual light-default convention. `prefers-color-scheme` is ignored.
 - **CSS Modules scope `@keyframes` names.** A module class can't use keyframes from `globals.css`; define a local copy in the module. Inline `style={{ animation }}` uses the global ones.
