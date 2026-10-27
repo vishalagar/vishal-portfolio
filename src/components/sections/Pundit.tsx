@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Sprite } from "@/components/sprite/Sprite";
 import { PUNDIT_COPY, PUNDIT_QA, type PunditErrorCode } from "@/content/pundit";
+import { track } from "@/lib/analytics/track";
 import { useReducedMotion, useWorld } from "@/lib/hooks/useStores";
 import { useUnmask } from "@/lib/hooks/useUnmask";
 import { QUESTION_MAX, QUESTION_MIN } from "@/lib/pundit/schema";
@@ -57,6 +58,7 @@ export function Pundit() {
     stopAll();
     sfx.blip();
     const { q, a } = PUNDIT_QA[i];
+    track("pundit_asked", { question: q, canned: true });
     if (calm) {
       setEx({ q, a, status: "done", chip: i });
       return;
@@ -74,7 +76,9 @@ export function Pundit() {
     e.preventDefault();
     const q = draft.replace(/\s+/g, " ").trim();
     stopAll();
+    track("pundit_asked", { question: q.slice(0, QUESTION_MAX), canned: false, length: q.length });
     if (q.length < QUESTION_MIN || q.length > QUESTION_MAX) {
+      track("pundit_answered", { status: "error", error: "invalid" });
       setEx({ q: q || "…", a: PUNDIT_COPY.errors.invalid, status: "error", chip: null });
       return;
     }
@@ -96,7 +100,9 @@ export function Pundit() {
         signal: ctrl.signal,
       });
       if (!res.ok || !res.body) {
-        setEx({ q, a: PUNDIT_COPY.errors[await readError(res)], status: "error", chip: null });
+        const code = await readError(res);
+        track("pundit_answered", { status: "error", error: code, http: res.status });
+        setEx({ q, a: PUNDIT_COPY.errors[code], status: "error", chip: null });
         return;
       }
       const reader = res.body.getReader();
@@ -108,10 +114,12 @@ export function Pundit() {
         answer += decoder.decode(value, { stream: true });
         setEx({ q, a: answer, status: "streaming", chip: null });
       }
+      track("pundit_answered", { status: answer.trim() ? "done" : "error", length: answer.trim().length });
       setEx({ q, a: answer.trim() || PUNDIT_COPY.errors.failed, status: answer.trim() ? "done" : "error", chip: null });
     } catch (err) {
       // aborted because the visitor asked something else: nothing to show
       if ((err as Error).name === "AbortError" && !timedOut) return;
+      track("pundit_answered", { status: "error", error: timedOut ? "timeout" : "failed" });
       setEx({ q, a: PUNDIT_COPY.errors.failed, status: "error", chip: null });
     } finally {
       clearTimeout(timeout);

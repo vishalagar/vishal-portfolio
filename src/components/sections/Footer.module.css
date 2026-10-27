@@ -81,3 +81,9 @@
     flex-basis: 100%;
   }
 }
+
+.privacy {
+  flex-basis: 100%;
+  max-width: 70ch;
+  font-size: 12px;
+}
