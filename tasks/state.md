@@ -34,10 +34,10 @@
   - Nav labels aren't per-world.
   - Decorative line-up animations don't pause off screen.
 - Test on a real iPhone: Safari audio unlock, multi-touch controller, mobile viewport.
-- Still pending from Vishal: scorebug wording (kept "VA 6 – 0 BUGS" from the mock), resume PDF (drop at `public/resume.pdf`, phone number removed; button appears automatically), domain, Pundit model/budget OK (default Opus 5.5 low effort, 300 questions/day cap ≈ a few $/day max; switch to a cheaper OpenAI model only at go-live), Snake DQN weights, official chip time, repo rename for the Sports Detection link.
-- Vercel env vars still unset (see `.env.example`): typed Pundit questions are off until `ANTHROPIC_API_KEY` + Upstash are set; set `NEXT_PUBLIC_SITE_URL`; optional PostHog. Redeploy after.
+- Still pending from Vishal: scorebug wording (kept "VA 6 – 0 BUGS" from the mock), resume PDF (drop at `public/resume.pdf`, phone number removed; button appears automatically), domain, OpenAI monthly budget cap, Snake DQN weights, official chip time, repo rename for the Sports Detection link.
+- Vercel env: OpenAI + PostHog set. Optional still: Upstash (shared rate limits), `NEXT_PUBLIC_SITE_URL` once there is a domain. Enable Vercel Web Analytics in the dashboard. Vishal to revoke the PostHog personal key (phx_…).
 - Optional: iPhone silent-switch audio (Web Audio is muted by the ring/silent switch; could set `navigator.audioSession.type = "playback"`).
-- Push to GitHub and connect the repo in Vercel for automatic deploys; merge `feat/live-coverage-site` into `main`.
+- 2026-10-28 open question for Vishal: commits 48429ef, 30373bb, b11ce4a, a72708c carry a "Co-Authored-By: Claude" line against his rule. Removing it needs a history rewrite + force push of `main`; waiting for his OK.
 
 ## Blockers
 - None. (GitHub MCP failed to connect this session; Google Drive connector needs authorising.)
