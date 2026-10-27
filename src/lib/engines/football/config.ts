@@ -1,4 +1,4 @@
-/** Engine tuning. Field is 100 × 50 units, 30 ticks per second. See tasks/portfolio-spec.md §6.5. */
+/** Engine tuning. Field is 100 × 50 units, 30 ticks per second. See tasks/portfolio-spec/ §6.5. */
 export const CFG = {
   walk: 0.62,
   sprint: 0.95,

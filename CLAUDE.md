@@ -2,9 +2,9 @@
 
 # Vishal Agarwal portfolio: "Live Coverage"
 
-A football-broadcast portfolio where every project is playable. Built from the approved mock in `design/mock/` and the spec in `tasks/portfolio-spec.md` (the source of truth for copy, facts, tokens, motion and engine tuning). Session log: `tasks/state.md`.
+A football-broadcast portfolio where every project is playable. Built from the approved mock in `design/mock/` and the spec in `tasks/portfolio-spec/` (the source of truth for copy, facts, tokens, motion and engine tuning). Session log: `tasks/state.md`.
 
-**Never delete** `design/mock/`, `design/mock-worlds/` or the Claude Design mock artifact (https://claude.ai/artifact/XGXN81pFWpSf4rW7ndv7CC), including artboards that are no longer on the page (e.g. Bug Hunt). The worlds version is specified in `tasks/worlds-spec.md`.
+**Never delete** `design/mock/`, `design/mock-worlds/` or the Claude Design mock artifact (https://claude.ai/artifact/XGXN81pFWpSf4rW7ndv7CC), including artboards that are no longer on the page (e.g. Bug Hunt). The worlds version is specified in `tasks/worlds-spec/`.
 
 ## Stack
 

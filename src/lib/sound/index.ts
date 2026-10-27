@@ -1,7 +1,7 @@
 /**
  * Every sound on the site, synthesised with WebAudio. No audio files.
  * Sound is off by default; nothing plays (and no AudioContext is created) until the visitor turns it on.
- * Per-world sets (opening sound, loop, blip, prop, gear) are in ./worlds and ./ambient; spec: tasks/worlds-spec.md section 5.
+ * Per-world sets (opening sound, loop, blip, prop, gear) are in ./worlds and ./ambient; spec: tasks/worlds-spec/ section 5.
  */
 import type { WorldId } from "@/content/worlds";
 import type { MatchEvent } from "../engines/football/types";

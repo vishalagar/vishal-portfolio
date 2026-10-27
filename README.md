@@ -9,4 +9,4 @@ npm test           # unit tests
 npm run test:e2e   # Playwright (run `npx playwright install chromium` once)
 ```
 
-Environment variables are optional; see `.env.example`. Project conventions and architecture: `CLAUDE.md`. Full design spec: `tasks/portfolio-spec.md`.
+Environment variables are optional; see `.env.example`. Project conventions and architecture: `CLAUDE.md`. Full design spec: `tasks/portfolio-spec/`.

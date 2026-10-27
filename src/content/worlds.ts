@@ -1,5 +1,5 @@
 /**
- * "Choose your world": same content, five looks. Spec: tasks/worlds-spec.md.
+ * "Choose your world": same content, five looks. Spec: tasks/worlds-spec/.
  * Everything a world changes lives here (copy, palettes for both modes, fonts, units, layouts);
  * components read it through useWorld() and CSS reads the variables built in src/lib/worlds/css.ts.
  */

@@ -1,4 +1,4 @@
-/** Site-wide copy. Every fact traces to tasks/portfolio-spec.md §7. */
+/** Site-wide copy. Every fact traces to tasks/portfolio-spec/ §7. */
 
 export const SITE = {
   name: "Vishal Agarwal",
