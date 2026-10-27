@@ -58,7 +58,7 @@ Part of `tasks/portfolio-spec/` (index: `README.md`).
 4. **Snake model weights:** does the trained DQN file still exist?
 5. **Official half-marathon chip time**, to replace the ≈2:16 summed from watch splits.
 6. **Project screenshots:** optional, since every card now has a demo.
-7. **Pundit model and monthly budget cap.** Decided 2026-10-25: a cheaper OpenAI model (Vishal has credits). Done 2026-10-27: `gpt-5.4-nano`; budget cap set on the OpenAI project.
+7. **Pundit model and monthly budget cap.** Decided 2026-10-25: a cheaper OpenAI model (Vishal has credits). Done 2026-10-27: `gpt-5.4-nano`. Still to do (Vishal): set a monthly budget on the OpenAI project.
 
 ## 11. Known gaps in the mock
 
