@@ -54,7 +54,7 @@ export const KITS: ReadonlyArray<Kit> = [
   {
     id: "blue",
     title: "MIT Hockey",
-    note: "Revels",
+    note: "Revels '24",
     result: "Runners-up",
     sway: 3.1,
     backAlt: "Blue speckled MIT Hockey shirt, back: gold VISHAL and a big 4",
@@ -63,7 +63,7 @@ export const KITS: ReadonlyArray<Kit> = [
   {
     id: "grey",
     title: "MIT Manipal",
-    note: "Inter-MAHE · medal + Certificate of Merit",
+    note: "Inter-MAHE '25",
     result: "Winners",
     sway: 3.7,
     backAlt: "Grey MIT Manipal shirt with black sleeves, back: MIT MANIPAL, 4, VISHAL",
@@ -72,7 +72,7 @@ export const KITS: ReadonlyArray<Kit> = [
   {
     id: "purple",
     title: "MIT Manipal",
-    note: "Inter-MAHE",
+    note: "Inter-MAHE '24",
     result: "Winners",
     sway: 2.9,
     backAlt: "Purple and white MIT Manipal shirt, back: white MIT MANIPAL and 4",

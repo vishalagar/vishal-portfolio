@@ -49,21 +49,24 @@ function bed(freq: number, q: number, vol: number, lfoRate: number, lfoDepth: nu
   return [src, lfo];
 }
 
-/** One car flying past: pitch drops through the doppler shift as it pans across and the filter opens. */
+/**
+ * One car flying past: pitch drops through the doppler shift as it pans across and the filter opens.
+ * Kept low, dark and quiet so it stays easy to listen to for minutes on end.
+ */
 function carPass(level: number): void {
   const b = bus();
   if (!b) return;
   const ac = b.ac;
   const t = now();
   const dir = Math.random() < 0.5 ? -1 : 1;
-  const base = 460 + Math.random() * 140;
-  const e = engine(t, [[0, base * 1.16], [1.0, base * 1.2], [1.22, base * 0.85], [2.7, base * 0.8]], 0.06 * level, { attack: 1.0, release: 1.4, bright: 4 });
+  const base = 240 + Math.random() * 80;
+  const e = engine(t, [[0, base * 1.16], [1.0, base * 1.2], [1.22, base * 0.85], [2.7, base * 0.8]], 0.035 * level, { attack: 1.0, release: 1.4, bright: 2.5 });
   if (!e) return;
   const near = ac.createBiquadFilter();
   near.type = "lowpass";
-  near.frequency.setValueAtTime(700, t);
-  near.frequency.exponentialRampToValueAtTime(6000, t + 1.1);
-  near.frequency.exponentialRampToValueAtTime(800, t + 2.7);
+  near.frequency.setValueAtTime(500, t);
+  near.frequency.exponentialRampToValueAtTime(2200, t + 1.1);
+  near.frequency.exponentialRampToValueAtTime(600, t + 2.7);
   e.out.connect(near);
   if (ac.createStereoPanner) {
     const pn = ac.createStereoPanner();
@@ -145,7 +148,7 @@ export function startAmbient(world: WorldId): void {
   };
   if (world === "gp") {
     amb.nodes.push(...bed(260, 0.6, 0.014 * A, 0.09, 0.006 * A));
-    randomly(2600, 5200, () => carPass(A));
+    randomly(9000, 16000, () => carPass(A));
   } else if (world === "gaming") {
     const bass = [110, 110, 165, 110, 147, 110, 196, 165];
     let i = 0;

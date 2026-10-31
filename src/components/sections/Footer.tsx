@@ -1,7 +1,8 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { UnmaskSprite } from "@/components/sprite/UnmaskSprite";
+import { Sprite } from "@/components/sprite/Sprite";
 import { FOOTER, SITE } from "@/content/site";
+import { LAST_FRAME } from "@/lib/hooks/unmaskMath";
 import { FooterKicker } from "./FooterKicker";
 import { WhistleLink } from "./WhistleLink";
 import styles from "./Footer.module.css";
@@ -16,12 +17,10 @@ export function Footer() {
   return (
     <footer id="fulltime" className={styles.footer}>
       <div className={styles.top}>
-        <UnmaskSprite
-          className={styles.portrait}
-          scale={3}
-          glance={{ duration: 12, delay: -7 }}
-          label="Pixel-art Vishal"
-        />
+        {/* the plain sprite in every world: no costume, no unmask on scroll */}
+        <div className={styles.portrait}>
+          <Sprite scale={3} glance={{ duration: 12, delay: -7 }} unmask={LAST_FRAME} label="Pixel-art Vishal" />
+        </div>
         <div className={styles.sign}>
           <FooterKicker />
           <h2 className={styles.title}>
@@ -48,7 +47,6 @@ export function Footer() {
       </div>
       <div className={styles.bottom}>
         <span>{FOOTER.copyright}</span>
-        <span className={styles.privacy}>{FOOTER.privacy}</span>
         <span className={`pixel ${styles.varHint}`} style={{ fontSize: 11 }}>
           {FOOTER.hint}
         </span>

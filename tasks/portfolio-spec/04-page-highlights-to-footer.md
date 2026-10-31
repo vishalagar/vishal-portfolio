@@ -54,6 +54,6 @@ Two smaller cards:
 
 - Sprite, then "Let's build **something that sees.**"
 - Buttons: Email (`agarwal.vishal2003@gmail.com`), GitHub, LinkedIn, Resume [PDF].
-- Footer line: "© 2026 Vishal Agarwal", the analytics notice, plus the "psst — type VAR anywhere" hint (football world only, like the easter egg itself).
+- Footer line: "© 2026 Vishal Agarwal" plus the "psst — type VAR anywhere" hint (football world only, like the easter egg itself).
 
 ---

@@ -13,7 +13,7 @@ Off by default; turned on by the header button or the start-screen toggle.
 | World | Opening sound | Background loop | Button blip | Prop | Gear off / on |
 |---|---|---|---|---|---|
 | Football | referee whistle | crowd noise bed | square blip | ball thud | — |
-| Grand Prix | engine blips on the grid, five start-light beeps, lights out, launch up through the gears with a pan | cars passing every 2.6–5.2 s with a doppler pitch drop, left-to-right pan and opening filter | team-radio squelch + beep | tyre thump + squeal | visor clack + chin strap + whoosh |
+| Grand Prix | engine blips on the grid, five start-light beeps, lights out, launch up through the gears with a pan | low, quiet cars passing every 9–16 s with a doppler pitch drop, left-to-right pan and opening filter | team-radio squelch + beep | tyre thump + squeal | visor clack + chin strap + whoosh |
 | Gaming | chiptune start jingle | chiptune bassline | coin-style square | coin "ba-ding" | headset pop |
 | Running | starting pistol (crack, body, building echo), then crowd cheer + claps | crowd bed, footsteps at 170 spm with breathing every 2 steps, a cheer swell every 6–10 s | sports-watch beep | bottle squeeze, bubbles, gulp | elastic stretch + snap |
 | AI | detuned pad chord opening up, echoing arpeggio, FM bell | evolving detuned pad with slow filter sweep and random pentatonic plucks | soft triangle pluck with echo | FM bell ping | power-down sweep + glitch blips (reverse on) |

@@ -22,7 +22,7 @@ The model knows nothing about Vishal on its own. Every question is sent with:
 
 ## 13. Analytics: what is tracked and where to look
 
-Code: `src/components/Analytics.tsx`, `src/lib/analytics/`. PostHog project "Personal Websitr" (US cloud), plus Vercel Web Analytics and Speed Insights. The footer tells visitors about it.
+Code: `src/components/Analytics.tsx`, `src/lib/analytics/`. PostHog project "Personal Websitr" (US cloud), plus Vercel Web Analytics and Speed Insights. No analytics notice on the page (removed at Vishal's request, 2026-10-31).
 
 PostHog traffic goes through the site's own domain at `/relay` (rewrites in `next.config.ts`), because Brave Shields and uBlock block posthog.com: before this, Brave visits logged pageviews only. Headless browsers are filtered out by PostHog as bots, so test with a real (headed) browser.
 

@@ -16,7 +16,7 @@ The Game Boy-style play mode from v1 is unchanged: the screen is the top half an
 - [x] `data-world` on `<html>` next to `data-theme`. Apply the saved world before paint in `BOOT_SCRIPT`.
 - [x] Theme toggle in every world (the existing store already holds night/day).
 - [x] Sprite assets: copy `design/pixel-me/worlds/*_sheet_8x.png` and `*_unmask_8x.png` to `public/sprite/`.
-- [x] Costume-off scroll hook shared by the hero, Pundit and footer sprites, with a reduced-motion swap.
+- [x] Costume-off scroll hook shared by the hero and Pundit sprites (footer is always plain), with a reduced-motion swap.
 - [x] Sound: per-world sets, master and ambient volumes in `src/lib/sound.ts`, and unit tests (an offline-render test like `sim/render_audio.mjs` if feasible).
 - [x] Line-up components per world (grid, character select, corrals, network).
 - [x] Games: Race, Pace run and Label Rush as engines in `src/lib/engines/`, with deterministic tests like the football engine; Snake already exists.

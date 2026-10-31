@@ -9,6 +9,8 @@ import { useMatch } from "./useMatch";
 import styles from "./FootballGame.module.css";
 
 const KIT = { A: "#2a50b8", B: "#e5432f" } as const;
+/** Tracking box colour for the ball: not white, so it never blends into the pitch lines. */
+const BALL_BOX = "#5ee7ff";
 
 interface Actor {
   key: string;
@@ -39,7 +41,7 @@ function actors(g: MatchState, accent: string): Actor[] {
   });
   const bx = Math.max(0, Math.min(100, g.ball.x));
   const by = Math.max(0, Math.min(50, g.ball.y));
-  return [...list, { key: "ball", x: bx, y: by, size: [8, 8], fill: "#ffffff", color: "#ffffff", thick: false, label: "ball" }];
+  return [...list, { key: "ball", x: bx, y: by, size: [11, 11], fill: "#ffffff", color: BALL_BOX, thick: false, label: "ball" }];
 }
 
 function status(g: MatchState): string {
@@ -103,7 +105,7 @@ function Match({ mode, pad = EMPTY_PAD, height = "360px" }: GameProps) {
           const [w, h] = a.size;
           return (
             <div key={a.key} className={styles.actor} style={{ left: `${a.x}%`, top: `${(a.y / 50) * 100}%` }}>
-              <div className={styles.body} style={{ left: -w / 2, top: -h / 2, width: w, height: h, background: a.fill }} />
+              <div className={a.key === "ball" ? `${styles.body} ${styles.ball}` : styles.body} style={{ left: -w / 2, top: -h / 2, width: w, height: h, background: a.fill }} />
               <div
                 className={styles.bbox}
                 style={{ left: -w / 2 - 5, top: -h / 2 - 5, width: w + 10, height: h + 10, border: `${a.thick ? 3 : 2}px solid ${a.color}` }}

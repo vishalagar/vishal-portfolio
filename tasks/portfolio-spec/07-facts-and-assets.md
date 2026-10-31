@@ -17,7 +17,7 @@ Part of `tasks/portfolio-spec/` (index: `README.md`).
   - Colorization (U-Net SSIM 0.897).
   - FedProx simulation (about 79.5%).
 - **Side projects:** PrintSafe.in (Next.js 14, TS, Cloudflare R2, Upstash, Supabase, Vercel; 500+ visits), Football Vision, Terminal (Bloomberg-style app), India Trading Bot, AI D-Day, PaceCoach.
-- **Off the pitch:** Mayo College, Ajmer (2012–2021: hockey, sitar, college monitor); Round Square, Borneo (Dec 2019); Wipro Bengaluru half marathon (Sep 2026); hockey for MIT, shirt No. 4: Inter-MAHE winners (twice, grey and purple kits; medal + Certificate of Merit), Revels runners-up (blue kit) and Revels '23 runners-up (black kit).
+- **Off the pitch:** Mayo College, Ajmer (2012–2021: hockey, sitar, college monitor); Round Square, Borneo (Dec 2019); Wipro Bengaluru half marathon (Sep 2026); hockey for MIT, shirt No. 4: Inter-MAHE winners twice ('25 white/grey kit, '24 purple kit), Revels runners-up twice ('24 blue kit, '23 black kit).
 - **Links:** github.com/vishalagar · linkedin.com/in/vishal-agarwal123 · printsafe.in
 
 ---

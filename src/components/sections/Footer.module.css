@@ -82,12 +82,6 @@
   }
 }
 
-.privacy {
-  flex-basis: 100%;
-  max-width: 70ch;
-  font-size: 12px;
-}
-
 /* VAR is football-only (EasterEggs), so its hint is too */
 :global(:root:not([data-world="football"])) .varHint {
   display: none;

@@ -96,6 +96,12 @@
   border: 2px solid #0b1610;
 }
 
+/* round, with a thin outline so the white stays big enough to spot */
+.ball {
+  border-width: 1px;
+  border-radius: 50%;
+}
+
 .bbox {
   position: absolute;
 }

@@ -14,7 +14,7 @@ Part of `tasks/portfolio-spec/` (index: `README.md`).
 **Rules:**
 - Throw-ins, corners (ball last touched by a defender), goal kicks.
 - After a goal, the team that conceded kicks off.
-- Every player and the ball wears a detection box with an ID, which is the link to Football Vision.
+- Every player and the ball wears a detection box with an ID, which is the link to Football Vision. The ball is round, 11 px, with a cyan box so it never blends into the white pitch lines.
 
 **Engine tuning** (field is 100 × 50 units, 30 ticks per second):
 
@@ -55,9 +55,9 @@ Part of `tasks/portfolio-spec/` (index: `README.md`).
 
 | Shirt | Back | Front | Caption (confirmed) |
 |---|---|---|---|
-| MIT Hockey (blue speckle) | gold VISHAL, big 4 | gold shoulder stripes, MIT HOCKEY, crest | Revels · **Runners-up** |
-| MIT Manipal (grey, black sleeves) | black MIT / MANIPAL, 4, VISHAL underneath | side panels, crest | Inter-MAHE · medal + Certificate of Merit · **Winners** |
-| MIT Manipal (purple / white) | white MIT / MANIPAL, 4 | white diagonal chest band, crest | Inter-MAHE · **Winners** |
+| MIT Hockey (blue speckle) | gold VISHAL, big 4 | gold shoulder stripes, MIT HOCKEY, crest | Revels '24 · **Runners-up** |
+| MIT Manipal (grey, black sleeves) | black MIT / MANIPAL, 4, VISHAL underneath | side panels, crest | Inter-MAHE '25 · **Winners** |
+| MIT Manipal (purple / white) | white MIT / MANIPAL, 4 | white diagonal chest band, crest | Inter-MAHE '24 · **Winners** |
 | MIT Hockey (black, yellow lines) | yellow VISHAL 4 | MIT HOCKEY, crests | Revels '23 · **Runners-up** |
 
 Each shirt shows a result badge: gold for Winners, silver (`#c9d1d6`) for Runners-up.

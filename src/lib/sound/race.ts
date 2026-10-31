@@ -42,7 +42,7 @@ function startEngine(): Engine | null {
   osc.frequency.value = 80;
   sub.frequency.value = 40;
   lp.type = "lowpass";
-  lp.frequency.value = 900;
+  lp.frequency.value = 650;
   gain.gain.value = 0.0001;
   osc.connect(lp);
   sub.connect(lp);
@@ -64,7 +64,7 @@ const engineWhine = gated((speed: number, boosting: boolean): void => {
   const t = ac.currentTime;
   e.osc.frequency.setTargetAtTime(f, t, 0.05);
   e.sub.frequency.setTargetAtTime(f / 2, t, 0.05);
-  e.gain.gain.setTargetAtTime(s > 0.02 ? 0.018 + s * 0.012 : 0.0001, t, 0.08);
+  e.gain.gain.setTargetAtTime(s > 0.02 ? 0.014 + s * 0.01 : 0.0001, t, 0.08);
 });
 
 export const raceSfx = {

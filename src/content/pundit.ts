@@ -69,7 +69,7 @@ OFF THE PITCH
 - Mayo College, Ajmer (2012–2021): school hockey team, sitar in the college orchestra, college monitor.
 - Round Square International Service Project in Borneo (Dec 2019): 15 days with 60 students from around the world.
 - Wipro Bengaluru Marathon half (21.097 km), Sep 2026: about 2:16 from watch splits, 6:21/km average, fastest kilometre was the last full one (the 21st) at 5:45.
-- Hockey for MIT Manipal, always shirt No. 4: Inter-MAHE winners twice (one with a medal and Certificate of Merit), Revels runners-up twice (including Revels '23).
+- Hockey for MIT Manipal, always shirt No. 4: Inter-MAHE winners twice ('24 and '25), Revels runners-up twice ('23 and '24).
 
 CONTACT
 - Email agarwal.vishal2003@gmail.com · github.com/vishalagar · linkedin.com/in/vishal-agarwal123 · printsafe.in
